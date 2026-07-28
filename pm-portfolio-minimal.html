@@ -94,6 +94,7 @@
       width: 100%; height: 100%; object-fit: cover; object-position: center top;
       display: block;
     }
+    /* Placeholder shown when no real photo */
     .photo-placeholder {
       width: 100%; height: 100%;
       display: flex; flex-direction: column;
@@ -101,11 +102,20 @@
       padding-bottom: 0;
       background: linear-gradient(160deg, #EEF2FF 0%, #E0E7FF 100%);
     }
-    .photo-placeholder svg { width: 120px; color: #A5B4FC; }
+    .photo-placeholder svg {
+      width: 120px; color: #A5B4FC;
+    }
+    .photo-upload-hint {
+      font-size: .68rem; color: var(--gray-5); text-align: center;
+      line-height: 1.4; border: 1.5px dashed var(--gray-3);
+      border-radius: 6px; padding: .5rem .75rem;
+    }
+    .photo-upload-hint strong { color: var(--accent); font-weight: 600; }
     @media(max-width:640px){
       .about-grid { grid-template-columns: 1fr; }
       .photo-frame { width: 140px; height: 168px; }
       .photo-col { flex-direction: row; align-items: flex-start; gap: 1.25rem; }
+      .photo-upload-hint { display: none; }
     }
 
     /* SKILL ICONS GRID */
@@ -143,16 +153,7 @@
       white-space: nowrap;
     }
     .project-badge svg { width: 12px; height: 12px; }
-    .project-badge.green { color: #16a34a; background: #dcfce7; }
     .project-desc { font-size: .875rem; color: var(--gray-5); line-height: 1.75; margin-bottom: 1.25rem; }
-    .project-link {
-      display: inline-flex; align-items: center; gap: .35rem;
-      font-size: .78rem; font-weight: 500; color: var(--accent);
-      text-decoration: none; border-bottom: 1px solid transparent;
-      transition: border-color .15s;
-    }
-    .project-link:hover { border-color: var(--accent); }
-    .project-link svg { width: 12px; height: 12px; }
 
     /* INFOGRAPHIC: Funnel */
     .infographic { margin-bottom: 1.25rem; }
@@ -190,10 +191,11 @@
       transform-origin: center; transform: rotate(-90deg);
     }
     .radial-label { font-size: 1.1rem; font-weight: 800; fill: var(--black); dominant-baseline: middle; text-anchor: middle; }
+    .radial-info {}
     .radial-val { font-size: 1.5rem; font-weight: 800; color: var(--black); letter-spacing: -.02em; line-height: 1; }
     .radial-desc { font-size: .72rem; color: var(--gray-5); margin-top: .2rem; }
 
-    /* INFOGRAPHIC: Bar comparison */
+    /* INFOGRAPHIC: LTV Bar comparison */
     .ltv-bars { display: flex; gap: 1.5rem; align-items: flex-end; height: 80px; margin-bottom: .5rem; }
     .ltv-col { display: flex; flex-direction: column; align-items: center; gap: .4rem; }
     .ltv-bar {
@@ -219,7 +221,6 @@
       border: 1.5px solid var(--gray-3); border-radius: 10px;
       padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem;
       transition: border-color .2s, box-shadow .2s; position: relative; overflow: hidden;
-      text-decoration: none; color: inherit;
     }
     .cur-card:hover { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-lt); }
     .cur-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: .75rem; }
@@ -258,6 +259,10 @@
       background: var(--gray-1); border: 1px solid var(--gray-3);
       padding: .2rem .55rem; border-radius: 100px;
     }
+
+    /* mini icon SVG for waterway */
+    .wave-anim { animation: waveScroll 3s linear infinite; }
+    @keyframes waveScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
     @media(max-width:640px){ .current-grid { grid-template-columns: 1fr; } }
 
@@ -314,6 +319,7 @@
     .contact-head em { font-style: normal; color: #D4A96A; }
     .contact-sub { font-size: 1rem; color: #A0835A; max-width: 460px; margin-bottom: 2.5rem; line-height: 1.7; }
 
+    /* Animated steam cup */
     .coffee-cup-wrap { margin-bottom: 2.5rem; display: flex; align-items: flex-end; gap: 1.25rem; }
     .cup-svg { width: 64px; flex-shrink: 0; }
     .steam { animation: steamRise 2s ease-in-out infinite; transform-origin: bottom center; }
@@ -326,6 +332,7 @@
     }
     .cup-tagline { font-size: 1rem; color: #C8A878; line-height: 1.6; font-style: italic; }
 
+    /* Order buttons */
     .coffee-orders { display: flex; flex-wrap: wrap; gap: .75rem; margin-bottom: 2.5rem; }
     .coffee-btn {
       display: inline-flex; align-items: center; gap: .5rem;
@@ -386,12 +393,12 @@
 <!-- HERO -->
 <section class="hero">
   <div class="wrap">
-    <div class="hero-impact">$11<span>M</span></div>
-    <p class="hero-desc">Revenue generated on a single project. I'm a product manager who ships things that move the number — across SaaS, e-commerce, and content products.</p>
+    <div class="hero-impact">$85<span>M</span></div>
+    <p class="hero-desc">GMV influenced. I'm a product manager with 7 years shipping checkout flows, mobile shopping apps, and marketplace features that convert.</p>
     <div class="hero-meta">
       <a href="#work" class="hero-link">See my work</a>
       <div class="hero-dot"></div>
-      <a href="TimothyMCocoresProductResume.pdf" class="hero-link soft" target="_blank">Download resume</a>
+      <a href="#contact" class="hero-link soft">Download resume</a>
       <div class="hero-dot"></div>
       <span class="hero-link soft" style="border:none;cursor:default">Brooklyn, NY</span>
     </div>
@@ -406,25 +413,34 @@
 
       <!-- PHOTO COLUMN -->
       <div class="photo-col">
-        <div class="photo-frame">
-          <img src="photo.jpg" alt="Timothy Cocores"
-            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-          <div class="photo-placeholder" style="display:none;">
+        <div class="photo-frame" id="photoFrame">
+          <!--
+            To add your photo, replace this placeholder with:
+            <img src="your-photo.jpg" alt="Timothy Cocores" />
+          -->
+          <div class="photo-placeholder">
             <svg viewBox="0 0 120 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Shoulders / torso -->
               <path d="M0 140 C10 100 30 88 60 88 C90 88 110 100 120 140Z" fill="#C7D2FE"/>
+              <!-- Neck -->
               <rect x="50" y="72" width="20" height="20" rx="4" fill="#A5B4FC"/>
+              <!-- Head -->
               <ellipse cx="60" cy="56" rx="26" ry="30" fill="#A5B4FC"/>
+              <!-- Face highlight -->
               <ellipse cx="60" cy="50" rx="18" ry="22" fill="#C7D2FE" opacity=".5"/>
             </svg>
           </div>
+        </div>
+        <div class="photo-upload-hint">
+          Replace the placeholder with<br><strong>your headshot</strong> — see code comment
         </div>
       </div>
 
       <!-- BIO COLUMN -->
       <div>
         <div class="about-body">
-          <p>I'm <strong>Timothy Cocores</strong>, a Senior Product Manager with 10+ years shipping SaaS and digital products. I've led product at companies across e-commerce, design tools, marketing automation, and healthcare — always grounded in the same thing: clear decisions, measurable outcomes, and teams that can move fast.</p>
-          <p>At <strong>B&H Photo Video</strong>, I own the learn-and-decide customer journey — connecting editorial content to purchase intent across a $1.3B annual sales pipeline. My background spans the full stack from analytics and user research to roadmap execution and stakeholder alignment.</p>
+          <p>I'm <strong>Timothy Cocores</strong>, a PM who lives at the intersection of commerce metrics and mobile UX. I've led product at companies from Series A to post-IPO — always focused on the three numbers that matter: conversion rate, average order value, and repeat purchase rate.</p>
+          <p>My background in growth analytics means I don't just read the dashboard — I built most of them. I partner closely with engineering and design, stay close to the data, and make decisions fast with incomplete information because that's what shipping requires.</p>
         </div>
       </div>
 
@@ -433,36 +449,36 @@
     <!-- SKILL ICON GRID -->
     <div class="skills-icon-grid">
       <div class="skill-icon-card">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-        <span class="skill-icon-name">Product Strategy</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="skill-icon-name">Checkout Optimization</span>
+      </div>
+      <div class="skill-icon-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+        <span class="skill-icon-name">Mobile Commerce</span>
       </div>
       <div class="skill-icon-card">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        <span class="skill-icon-name">Data & Analytics</span>
+        <span class="skill-icon-name">A/B Testing</span>
       </div>
       <div class="skill-icon-card">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <span class="skill-icon-name">User Research</span>
-      </div>
-      <div class="skill-icon-card">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-        <span class="skill-icon-name">SaaS Products</span>
+        <span class="skill-icon-name">Search & Discovery</span>
       </div>
       <div class="skill-icon-card">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        <span class="skill-icon-name">Stakeholder Management</span>
+        <span class="skill-icon-name">Retention & Lifecycle</span>
       </div>
       <div class="skill-icon-card">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-        <span class="skill-icon-name">Agile & Scrum</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span class="skill-icon-name">Marketplace Products</span>
       </div>
       <div class="skill-icon-card">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-        <span class="skill-icon-name">E-Commerce</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        <span class="skill-icon-name">Pricing Strategy</span>
       </div>
       <div class="skill-icon-card">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-        <span class="skill-icon-name">A/B Testing</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        <span class="skill-icon-name">SQL & Analytics</span>
       </div>
     </div>
   </div>
@@ -474,172 +490,163 @@
     <span class="label">Selected Work</span>
     <div class="project-list">
 
-      <!-- PROJECT 1: B&H Leasing — funnel infographic -->
+      <!-- PROJECT 1: Checkout — funnel infographic -->
       <div class="project" data-animate="funnel">
         <div class="project-header">
           <div>
-            <div class="project-co">B&H Photo Video · 2023–Present</div>
-            <div class="project-title">Leasing Discoverability & PDP Centralization</div>
+            <div class="project-co">Vessel Commerce · 2024</div>
+            <div class="project-title">One-Page Checkout Redesign</div>
           </div>
           <div class="project-badge">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
-            +225% Applications
+            +34% CVR
           </div>
         </div>
-        <p class="project-desc">Leasing was buried across B&H's catalog — a financing option most shoppers never found. Led discovery, strategy, and centralization of leasing onto the Product Detail Page, creating a single authoritative path to apply. Application submissions jumped 225%, generating $11.1M in additional annual revenue.</p>
+        <p class="project-desc">Mobile checkout had a 72% abandonment rate — 11 points above industry average. Discovery across 240K sessions led to a single-page redesign with guest-first defaults and inline validation. Cart abandonment fell to 53%, adding $6.2M in projected annual GMV.</p>
 
+        <!-- Funnel Infographic -->
         <div class="infographic">
-          <div class="infographic-title">Leasing funnel — before vs. after centralization</div>
+          <div class="infographic-title">Checkout funnel — before vs. after</div>
           <div class="funnel-rows">
             <div class="funnel-row">
-              <span class="funnel-step-name">PDP Visit</span>
+              <span class="funnel-step-name">Page View</span>
               <div class="funnel-bar-wrap"><div class="funnel-bar" data-w="100"></div></div>
               <span class="funnel-pct">100%</span>
               <span class="funnel-delta"></span>
             </div>
             <div class="funnel-row">
-              <span class="funnel-step-name">Leasing Found</span>
-              <div class="funnel-bar-wrap"><div class="funnel-bar" data-w="72"></div></div>
-              <span class="funnel-pct">72%</span>
-              <span class="funnel-delta">+41%</span>
+              <span class="funnel-step-name">Add to Cart</span>
+              <div class="funnel-bar-wrap"><div class="funnel-bar" data-w="62"></div></div>
+              <span class="funnel-pct">62%</span>
+              <span class="funnel-delta">+8%</span>
             </div>
             <div class="funnel-row">
-              <span class="funnel-step-name">App Started</span>
-              <div class="funnel-bar-wrap"><div class="funnel-bar" data-w="48"></div></div>
-              <span class="funnel-pct">48%</span>
-              <span class="funnel-delta">+29%</span>
+              <span class="funnel-step-name">Checkout</span>
+              <div class="funnel-bar-wrap"><div class="funnel-bar" data-w="41"></div></div>
+              <span class="funnel-pct">41%</span>
+              <span class="funnel-delta">+12%</span>
             </div>
             <div class="funnel-row">
-              <span class="funnel-step-name">Submitted</span>
-              <div class="funnel-bar-wrap"><div class="funnel-bar" data-w="31"></div></div>
-              <span class="funnel-pct">31%</span>
-              <span class="funnel-delta">+225%</span>
+              <span class="funnel-step-name">Purchase</span>
+              <div class="funnel-bar-wrap"><div class="funnel-bar" data-w="27"></div></div>
+              <span class="funnel-pct">27%</span>
+              <span class="funnel-delta">+34%</span>
             </div>
           </div>
         </div>
 
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;">
-          <div class="project-tags">
-            <span class="ptag">PDP Strategy</span><span class="ptag">Conversion</span><span class="ptag">Fintech</span><span class="ptag">B&H Leasing</span>
-          </div>
-          <a href="bh-explora.html" class="project-link">
-            Full case study
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
-          </a>
+        <div class="project-tags">
+          <span class="ptag">Checkout Flow</span><span class="ptag">A/B Testing</span><span class="ptag">Mobile Web</span><span class="ptag">Conversion Rate</span>
         </div>
       </div>
 
-      <!-- PROJECT 2: B&H Explora — radial + sparkline -->
+      <!-- PROJECT 2: App — radial rating + sparkline -->
       <div class="project" data-animate="radial">
         <div class="project-header">
           <div>
-            <div class="project-co">B&H Photo Video · 2023–Present</div>
-            <div class="project-title">Explora Learn & Decide Customer Journey</div>
+            <div class="project-co">Vessel Commerce · 2023</div>
+            <div class="project-title">iOS & Android App Relaunch</div>
           </div>
           <div class="project-badge">
             <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            14M Customers
+            4.7 Rating
           </div>
         </div>
-        <p class="project-desc">B&H's Explora platform publishes articles, videos, and podcasts that help customers make confident purchase decisions. I spearheaded the product strategy connecting Explora educational content to the full customer journey — from discovery through checkout — driving 14 million customers annually and a 10% lift in customer-submitted reviews.</p>
+        <p class="project-desc">The app was a port of mobile web — 3.2 stars, no Apple Pay, 78% D1 drop-off. Led a zero-base UX audit, rebuilt browse → wishlist → buy, shipped biometric checkout. Apple featured us in Shopping within 60 days. D30 retention up 41%, 2.1M new installs.</p>
 
+        <!-- Radial + Sparkline -->
         <div class="infographic">
-          <div class="infographic-title">Customer reach & review engagement growth</div>
+          <div class="infographic-title">App store rating improvement & install growth</div>
           <div style="display:flex;gap:2.5rem;align-items:center;flex-wrap:wrap;">
             <div class="radial-wrap">
               <svg class="radial-svg" viewBox="0 0 56 56">
                 <circle class="radial-track" cx="28" cy="28" r="26"/>
-                <circle class="radial-fill" data-pct="87" cx="28" cy="28" r="26"/>
-                <text class="radial-label" x="28" y="29" font-family="Inter,sans-serif" font-size="9" font-weight="800" fill="#0A0A0A">+10%</text>
+                <circle class="radial-fill" data-pct="94" cx="28" cy="28" r="26"/>
+                <text class="radial-label" x="28" y="29" font-family="Inter,sans-serif" font-size="11" font-weight="800" fill="#0A0A0A">4.7★</text>
               </svg>
-              <div>
-                <div class="radial-val">+10%</div>
-                <div class="radial-desc">Customer reviews<br>submitted YoY</div>
+              <div class="radial-info">
+                <div class="radial-val">4.7 ★</div>
+                <div class="radial-desc">Up from 3.2 ★<br>+47% improvement</div>
               </div>
             </div>
             <div style="flex:1;min-width:160px;">
-              <div style="font-size:.68rem;color:var(--gray-5);margin-bottom:.5rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;">Annual customer influx</div>
-              <div class="sparkline-wrap">
-                <div class="spark-bar" style="height:22%"></div>
-                <div class="spark-bar" style="height:30%"></div>
+              <div style="font-size:.68rem;color:var(--gray-5);margin-bottom:.5rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;">Monthly installs (k)</div>
+              <div class="sparkline-wrap" id="spark1">
+                <div class="spark-bar" style="height:20%"></div>
+                <div class="spark-bar" style="height:28%"></div>
+                <div class="spark-bar" style="height:25%"></div>
                 <div class="spark-bar" style="height:35%"></div>
-                <div class="spark-bar" style="height:45%"></div>
-                <div class="spark-bar" style="height:55%"></div>
-                <div class="spark-bar" style="height:65%"></div>
-                <div class="spark-bar" style="height:80%"></div>
+                <div class="spark-bar" style="height:42%"></div>
+                <div class="spark-bar" style="height:38%"></div>
+                <div class="spark-bar" style="height:60%"></div>
                 <div class="spark-bar accent" style="height:100%"></div>
               </div>
               <div style="display:flex;justify-content:space-between;font-size:.62rem;color:var(--gray-5);margin-top:.3rem;">
-                <span>Pre-Explora integration</span><span>14M / yr</span>
+                <span>Pre-launch</span><span>Post-launch</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;">
-          <div class="project-tags">
-            <span class="ptag">Content Commerce</span><span class="ptag">Customer Journey</span><span class="ptag">SEO / Editorial</span><span class="ptag">Reviews</span>
-          </div>
-          <a href="bh-explora.html" class="project-link">
-            Full case study
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
-          </a>
+        <div class="project-tags">
+          <span class="ptag">iOS · Android</span><span class="ptag">Apple Pay</span><span class="ptag">Push Notifications</span><span class="ptag">App Store Optimization</span>
         </div>
       </div>
 
-      <!-- PROJECT 3: Promenade — bar chart -->
+      <!-- PROJECT 3: Search — bar chart -->
       <div class="project" data-animate="bars">
         <div class="project-header">
           <div>
-            <div class="project-co">Promenade · 2022–2023</div>
-            <div class="project-title">Local Commerce Marketplace — Cold Start to $5M ARR</div>
+            <div class="project-co">Arro Marketplace · 2022</div>
+            <div class="project-title">Search & Discovery Overhaul</div>
           </div>
-          <div class="project-badge green">
+          <div class="project-badge">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
-            $5M ARR
+            +23% GMV/session
           </div>
         </div>
-        <p class="project-desc">Joined Promenade during the critical cold-start phase — solving the chicken-and-egg problem of a local commerce marketplace. Led product strategy for discovery, seller tooling, and merchant retention. Drove a curated geographic rollout combined with high-touch onboarding that grew the platform from zero traction to $5M ARR.</p>
+        <p class="project-desc">50% of sessions started with search, but 22% returned zero results. Partnered with ML to re-rank using behavioral signals. Shipped query expansion, synonym mapping, personalized surfacing. Search-to-PDP click rate up 38%, zero-result rate down 15%.</p>
 
+        <!-- Bar chart infographic -->
         <div class="infographic">
-          <div class="infographic-title">Key platform metrics — before vs. after strategy</div>
+          <div class="infographic-title">Key search metrics — before vs. after</div>
           <div style="display:flex;flex-direction:column;gap:.6rem;">
             <div style="display:flex;align-items:center;gap:.75rem;">
-              <span style="font-size:.72rem;color:var(--gray-5);width:130px;flex-shrink:0;">Merchant activation</span>
+              <span style="font-size:.72rem;color:var(--gray-5);width:130px;flex-shrink:0;">GMV / session</span>
               <div style="flex:1;display:flex;flex-direction:column;gap:.25rem;">
                 <div style="display:flex;align-items:center;gap:.5rem;">
-                  <div style="height:8px;border-radius:2px;background:var(--gray-3);width:22%;"></div>
+                  <div style="height:8px;border-radius:2px;background:var(--gray-3);width:60%;"></div>
                   <span style="font-size:.65rem;color:var(--gray-5);">Before</span>
                 </div>
                 <div style="display:flex;align-items:center;gap:.5rem;">
-                  <div class="stat-bar-after" data-w="70" style="height:8px;border-radius:2px;background:var(--accent);width:0%;transition:width 1s ease;"></div>
-                  <span style="font-size:.65rem;color:var(--accent);font-weight:600;">+34% after</span>
+                  <div class="stat-bar-after" data-w="74" style="height:8px;border-radius:2px;background:var(--accent);width:0%;transition:width 1s ease;"></div>
+                  <span style="font-size:.65rem;color:var(--accent);font-weight:600;">+23% after</span>
                 </div>
               </div>
             </div>
             <div style="display:flex;align-items:center;gap:.75rem;">
-              <span style="font-size:.72rem;color:var(--gray-5);width:130px;flex-shrink:0;">Buyer repeat rate</span>
+              <span style="font-size:.72rem;color:var(--gray-5);width:130px;flex-shrink:0;">Click-through rate</span>
               <div style="flex:1;display:flex;flex-direction:column;gap:.25rem;">
                 <div style="display:flex;align-items:center;gap:.5rem;">
-                  <div style="height:8px;border-radius:2px;background:var(--gray-3);width:30%;"></div>
+                  <div style="height:8px;border-radius:2px;background:var(--gray-3);width:42%;"></div>
                   <span style="font-size:.65rem;color:var(--gray-5);">Before</span>
                 </div>
                 <div style="display:flex;align-items:center;gap:.5rem;">
                   <div class="stat-bar-after" data-w="58" style="height:8px;border-radius:2px;background:var(--accent);width:0%;transition:width 1s ease .15s;"></div>
-                  <span style="font-size:.65rem;color:var(--accent);font-weight:600;">+28% after</span>
+                  <span style="font-size:.65rem;color:var(--accent);font-weight:600;">+38% after</span>
                 </div>
               </div>
             </div>
             <div style="display:flex;align-items:center;gap:.75rem;">
-              <span style="font-size:.72rem;color:var(--gray-5);width:130px;flex-shrink:0;">Monthly ARR</span>
+              <span style="font-size:.72rem;color:var(--gray-5);width:130px;flex-shrink:0;">Zero-result rate</span>
               <div style="flex:1;display:flex;flex-direction:column;gap:.25rem;">
                 <div style="display:flex;align-items:center;gap:.5rem;">
-                  <div style="height:8px;border-radius:2px;background:var(--gray-3);width:5%;"></div>
-                  <span style="font-size:.65rem;color:var(--gray-5);">Cold start</span>
+                  <div style="height:8px;border-radius:2px;background:var(--gray-3);width:32%;"></div>
+                  <span style="font-size:.65rem;color:var(--gray-5);">Before (22%)</span>
                 </div>
                 <div style="display:flex;align-items:center;gap:.5rem;">
-                  <div class="stat-bar-after" data-w="80" style="height:8px;border-radius:2px;background:#22C55E;width:0%;transition:width 1s ease .3s;"></div>
-                  <span style="font-size:.65rem;color:#22C55E;font-weight:600;">$5M ARR</span>
+                  <div class="stat-bar-after" data-w="27" style="height:8px;border-radius:2px;background:#22C55E;width:0%;transition:width 1s ease .3s;"></div>
+                  <span style="font-size:.65rem;color:#22C55E;font-weight:600;">−15% after</span>
                 </div>
               </div>
             </div>
@@ -647,54 +654,55 @@
         </div>
 
         <div class="project-tags">
-          <span class="ptag">Marketplace</span><span class="ptag">Cold Start</span><span class="ptag">Growth Strategy</span><span class="ptag">Local Commerce</span>
+          <span class="ptag">Search Ranking</span><span class="ptag">ML Partnership</span><span class="ptag">Personalization</span><span class="ptag">Marketplace</span>
         </div>
       </div>
 
-      <!-- PROJECT 4: Demandforce — LTV / ticket reduction -->
+      <!-- PROJECT 4: Loyalty — LTV comparison bars -->
       <div class="project" data-animate="ltv">
         <div class="project-header">
           <div>
-            <div class="project-co">InternetBrands – Demandforce · 2020–2022</div>
-            <div class="project-title">SMB SaaS Onboarding & Support Automation</div>
+            <div class="project-co">Arro Marketplace · 2021</div>
+            <div class="project-title">Loyalty & Subscription Program</div>
           </div>
           <div class="project-badge">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
-            50% Ticket Reduction
+            3.2× LTV
           </div>
         </div>
-        <p class="project-desc">Demandforce's support queue was overwhelmed — mostly onboarding confusion from SMB customers new to marketing automation. Instead of patching the funnel, I ran a first-principles research sprint to find the real causes. Rebuilt the onboarding flow from findings, cutting support tickets by 50% and improving early activation.</p>
+        <p class="project-desc">18% 60-day repeat purchase rate. Scoped and shipped a subscription membership — free shipping, early access, member pricing — in 5 months. 180K subscribers in year one. Members averaged 3.2× the LTV of non-members within 12 months.</p>
 
+        <!-- LTV comparison infographic -->
         <div class="infographic">
-          <div class="infographic-title">Support load — before vs. after onboarding rebuild</div>
+          <div class="infographic-title">Customer LTV — members vs. non-members</div>
           <div class="ltv-bars">
             <div class="ltv-col">
-              <div class="ltv-bar" id="ltv-high" style="height:0" data-h="80px"></div>
-              <span class="ltv-col-label">Before<br>Rebuild</span>
+              <div class="ltv-bar" id="ltv-low" style="height:0" data-h="30px"></div>
+              <span class="ltv-col-label">Non-<br>Member</span>
             </div>
             <div class="ltv-col">
-              <div class="ltv-bar hi" id="ltv-low2" style="height:0" data-h="40px"></div>
-              <span class="ltv-col-label">After<br>−50%</span>
+              <div class="ltv-bar hi" id="ltv-hi" style="height:0" data-h="96px"></div>
+              <span class="ltv-col-label">Member<br>3.2×</span>
             </div>
             <div style="flex:1;display:flex;align-items:center;padding-left:.5rem;">
               <div>
-                <div style="font-size:2rem;font-weight:900;letter-spacing:-.03em;color:var(--accent);line-height:1;">50%</div>
-                <div style="font-size:.75rem;color:var(--gray-5);margin-top:.2rem;line-height:1.4;">fewer support tickets<br>post onboarding rebuild</div>
+                <div style="font-size:2rem;font-weight:900;letter-spacing:-.03em;color:var(--accent);line-height:1;">3.2×</div>
+                <div style="font-size:.75rem;color:var(--gray-5);margin-top:.2rem;line-height:1.4;">higher lifetime value<br>for subscribed customers</div>
               </div>
             </div>
           </div>
           <div style="display:flex;gap:1.25rem;margin-top:.25rem;">
             <div style="display:flex;align-items:center;gap:.4rem;font-size:.68rem;color:var(--gray-5);">
-              <div style="width:10px;height:10px;border-radius:2px;background:var(--gray-3);"></div> Old onboarding
+              <div style="width:10px;height:10px;border-radius:2px;background:var(--gray-3);"></div> Non-member
             </div>
             <div style="display:flex;align-items:center;gap:.4rem;font-size:.68rem;color:var(--gray-5);">
-              <div style="width:10px;height:10px;border-radius:2px;background:var(--accent);"></div> Rebuilt onboarding
+              <div style="width:10px;height:10px;border-radius:2px;background:var(--accent);"></div> Member
             </div>
           </div>
         </div>
 
         <div class="project-tags">
-          <span class="ptag">SaaS</span><span class="ptag">Onboarding</span><span class="ptag">User Research</span><span class="ptag">SMB</span>
+          <span class="ptag">Subscriptions</span><span class="ptag">Loyalty</span><span class="ptag">Pricing Strategy</span><span class="ptag">LTV</span>
         </div>
       </div>
 
@@ -712,12 +720,13 @@
     </div>
     <div class="current-grid">
 
-      <!-- WINGD -->
-      <a class="cur-card" href="wingd.html" data-progress="65">
+      <!-- 1. WINGD -->
+      <div class="cur-card" data-progress="65">
         <div class="cur-card-top">
           <div class="cur-icon-wrap" style="background:#FFF0F6;">
             <svg viewBox="0 0 24 24" fill="none" stroke="#EC4899" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              <!-- wing hint -->
               <path d="M17 3 Q22 6 20 12" stroke="#F9A8D4" stroke-width="1.2" fill="none"/>
             </svg>
           </div>
@@ -729,6 +738,7 @@
         </div>
         <p class="cur-desc">A dating app where friends vouch for you — your "wing" sends the first message on your behalf to break the ice. Designing the matching algorithm, trust & safety model, and the dual-profile UX that balances your identity with your wing's endorsement.</p>
 
+        <!-- Mini infographic: user flow stages -->
         <div class="infographic" style="margin-bottom:0;">
           <div class="infographic-title">Core loop</div>
           <div style="display:flex;align-items:center;gap:.3rem;font-size:.68rem;flex-wrap:wrap;">
@@ -747,12 +757,12 @@
           <div class="cur-progress-track"><div class="cur-progress-fill" data-w="65" style="background:#EC4899;"></div></div>
         </div>
         <div class="cur-tags">
-          <span class="cur-tag">Dating · Social</span><span class="cur-tag">iOS</span><span class="cur-tag">Trust & Safety</span><span class="cur-tag">Matching</span>
+          <span class="cur-tag">Dating · Social</span><span class="cur-tag">iOS</span><span class="cur-tag">Trust & Safety</span><span class="cur-tag">Matching Algorithm</span>
         </div>
-      </a>
+      </div>
 
-      <!-- RESUME REVIEWER -->
-      <a class="cur-card" href="resume-reviewer.html" data-progress="80">
+      <!-- 2. RECRUITR CRITIC -->
+      <div class="cur-card" data-progress="80">
         <div class="cur-card-top">
           <div class="cur-icon-wrap" style="background:#F0FDF4;">
             <svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -760,6 +770,8 @@
               <polyline points="14 2 14 8 20 8"/>
               <line x1="9" y1="13" x2="15" y2="13"/>
               <line x1="9" y1="17" x2="12" y2="17"/>
+              <polyline points="9 9 10 9 11 9"/>
+              <!-- checkmark overlay -->
               <circle cx="18" cy="18" r="5" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
               <polyline points="15.5 18 17 19.5 20.5 16" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -767,11 +779,12 @@
           <span class="cur-status status-beta">Beta Testing</span>
         </div>
         <div>
-          <div class="cur-name">Resume Reviewer</div>
+          <div class="cur-name">Recruitr Critic</div>
           <div class="cur-tagline">AI resume & job description critique tool</div>
         </div>
-        <p class="cur-desc">Scores resumes against job descriptions, flags keyword mismatches, and gives applicants a brutally honest gap analysis — before they apply. Also scores job postings for vague language, unrealistic requirements, and red flags that waste candidate time.</p>
+        <p class="cur-desc">A tool that scores resumes against job descriptions, flags keyword mismatches, and gives applicants a brutally honest gap analysis — before they apply. Also scores job postings for vague language, unrealistic requirements, and red flags that waste candidate time.</p>
 
+        <!-- Score meter infographic -->
         <div class="infographic" style="margin-bottom:0;">
           <div class="infographic-title">Resume match score example</div>
           <div style="display:flex;gap:1.5rem;align-items:flex-end;">
@@ -795,87 +808,106 @@
           <div class="cur-progress-track"><div class="cur-progress-fill" data-w="80" style="background:#16A34A;"></div></div>
         </div>
         <div class="cur-tags">
-          <span class="cur-tag">AI / LLM</span><span class="cur-tag">Job Search</span><span class="cur-tag">Web App</span><span class="cur-tag">NLP</span>
+          <span class="cur-tag">AI / LLM</span><span class="cur-tag">Job Search Tools</span><span class="cur-tag">Web App</span><span class="cur-tag">NLP</span>
         </div>
-      </a>
+      </div>
 
-      <!-- HOT SPOT TOOL -->
-      <a class="cur-card" href="hot-spot-tool.html" data-progress="40">
+      <!-- 3. POLO-POCKET -->
+      <div class="cur-card" data-progress="40">
         <div class="cur-card-top">
-          <div class="cur-icon-wrap" style="background:#FFF7ED;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#EA580C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/>
-              <circle cx="12" cy="12" r="4"/>
-              <line x1="12" y1="2" x2="12" y2="4"/>
-              <line x1="12" y1="20" x2="12" y2="22"/>
-              <line x1="2" y1="12" x2="4" y2="12"/>
-              <line x1="20" y1="12" x2="22" y2="12"/>
+          <div class="cur-icon-wrap" style="background:#EFF6FF;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <!-- shirt outline -->
+              <path d="M3 6 L6 3 L9 5 Q12 7 15 5 L18 3 L21 6 L18 9 L18 21 L6 21 L6 9 Z"/>
+              <!-- pocket -->
+              <rect x="8" y="11" width="4" height="4" rx="1" stroke="#3B82F6" stroke-width="1.4"/>
             </svg>
           </div>
           <span class="cur-status status-building">In Development</span>
         </div>
         <div>
-          <div class="cur-name">Hot Spot Tool</div>
-          <div class="cur-tagline">Visual heatmap tool for product decision-making</div>
+          <div class="cur-name">Polo-Pocket</div>
+          <div class="cur-tagline">Micro-saving tool tucked inside everyday spending</div>
         </div>
-        <p class="cur-desc">A lightweight tool for PMs and designers to overlay engagement heatmaps directly on product screenshots — making it easy to annotate, share, and discuss where users focus, click, and drop off without exporting to separate analytics tools.</p>
+        <p class="cur-desc">A fintech utility that rounds up every transaction to the nearest dollar and routes the spare change to a goal — a vacation, an emergency fund, a gift. Simple as a polo pocket: small, always there, surprisingly useful. Designing the bank sync layer, goal UX, and behavioral nudge system.</p>
 
+        <!-- Round-up animation infographic -->
         <div class="infographic" style="margin-bottom:0;">
-          <div class="infographic-title">Use case flow</div>
-          <div style="display:flex;align-items:center;gap:.3rem;font-size:.68rem;flex-wrap:wrap;">
-            <span style="background:var(--gray-1);padding:.25rem .6rem;border-radius:4px;color:var(--gray-7);font-weight:500;">Upload screenshot</span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-            <span style="background:var(--gray-1);padding:.25rem .6rem;border-radius:4px;color:var(--gray-7);font-weight:500;">Mark hot spots</span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-            <span style="background:#FFF7ED;padding:.25rem .6rem;border-radius:4px;color:#EA580C;font-weight:600;">Share insights</span>
+          <div class="infographic-title">Round-up example</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;background:var(--gray-1);border-radius:6px;padding:.6rem .8rem;font-size:.78rem;">
+            <div>
+              <div style="color:var(--gray-5);font-size:.65rem;margin-bottom:.15rem;">Coffee purchase</div>
+              <div style="font-weight:700;color:var(--black);">$4.37</div>
+            </div>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            <div style="text-align:right;">
+              <div style="color:var(--gray-5);font-size:.65rem;margin-bottom:.15rem;">Round-up saved</div>
+              <div style="font-weight:700;color:#3B82F6;">+$0.63 ✦</div>
+            </div>
           </div>
         </div>
 
         <div class="cur-progress-wrap">
           <div class="cur-progress-label"><span>Progress</span><span>40%</span></div>
-          <div class="cur-progress-track"><div class="cur-progress-fill" data-w="40" style="background:#EA580C;"></div></div>
+          <div class="cur-progress-track"><div class="cur-progress-fill" data-w="40" style="background:#3B82F6;"></div></div>
         </div>
         <div class="cur-tags">
-          <span class="cur-tag">Product Tools</span><span class="cur-tag">Analytics</span><span class="cur-tag">Web App</span>
+          <span class="cur-tag">Fintech</span><span class="cur-tag">Micro-saving</span><span class="cur-tag">Mobile</span><span class="cur-tag">Behavioral Design</span>
         </div>
-      </a>
+      </div>
 
-      <!-- BATHROOM CODES -->
-      <a class="cur-card" href="bathroom-codes.html" data-progress="90">
+      <!-- 4. AQUABOT / WATERWAY ROBOT -->
+      <div class="cur-card" data-progress="55">
         <div class="cur-card-top">
-          <div class="cur-icon-wrap" style="background:#F0FDF4;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          <div class="cur-icon-wrap" style="background:#F0FDFA;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#0D9488" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <!-- water waves -->
+              <path d="M2 14 Q5 11 8 14 Q11 17 14 14 Q17 11 20 14 Q22 16 24 14"/>
+              <path d="M2 18 Q5 15 8 18 Q11 21 14 18 Q17 15 20 18 Q22 20 24 18" opacity=".4"/>
+              <!-- robot hull -->
+              <rect x="6" y="8" width="12" height="7" rx="2" fill="#F0FDFA" stroke="#0D9488" stroke-width="1.5"/>
+              <!-- sensor dome -->
+              <path d="M10 8 Q12 5 14 8" stroke="#0D9488" stroke-width="1.5" fill="none"/>
+              <!-- arm -->
+              <line x1="6" y1="11" x2="3" y2="13" stroke="#0D9488" stroke-width="1.5"/>
+              <circle cx="3" cy="13" r="1.2" fill="#0D9488"/>
             </svg>
           </div>
-          <span class="cur-status status-proposal">Live MVP</span>
+          <span class="cur-status status-proposal">Proposal Stage</span>
         </div>
         <div>
-          <div class="cur-name">Bathroom Codes</div>
-          <div class="cur-tagline">Community-sourced restroom access codes</div>
+          <div class="cur-name">AquaBot — Waterway Trash Robot</div>
+          <div class="cur-tagline">Autonomous surface robot for waterway trash collection</div>
         </div>
-        <p class="cur-desc">A crowdsourced directory of bathroom door codes for cafes, hotels, and stores. Users submit codes, the community validates them, and a trust score surfaces the most reliable ones. Designing the reputation system and anti-gaming mechanics to keep data accurate.</p>
+        <p class="cur-desc">A product proposal for an AI-guided autonomous robot that skims rivers, lakes, and harbors — collecting surface trash before it sinks or flows to sea. Covers sensor stack (CV + LiDAR), collection mechanism design, solar power system, remote monitoring dashboard, and a municipal deployment model.</p>
 
+        <!-- Coverage infographic -->
         <div class="infographic" style="margin-bottom:0;">
-          <div class="infographic-title">Community trust loop</div>
-          <div style="display:flex;align-items:center;gap:.3rem;font-size:.68rem;flex-wrap:wrap;">
-            <span style="background:var(--gray-1);padding:.25rem .6rem;border-radius:4px;color:var(--gray-7);font-weight:500;">Submit code</span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-            <span style="background:var(--gray-1);padding:.25rem .6rem;border-radius:4px;color:var(--gray-7);font-weight:500;">Community confirms</span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-            <span style="background:#F0FDF4;padding:.25rem .6rem;border-radius:4px;color:#16a34a;font-weight:600;">Score rises ✓</span>
+          <div class="infographic-title">Proposed operational metrics</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;text-align:center;">
+            <div style="background:#F0FDFA;border-radius:6px;padding:.5rem;">
+              <div style="font-size:1rem;font-weight:800;color:#0D9488;line-height:1;">8hr</div>
+              <div style="font-size:.62rem;color:var(--gray-5);margin-top:.15rem;">Per charge</div>
+            </div>
+            <div style="background:#F0FDFA;border-radius:6px;padding:.5rem;">
+              <div style="font-size:1rem;font-weight:800;color:#0D9488;line-height:1;">50kg</div>
+              <div style="font-size:.62rem;color:var(--gray-5);margin-top:.15rem;">Trash/day</div>
+            </div>
+            <div style="background:#F0FDFA;border-radius:6px;padding:.5rem;">
+              <div style="font-size:1rem;font-weight:800;color:#0D9488;line-height:1;">5km²</div>
+              <div style="font-size:.62rem;color:var(--gray-5);margin-top:.15rem;">Coverage</div>
+            </div>
           </div>
         </div>
 
         <div class="cur-progress-wrap">
-          <div class="cur-progress-label"><span>Progress</span><span>90%</span></div>
-          <div class="cur-progress-track"><div class="cur-progress-fill" data-w="90" style="background:#16a34a;"></div></div>
+          <div class="cur-progress-label"><span>Progress</span><span>55%</span></div>
+          <div class="cur-progress-track"><div class="cur-progress-fill" data-w="55" style="background:#0D9488;"></div></div>
         </div>
         <div class="cur-tags">
-          <span class="cur-tag">Community</span><span class="cur-tag">Trust & Safety</span><span class="cur-tag">Mobile Web</span>
+          <span class="cur-tag">Robotics</span><span class="cur-tag">CleanTech</span><span class="cur-tag">Computer Vision</span><span class="cur-tag">Proposal</span>
         </div>
-      </a>
+      </div>
 
     </div>
   </div>
@@ -888,18 +920,18 @@
     <div class="numbers-grid">
       <div class="num-cell">
         <svg class="num-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-        <div class="n-val">$11M+</div>
-        <div class="n-label">Revenue from B&H leasing project</div>
-      </div>
-      <div class="num-cell">
-        <svg class="num-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        <div class="n-val">14M</div>
-        <div class="n-label">Customers reached via Explora journey</div>
+        <div class="n-val">$85M+</div>
+        <div class="n-label">GMV directly influenced</div>
       </div>
       <div class="num-cell">
         <svg class="num-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-        <div class="n-val">10+ yrs</div>
-        <div class="n-label">Shipping SaaS & digital products</div>
+        <div class="n-val">7 yrs</div>
+        <div class="n-label">Building commerce products</div>
+      </div>
+      <div class="num-cell">
+        <svg class="num-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <div class="n-val">300+</div>
+        <div class="n-label">User interviews conducted</div>
       </div>
     </div>
   </div>
@@ -918,21 +950,21 @@
         <div class="tool-list">
           <div class="tool-item">Amplitude</div>
           <div class="tool-item">Mixpanel</div>
-          <div class="tool-item">Google Analytics 4</div>
-          <div class="tool-item">SQL — BigQuery</div>
           <div class="tool-item">Looker</div>
+          <div class="tool-item">SQL — BigQuery</div>
+          <div class="tool-item">GA4</div>
         </div>
       </div>
       <div>
         <div class="tool-group-name">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-          Design & Research
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          Commerce
         </div>
         <div class="tool-list">
-          <div class="tool-item">Figma</div>
-          <div class="tool-item">InVision / Freehand</div>
-          <div class="tool-item">UserTesting</div>
-          <div class="tool-item">Hotjar</div>
+          <div class="tool-item">Shopify Plus</div>
+          <div class="tool-item">Stripe & Braintree</div>
+          <div class="tool-item">Algolia</div>
+          <div class="tool-item">Klaviyo</div>
         </div>
       </div>
       <div>
@@ -941,21 +973,21 @@
           Experimentation
         </div>
         <div class="tool-list">
-          <div class="tool-item">Optimizely</div>
           <div class="tool-item">LaunchDarkly</div>
+          <div class="tool-item">Optimizely</div>
           <div class="tool-item">A/B test design & analysis</div>
         </div>
       </div>
       <div>
         <div class="tool-group-name">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
           Process
         </div>
         <div class="tool-list">
-          <div class="tool-item">Jira & Linear</div>
-          <div class="tool-item">Notion & Confluence</div>
+          <div class="tool-item">Figma</div>
+          <div class="tool-item">Linear</div>
+          <div class="tool-item">Notion</div>
           <div class="tool-item">Shape Up</div>
-          <div class="tool-item">Agile / Scrum</div>
         </div>
       </div>
     </div>
@@ -969,82 +1001,66 @@
     <div class="exp-list">
 
       <div class="exp-item">
-        <div class="exp-dates">2023 – Present</div>
+        <div class="exp-dates">2022 – Present</div>
         <div>
           <div class="exp-role-wrap">
             <div class="exp-icon-wrap">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
             </div>
             <div>
-              <div class="exp-role">Product Manager — Learn & Decide Journey</div>
-              <div class="exp-company">B&H Photo Video</div>
+              <div class="exp-role">Senior Product Manager — Commerce</div>
+              <div class="exp-company">Vessel Commerce</div>
             </div>
           </div>
-          <p class="exp-desc">Spearhead the learn-and-decide customer journey connecting Explora editorial content to product discovery and checkout across a $1.3B annual sales pipeline. Led the leasing PDP centralization project: 225% increase in applications, $11.1M in new revenue.</p>
+          <p class="exp-desc">Owned checkout, mobile app, and growth. Led team of 2 PMs. Delivered the one-page checkout redesign and app relaunch. Directly accountable for $40M+ in annual GMV.</p>
         </div>
       </div>
 
       <div class="exp-item">
-        <div class="exp-dates">2022 – 2023</div>
+        <div class="exp-dates">2019 – 2022</div>
         <div>
           <div class="exp-role-wrap">
             <div class="exp-icon-wrap">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
             </div>
             <div>
-              <div class="exp-role">Senior Product Manager</div>
-              <div class="exp-company">Promenade</div>
+              <div class="exp-role">Product Manager — Marketplace</div>
+              <div class="exp-company">Arro Marketplace</div>
             </div>
           </div>
-          <p class="exp-desc">Led cross-functional product strategy for a local commerce marketplace. Owned discovery, seller tooling, and retention. Drove platform from cold start to $5M ARR through curated geographic expansion and high-touch merchant onboarding.</p>
+          <p class="exp-desc">Second PM hire. Scaled with the company from $2M to $18M GMV/month. Led search, discovery, and retention. Shipped the loyalty program and search overhaul.</p>
         </div>
       </div>
 
       <div class="exp-item">
-        <div class="exp-dates">2020 – 2022</div>
-        <div>
-          <div class="exp-role-wrap">
-            <div class="exp-icon-wrap">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            </div>
-            <div>
-              <div class="exp-role">Product Manager</div>
-              <div class="exp-company">InternetBrands – Demandforce</div>
-            </div>
-          </div>
-          <p class="exp-desc">Defined roadmaps and shipped features for an SMB marketing automation platform. Led a research-first onboarding rebuild that reduced support tickets by 50%. Owned the full product lifecycle from discovery through post-launch iteration.</p>
-        </div>
-      </div>
-
-      <div class="exp-item">
-        <div class="exp-dates">2018 – 2020</div>
+        <div class="exp-dates">2017 – 2019</div>
         <div>
           <div class="exp-role-wrap">
             <div class="exp-icon-wrap">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
             </div>
             <div>
-              <div class="exp-role">Product Manager — Freehand</div>
-              <div class="exp-company">InVision App</div>
+              <div class="exp-role">Associate Product Manager</div>
+              <div class="exp-company">Threadly — acquired by Poshmark</div>
             </div>
           </div>
-          <p class="exp-desc">Spearheaded feature development for Freehand — InVision's real-time collaboration canvas. Set product strategy, navigated features vs. speed-to-market trade-offs, and established success metrics post-launch. Worked closely with design and engineering to ship iteratively.</p>
+          <p class="exp-desc">First PM role at a social commerce app. Owned listing flow, seller dashboard, and in-app messaging. Built the first cohort analysis framework.</p>
         </div>
       </div>
 
       <div class="exp-item">
-        <div class="exp-dates">2016 – 2018</div>
+        <div class="exp-dates">2015 – 2017</div>
         <div>
           <div class="exp-role-wrap">
             <div class="exp-icon-wrap">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
             </div>
             <div>
-              <div class="exp-role">Product Owner</div>
-              <div class="exp-company">Oracle Cerner</div>
+              <div class="exp-role">Growth Analyst → APM</div>
+              <div class="exp-company">RetailOS</div>
             </div>
           </div>
-          <p class="exp-desc">Defined product requirements and managed the backlog for healthcare SaaS tooling. Prioritized features against compliance requirements, market trends, and customer feedback. Collaborated with sales and marketing on GTM strategies for new product launches.</p>
+          <p class="exp-desc">Started in analytics, moved to product. Owned merchant reporting and in-store pickup features. First exposure to payments and omnichannel commerce.</p>
         </div>
       </div>
 
@@ -1057,38 +1073,47 @@
   <div class="wrap">
     <span class="label">Get in touch</span>
 
+    <!-- Animated coffee cup -->
     <div class="coffee-cup-wrap">
       <svg class="cup-svg" viewBox="0 0 64 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Steam wisps -->
         <path class="steam" d="M24 18 Q22 12 24 7 Q26 2 24 -2" stroke="#A0835A" stroke-width="2" stroke-linecap="round" fill="none"/>
         <path class="steam" d="M32 18 Q30 11 32 6 Q34 1 32 -3" stroke="#A0835A" stroke-width="2" stroke-linecap="round" fill="none"/>
         <path class="steam" d="M40 18 Q38 12 40 7 Q42 2 40 -2" stroke="#A0835A" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <!-- Saucer -->
         <ellipse cx="32" cy="65" rx="24" ry="5" fill="#3D2B1A"/>
+        <!-- Cup body -->
         <path d="M12 28 L16 62 Q16 66 20 66 L44 66 Q48 66 48 62 L52 28 Z" fill="#2E1D0E" stroke="#5C3D1E" stroke-width="1.5"/>
+        <!-- Cup rim -->
         <rect x="10" y="24" width="44" height="7" rx="3.5" fill="#3D2B1A"/>
+        <!-- Coffee surface -->
         <ellipse cx="32" cy="27.5" rx="19" ry="3" fill="#6B3F1E"/>
+        <!-- Handle -->
         <path d="M52 34 Q64 34 64 44 Q64 54 52 54" stroke="#3D2B1A" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <!-- Latte art heart -->
         <path d="M26 38 Q26 34 30 34 Q32 34 32 36 Q32 34 34 34 Q38 34 38 38 Q38 42 32 46 Q26 42 26 38Z" fill="#A0653A" opacity=".6"/>
       </svg>
       <p class="cup-tagline">"Best ideas happen<br>over a good cup of coffee."</p>
     </div>
 
-    <h2 class="contact-head">Let's grab a <em>coffee.</em></h2>
-    <p class="contact-sub">I'm open to Senior PM and Lead PM roles — SaaS, digital products, e-commerce. No cold pitches, just real conversations. Pull up a chair.</p>
+    <h2 class="contact-head">Let's grab a <em>virtual coffee.</em></h2>
+    <p class="contact-sub">I'm open to senior IC and lead PM roles at e-commerce, marketplace, or consumer app companies. No cold pitches — just real conversations. Pull up a chair.</p>
 
+    <!-- Coffee-order style buttons -->
     <div class="coffee-orders">
-      <a href="mailto:timothycocores@gmail.com" class="coffee-btn primary">
+      <a href="mailto:timothy@example.com" class="coffee-btn primary">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
         Order an espresso (email me)
       </a>
-      <a href="https://www.linkedin.com/in/timothycocores" class="coffee-btn" target="_blank">
+      <a href="#" class="coffee-btn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
         LinkedIn
       </a>
-      <a href="TimothyMCocoresProductResume.pdf" class="coffee-btn" target="_blank">
+      <a href="#" class="coffee-btn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
         Download resume
       </a>
-      <a href="#work" class="coffee-btn">
+      <a href="#" class="coffee-btn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
         Case studies
       </a>
@@ -1112,14 +1137,17 @@
       const el = e.target;
       el.classList.add('visible');
 
+      // Funnel bars
       el.querySelectorAll('.funnel-bar[data-w]').forEach(bar => {
         setTimeout(() => { bar.style.width = bar.dataset.w + '%'; }, 100);
       });
 
+      // Stat bars (search project)
       el.querySelectorAll('.stat-bar-after[data-w]').forEach(bar => {
         setTimeout(() => { bar.style.width = bar.dataset.w + '%'; }, 200);
       });
 
+      // Radial progress
       el.querySelectorAll('.radial-fill[data-pct]').forEach(circle => {
         const pct = parseFloat(circle.dataset.pct);
         const circumference = 163;
@@ -1128,15 +1156,15 @@
         }, 200);
       });
 
-      // Bar comparison (Demandforce)
-      const ltvHigh = el.querySelector('#ltv-high');
-      const ltvLow2 = el.querySelector('#ltv-low2');
-      if (ltvHigh && ltvLow2) {
+      // LTV bars
+      const ltvLow = el.querySelector('#ltv-low');
+      const ltvHi  = el.querySelector('#ltv-hi');
+      if (ltvLow && ltvHi) {
         setTimeout(() => {
-          ltvHigh.style.transition = 'height 0.9s cubic-bezier(.4,0,.2,1)';
-          ltvLow2.style.transition  = 'height 0.9s cubic-bezier(.4,0,.2,1)';
-          ltvHigh.style.height = ltvHigh.dataset.h;
-          ltvLow2.style.height  = ltvLow2.dataset.h;
+          ltvLow.style.transition = 'height 0.9s cubic-bezier(.4,0,.2,1)';
+          ltvHi.style.transition  = 'height 0.9s cubic-bezier(.4,0,.2,1)';
+          ltvLow.style.height = ltvLow.dataset.h;
+          ltvHi.style.height  = ltvHi.dataset.h;
         }, 150);
       }
 
