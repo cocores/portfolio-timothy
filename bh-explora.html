@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>B&H Explora — Case Study · Timothy Cocores</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f9f9f8; --white: #fff; --border: #e7e5e4;
+      --text: #18181b; --muted: #71717a; --subtle: #a1a1aa;
+      --accent: #2563eb; --accent-light: #dbeafe;
+      --bh-red: #cc0000; --bh-dark: #0d0d0d;
+      --font: 'Inter', -apple-system, sans-serif; --max: 720px;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); background: var(--white); color: var(--text); -webkit-font-smoothing: antialiased; }
+    ::selection { background: #fde8e8; color: var(--bh-red); }
+
+    /* ── Reveal ── */
+    .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+    .d1 { transition-delay: 0.1s; } .d2 { transition-delay: 0.2s; } .d3 { transition-delay: 0.3s; }
+
+    /* ── Back bar ── */
+    .back-bar {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,13,13,0.92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 0 2rem; height: 52px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .back-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.45);
+      text-decoration: none; transition: color 0.15s;
+    }
+    .back-link:hover { color: rgba(255,255,255,0.9); }
+    .back-bar-tag {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: rgba(255,255,255,0.25);
+    }
+    .back-bar-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--bh-red);
+      display: inline-block; margin-right: 0.5rem;
+      box-shadow: 0 0 8px rgba(204,0,0,0.6);
+    }
+
+    /* ── Hero ── */
+    .hero {
+      background:
+        radial-gradient(ellipse at 0% 100%, rgba(204,0,0,0.12) 0%, transparent 55%),
+        radial-gradient(ellipse at 100% 0%, rgba(30,30,80,0.4) 0%, transparent 60%),
+        var(--bh-dark);
+      padding: 6rem 2rem 0;
+      overflow: hidden; position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 80px),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 80px);
+      pointer-events: none;
+    }
+    .hero-inner { max-width: var(--max); margin: 0 auto; position: relative; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--bh-red);
+      margin-bottom: 1.5rem;
+    }
+    .hero-eyebrow-line { display: block; width: 24px; height: 1.5px; background: var(--bh-red); }
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 700;
+      letter-spacing: -0.04em; line-height: 1.08; color: #fff;
+      margin-bottom: 1.25rem;
+    }
+    .hero h1 em { font-style: normal; color: rgba(255,255,255,0.45); }
+    .hero-sub {
+      font-size: 1rem; color: rgba(255,255,255,0.5);
+      line-height: 1.75; max-width: 540px; margin-bottom: 3rem; font-weight: 400;
+    }
+    .hero-meta {
+      display: grid; grid-template-columns: repeat(4, auto); gap: 0;
+      width: fit-content; background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden;
+      margin-bottom: 0;
+    }
+    .hero-meta-item {
+      display: flex; flex-direction: column; gap: 0.25rem;
+      padding: 1rem 1.5rem; border-right: 1px solid rgba(255,255,255,0.08);
+    }
+    .hero-meta-item:last-child { border-right: none; }
+    .hero-meta-label { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.28); }
+    .hero-meta-value { font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.72); }
+
+    /* ── Screenshot ── */
+    .screenshot-wrap { background: var(--bh-dark); padding: 3.5rem 2rem 0; position: relative; }
+    .screenshot-wrap::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 120px;
+      background: linear-gradient(to bottom, transparent, var(--white));
+      pointer-events: none;
+    }
+    .screenshot-inner {
+      max-width: 1000px; margin: 0 auto;
+      border-radius: 12px 12px 0 0; overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.12); border-bottom: none;
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.5), 0 24px 80px rgba(0,0,0,0.6);
+    }
+    .screenshot-bar {
+      background: #1c1c1c; padding: 0.7rem 1rem;
+      display: flex; align-items: center; gap: 0.45rem; border-bottom: 1px solid #2a2a2a;
+    }
+    .screenshot-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .screenshot-url {
+      flex: 1; background: #252525; border-radius: 5px;
+      padding: 0.3rem 0.85rem; font-size: 0.7rem; color: #666;
+      font-family: 'SF Mono', 'Fira Code', monospace; margin: 0 0.5rem;
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .screenshot-lock { color: #444; font-size: 0.65rem; }
+    .screenshot-img { display: block; width: 100%; background: #1a1a1a; }
+    .screenshot-img img { display: block; width: 100%; }
+    .screenshot-placeholder {
+      width: 100%; height: 400px;
+      background: linear-gradient(160deg, #1a1a2e 0%, #0d1117 100%);
+      display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 0.5rem;
+    }
+    .screenshot-placeholder-text { font-size: 0.72rem; color: rgba(255,255,255,0.15); font-family: monospace; letter-spacing: 0.06em; }
+
+    /* ── Article body ── */
+    .article { padding: 6rem 2rem 5rem; background: var(--white); }
+    .article-inner { max-width: var(--max); margin: 0 auto; }
+
+    .lede {
+      font-size: 1.2rem; color: var(--text); line-height: 1.75; font-weight: 400;
+      margin-bottom: 3rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--border);
+    }
+
+    h2 {
+      font-size: 1.25rem; font-weight: 700; letter-spacing: -0.025em;
+      color: var(--text); margin: 3rem 0 0.9rem; line-height: 1.3;
+    }
+    h3 {
+      display: flex; align-items: center; gap: 0.75rem;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--subtle);
+      margin: 2.5rem 0 0.75rem;
+    }
+    h3[data-n]:not([data-n=""])::before {
+      content: attr(data-n);
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--bh-red); color: #fff; font-size: 0.6rem;
+      font-weight: 700; flex-shrink: 0; letter-spacing: 0;
+    }
+    p { font-size: 0.975rem; color: var(--muted); line-height: 1.85; margin-bottom: 1.25rem; }
+    p strong { color: var(--text); font-weight: 600; }
+    ul { padding-left: 1.25em; margin-bottom: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; }
+    li { font-size: 0.975rem; color: var(--muted); line-height: 1.75; }
+    li strong { color: var(--text); font-weight: 600; }
+
+    /* Pull quote — full-bleed dark */
+    .pull-quote {
+      background: var(--bh-dark);
+      margin: 3rem -2rem; padding: 3rem 2rem;
+      position: relative; overflow: hidden;
+    }
+    .pull-quote::before {
+      content: '\201C';
+      position: absolute; top: -0.5rem; left: 1.5rem;
+      font-size: 8rem; line-height: 1; color: rgba(204,0,0,0.15);
+      font-family: Georgia, serif; pointer-events: none;
+    }
+    .pull-quote p {
+      max-width: var(--max); margin: 0 auto;
+      font-size: 1.3rem; font-style: italic; font-weight: 400;
+      color: rgba(255,255,255,0.85); line-height: 1.6;
+      position: relative; margin-bottom: 0;
+    }
+
+    /* ── Stat strip ── */
+    .stat-strip {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 0; background: var(--bh-dark);
+      border-radius: 14px; overflow: hidden;
+      margin: 3rem 0;
+      box-shadow: 0 2px 40px rgba(0,0,0,0.12);
+    }
+    .stat-cell {
+      background: var(--bh-dark); padding: 2rem 1.5rem;
+      border-right: 1px solid rgba(255,255,255,0.07);
+      position: relative; overflow: hidden; transition: background 0.2s;
+    }
+    .stat-cell:last-child { border-right: none; }
+    .stat-cell:hover { background: #161616; }
+    .stat-cell::after {
+      content: ''; position: absolute; bottom: 0; left: 1.5rem; right: 1.5rem;
+      height: 2px; background: var(--bh-red);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+    .stat-cell:hover::after { transform: scaleX(1); }
+    .stat-big { font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 700; letter-spacing: -0.05em; color: #fff; line-height: 1; margin-bottom: 0.5rem; }
+    .stat-lbl { font-size: 0.72rem; font-weight: 600; color: rgba(255,255,255,0.6); margin-bottom: 0.2rem; }
+    .stat-ctx { font-size: 0.67rem; color: rgba(255,255,255,0.3); line-height: 1.55; }
+
+    /* ── Tag chips ── */
+    .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 1.25rem 0 2rem; }
+    .chip {
+      font-size: 0.68rem; font-weight: 500; padding: 0.25rem 0.65rem;
+      border-radius: 99px; background: var(--bg); border: 1px solid var(--border); color: var(--muted);
+      transition: border-color 0.15s;
+    }
+    .chip:hover { border-color: var(--subtle); }
+
+    /* ── Section divider ── */
+    .divider { border: none; border-top: 1px solid var(--border); margin: 3rem 0; }
+
+    /* ── Contributions ── */
+    .contributions {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 12px; padding: 2rem; margin-top: 2rem;
+    }
+    .contributions ul { margin-bottom: 0; }
+    .contributions li { font-size: 0.9rem; }
+
+    /* ── Footer ── */
+    .cs-footer {
+      background: var(--bh-dark); padding: 2.5rem 2rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+    }
+    .cs-footer-text { font-size: 0.78rem; color: rgba(255,255,255,0.25); }
+    .cs-footer-back {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.6);
+      text-decoration: none; transition: color 0.15s, gap 0.15s;
+    }
+    .cs-footer-back:hover { color: #fff; gap: 0.7rem; }
+
+    @media (max-width: 640px) {
+      .hero-meta { grid-template-columns: 1fr 1fr; }
+      .hero-meta-item:nth-child(2) { border-right: none; }
+      .stat-strip { grid-template-columns: 1fr; }
+      .stat-cell { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); }
+      .stat-cell:last-child { border-bottom: none; }
+      .pull-quote { margin: 3rem -2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Back bar -->
+<div class="back-bar">
+  <a href="portfolio.html" class="back-link">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Back to portfolio
+  </a>
+  <span class="back-bar-tag"><span class="back-bar-dot"></span>Case Study · B&amp;H Photo Video</span>
+</div>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><span class="hero-eyebrow-line"></span>Case Study</div>
+    <h1>Reimagining How B&amp;H Customers <em>Learn, Decide,</em> and Buy</h1>
+    <p class="hero-sub">Building the editorial infrastructure behind Explora — B&amp;H's written article database of learning content — and connecting it to the product detail page to serve high-consideration buyers.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Company</span>
+        <span class="hero-meta-value">B&amp;H Photo Video</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Role</span>
+        <span class="hero-meta-value">Product Manager — Learn &amp; Decide Journey</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Timeline</span>
+        <span class="hero-meta-value">2023 – Present</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Domain</span>
+        <span class="hero-meta-value">Ecommerce · Editorial · Content Strategy</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Screenshot -->
+<div class="screenshot-wrap">
+  <div class="screenshot-inner">
+    <div class="screenshot-bar">
+      <div class="screenshot-dot" style="background:#ff5f57;"></div>
+      <div class="screenshot-dot" style="background:#febc2e;"></div>
+      <div class="screenshot-dot" style="background:#28c840;"></div>
+      <div class="screenshot-url"><span class="screenshot-lock">🔒</span> bhphotovideo.com/explora</div>
+    </div>
+    <div class="screenshot-img">
+      <img src="bh-explora-screenshot.png" alt="B&H Explora — Learn with B&H" onerror="this.parentElement.innerHTML='<div class=\'screenshot-placeholder\'><span class=\'screenshot-placeholder-text\'>[ bhphotovideo.com/explora ]</span></div>'">
+    </div>
+  </div>
+</div>
+
+<!-- Article -->
+<div class="article">
+  <div class="article-inner">
+
+    <p class="lede">B&amp;H Photo Video serves over 14 million customers a year — many of them professionals, creatives, and enthusiasts making complex, high-consideration purchases. The question I was brought in to answer: <strong>how do you build a product experience that focuses on education and brings our green vest experience to the ecommerce experience?</strong></p>
+
+    <h2>What is B&amp;H Explora?</h2>
+    <p>Explora is B&amp;H's editorial content platform — a living database of written articles, how-to guides, video tutorials, podcasts, and educational deep dives covering photography, videography, audio production, lighting, and more. Think of it as the editorial brain behind one of the world's largest camera and electronics retailers.</p>
+    <p>The content spans everything from beginner guides ("What makes for good landscape photography?") to advanced technique breakdowns ("Master Cinematography — Part 4: Digital Grading"). It's built for the kind of buyer who doesn't just want to add to cart — they want to <em>understand</em> what they're buying and why it matters for their work.</p>
+    <div class="chips">
+      <span class="chip">Written Articles</span>
+      <span class="chip">Video Tutorials</span>
+      <span class="chip">Podcasts &amp; Audio</span>
+      <span class="chip">Educational Deep Dives</span>
+      <span class="chip">Product Launches</span>
+      <span class="chip">Upcoming Events</span>
+      <span class="chip">Creator Resources</span>
+    </div>
+
+    <div class="pull-quote"><p>"The best customers aren't the ones who buy fastest. They're the ones who buy right — and come back."</p></div>
+
+    <h2>The Problem</h2>
+    <p>B&amp;H's buyers don't shop like a typical ecommerce customer. A working photographer buying a camera body is making a decision worth thousands of dollars and several years of their career. They're not browsing — they're researching, comparing, and validating. They want to know: <strong>Is this the right tool for what I need to do?</strong></p>
+    <p>The challenge was that Explora and the product detail page (PDP) lived in separate worlds. A customer could read a beautifully written guide on mirrorless cameras and then land on a PDP that told them almost nothing about how to make that decision. The editorial layer and the commerce layer weren't connected.</p>
+    <p>Meanwhile, high-value services like leasing — which let professionals finance gear across productions — were buried, inconsistent, and difficult to find. A customer ready to lease $8,000 of cinema equipment had no clear path to do it.</p>
+
+    <hr class="divider">
+
+    <h2>The Approach</h2>
+
+    <h3 data-n="1">Map the Learn-and-Decide Journey</h3>
+    <p>The first step was understanding how high-consideration buyers actually moved through the site. Through data analysis and customer research, we mapped the full journey: how customers arrived via search and Explora content, how they moved between article pages and PDPs, where they dropped off, and what finally pushed them to convert.</p>
+    <p>The insight was clear: <strong>customers who engaged with educational content converted at significantly higher rates and returned more often</strong>. Explora wasn't just a content play — it was a conversion driver hiding in plain sight.</p>
+
+    <h3 data-n="2">Connect Explora to the PDP</h3>
+    <p>We worked to surface relevant Explora content directly within the product detail page — embedding contextually matched articles, guides, and video content alongside specs and reviews. A customer looking at a cinema lens could now access the "Guide to Cinematography Glass" without leaving the purchase context.</p>
+    <p>This wasn't just about adding links. It required building new product taxonomy, content tagging infrastructure, and editorial workflows so the right content surfaced for the right product at the right moment.</p>
+
+    <h3 data-n="3">Centralize Leasing on the PDP</h3>
+    <p>One of the highest-impact projects was identifying and fixing leasing. B&amp;H offers equipment leasing for professionals — but the feature was scattered, inconsistently surfaced, and rarely visible at the moment of decision. We centralized the entire leasing experience on the PDP, making it a first-class option alongside buy and rent.</p>
+    <p>The result was immediate and significant.</p>
+
+    <h3 data-n="4">Optimize Content Quality and Depth</h3>
+    <p>Beyond the structural work, we defined standards for product descriptions, specification completeness, visual quality, and review density. We implemented agile workflows for the newly formed product content team, setting up processes to systematically improve the quality of product pages across hundreds of thousands of SKUs.</p>
+
+    <div class="stat-strip">
+      <div class="stat-cell">
+        <div class="stat-big">225%</div>
+        <div class="stat-lbl">Leasing Application Lift</div>
+        <div class="stat-ctx">After centralizing leasing on the PDP</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-big">$11.1M</div>
+        <div class="stat-lbl">Additional Revenue</div>
+        <div class="stat-ctx">Generated by the leasing centralization project</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-big">14M</div>
+        <div class="stat-lbl">Annual Customers</div>
+        <div class="stat-ctx">Served across the learn-and-decide journey</div>
+      </div>
+    </div>
+
+    <h2>What I Learned</h2>
+    <p>The biggest shift in thinking was moving away from the idea that ecommerce is about reducing friction. For a high-consideration buyer, <strong>friction is often the product</strong>. The time they spend learning is not an obstacle to conversion — it's the thing that makes the conversion real.</p>
+    <p>The Explora platform taught me that editorial content, when treated as a product rather than a marketing function, can become one of the most powerful levers in a commerce experience. It builds trust, reduces returns, increases basket size, and creates the kind of relationship that brings customers back — not because of a loyalty program, but because they genuinely believe the brand understands their craft.</p>
+    <p>The leasing work reinforced a more tactical lesson: <strong>sometimes the highest-ROI product work is identifying a feature that already exists and making it visible</strong>. We didn't invent leasing. We just gave it a home.</p>
+
+    <hr class="divider">
+
+    <h3 data-n="">Contributions</h3>
+    <div class="contributions">
+      <ul>
+        <li><strong>Product strategy</strong> for the learn-and-decide customer journey across bhphotovideo.com</li>
+        <li><strong>Explora integration</strong> — connecting editorial content to product pages via taxonomy and tagging</li>
+        <li><strong>Leasing centralization</strong> on the PDP, generating $11.1M in additional revenue</li>
+        <li><strong>Content quality standards</strong> across product descriptions, specs, visuals, and reviews</li>
+        <li><strong>Agile process development</strong> for a newly established product content team</li>
+        <li><strong>Stakeholder alignment</strong> across engineering, design, marketing, and editorial teams</li>
+        <li>Contributed to <strong>$1.3B in annual sales</strong> and a 10% increase in customer-submitted reviews</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<div class="cs-footer">
+  <span class="cs-footer-text">© Timothy Cocores · B&amp;H Photo Video Case Study</span>
+  <a href="portfolio.html" class="cs-footer-back">
+    Back to portfolio
+    <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
+</div>
+
+<script>
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('h2, h3, p, .lede, .pull-quote, .stat-strip, .chips, .contributions, .divider').forEach((el, i) => {
+    el.classList.add('reveal');
+    el.style.transitionDelay = (i % 4) * 0.06 + 's';
+    io.observe(el);
+  });
+</script>
+</body>
+</html>

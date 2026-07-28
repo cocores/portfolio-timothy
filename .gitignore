@@ -1,0 +1,54 @@
+# macOS
+.DS_Store
+.Trash/
+.CFUserTextEncoding
+.thumbnails/
+
+# Personal dotfiles & config
+.adobe/
+.antigravity/
+.cache/
+.claude/
+.claude.json
+.claude.json.backup
+.claude-server-commander/
+.cocoapods/
+.config/
+.cups/
+.cursor/
+.expo/
+.gem/
+.gemini/
+.gitconfig
+.id
+.local/
+.mainhelper
+.npm/
+.oracle_jre_usage/
+.pass
+.swiftpm/
+.username
+.vnc/
+.zprofile
+.zsh_history
+.zsh_sessions/
+.zshrc
+
+# System folders
+Applications/
+Applications (Parallels)/
+Creative Cloud Files*/
+Desktop/
+Documents/
+Downloads/
+Library/
+Movies/
+Music/
+Parallels/
+Pictures/
+Public/
+
+# Other projects
+Bathroom App/
+kit-optimizer/
+measurement-annotator/

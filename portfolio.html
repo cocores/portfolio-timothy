@@ -1,0 +1,1794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timothy Cocores — Product Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f9f9f8;
+      --white: #ffffff;
+      --border: #e7e5e4;
+      --text: #18181b;
+      --muted: #71717a;
+      --subtle: #a1a1aa;
+      --accent: #2563eb;
+      --accent-light: #dbeafe;
+      --accent-text: #1d4ed8;
+      --font: 'Inter', -apple-system, sans-serif;
+      --max: 960px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--subtle); }
+
+    /* Text selection */
+    ::selection { background: var(--accent-light); color: var(--accent-text); }
+
+    .container { max-width: var(--max); margin: 0 auto; padding: 0 2rem; }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(249,249,248,0.85);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: var(--max); margin: 0 auto; padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 56px;
+    }
+    .nav-name {
+      font-size: 0.875rem; font-weight: 600; color: var(--text);
+      text-decoration: none; letter-spacing: -0.01em;
+    }
+    .nav-links { display: flex; align-items: center; gap: 1.75rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.8rem; color: var(--muted); text-decoration: none;
+      font-weight: 500; transition: color 0.15s;
+      position: relative; padding-bottom: 2px;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
+      height: 2px; background: var(--text); border-radius: 1px;
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.2s cubic-bezier(0.4,0,0.2,1);
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+    .nav-links a.active::after { transform: scaleX(1); }
+    .nav-cta {
+      font-size: 0.8rem; font-weight: 500; color: var(--accent);
+      text-decoration: none; border: 1px solid var(--accent-light);
+      background: var(--accent-light); border-radius: 6px;
+      padding: 0.3rem 0.75rem; transition: background 0.15s;
+    }
+    .nav-cta:hover { background: #bfdbfe; }
+
+    /* ── Scroll progress ── */
+    #progress {
+      position: fixed; top: 0; left: 0; height: 2px;
+      background: var(--accent); z-index: 200; width: 0%;
+      transition: width 0.08s linear;
+    }
+
+    /* ── Reveal ── */
+    .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.55s ease, transform 0.55s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    .d1 { transition-delay: 0.08s; }
+    .d2 { transition-delay: 0.16s; }
+    .d3 { transition-delay: 0.24s; }
+    .d4 { transition-delay: 0.32s; }
+
+    /* ── Section shared ── */
+    section { padding: 6rem 0; border-bottom: 1px solid var(--border); }
+    .eyebrow {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.1rem); font-weight: 700;
+      letter-spacing: -0.025em; color: var(--text); margin-bottom: 3rem; line-height: 1.2;
+    }
+
+    /* ── Hero ── */
+    #hero { padding: 9rem 0 6rem; }
+    .hero-grid { display: grid; grid-template-columns: 1fr auto; gap: 4rem; align-items: center; }
+    .hero-photo-wrap {
+      width: 200px; height: 200px; flex-shrink: 0;
+      border-radius: 50%; border: 3px solid var(--accent);
+      overflow: hidden; position: relative;
+      background: var(--white);
+    }
+    .hero-photo-wrap img {
+      width: 100%; height: 100%; object-fit: cover; object-position: top; display: block;
+    }
+    .hero-photo-initials {
+      display: none; position: absolute; inset: 0;
+      align-items: center; justify-content: center;
+      font-size: 2rem; font-weight: 700; letter-spacing: -0.03em; color: var(--accent);
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.775rem; font-weight: 500; color: var(--muted);
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 999px; padding: 0.3rem 0.9rem; margin-bottom: 2rem;
+    }
+    .hero-dot {
+      width: 7px; height: 7px; border-radius: 50%; background: #22c55e;
+      box-shadow: 0 0 0 2px rgba(34,197,94,0.25); flex-shrink: 0;
+      animation: pulse-dot 2.5s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { box-shadow: 0 0 0 2px rgba(34,197,94,0.2); }
+      50% { box-shadow: 0 0 0 4px rgba(34,197,94,0.12); }
+    }
+    h1 {
+      font-size: clamp(3rem, 8vw, 5.5rem); font-weight: 700;
+      letter-spacing: -0.04em; line-height: 1.05; color: var(--text);
+      margin-bottom: 1.5rem;
+    }
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.15rem); color: var(--muted);
+      max-width: 500px; line-height: 1.7; margin-bottom: 2.5rem; font-weight: 400;
+    }
+    .hero-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 4rem; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      padding: 0.6rem 1.2rem; border-radius: 8px; font-size: 0.875rem;
+      font-weight: 500; text-decoration: none; border: none; cursor: pointer;
+      font-family: var(--font); transition: all 0.15s;
+    }
+    .btn-dark { background: var(--text); color: #fff; }
+    .btn-dark:hover { background: #27272a; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .btn-dark:active { transform: translateY(0); box-shadow: none; }
+    .btn-outline { background: var(--white); color: var(--text); border: 1px solid var(--border); }
+    .btn-outline:hover { border-color: var(--subtle); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+    .btn-outline:active { transform: translateY(0); box-shadow: none; }
+
+    /* ── Resume link ── */
+    .resume-link {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      font-size: 0.8rem; font-weight: 500; color: var(--muted);
+      background: none; border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.45rem 0.9rem; cursor: pointer; font-family: var(--font);
+      transition: color 0.15s, border-color 0.15s, background 0.15s;
+      white-space: nowrap; flex-shrink: 0; margin-top: 0.5rem;
+    }
+    .resume-link:hover { color: var(--text); border-color: var(--subtle); background: var(--white); }
+
+    /* ── Resume drawer (right-side) ── */
+    .resume-tray {
+      position: fixed; top: 0; right: 0; bottom: 0; z-index: 301;
+      width: min(500px, 100vw);
+      background: var(--white); border-left: 1px solid var(--border);
+      transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.32,0.72,0,1);
+      box-shadow: -12px 0 48px rgba(0,0,0,0.1);
+      display: flex; flex-direction: column;
+    }
+    .resume-tray.open { transform: translateX(0); }
+    .resume-tray-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 1.5rem; border-bottom: 1px solid var(--border);
+      flex-shrink: 0; gap: 1rem;
+    }
+    .resume-tray-title { font-size: 0.875rem; font-weight: 600; color: var(--text); }
+    .resume-tray-actions { display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; }
+    .resume-tray-dl {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.775rem; font-weight: 500; color: #fff;
+      background: var(--text); border: none; border-radius: 7px;
+      padding: 0.4rem 0.85rem; cursor: pointer; font-family: var(--font);
+      text-decoration: none; transition: background 0.15s;
+    }
+    .resume-tray-dl:hover { background: #27272a; }
+    .resume-tray-close {
+      background: var(--bg); border: 1px solid var(--border); border-radius: 50%;
+      width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 0.7rem; color: var(--muted); transition: background 0.15s;
+      flex-shrink: 0;
+    }
+    .resume-tray-close:hover { background: var(--border); }
+    .resume-tray-body {
+      overflow-y: auto; padding: 2rem 1.75rem 3rem; flex: 1;
+      -webkit-overflow-scrolling: touch;
+    }
+    /* Resume content */
+    .rv-name { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; }
+    .rv-title { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; margin-bottom: 0.6rem; }
+    .rv-contact { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; font-size: 0.75rem; color: var(--muted); padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; }
+    .rv-contact a { color: var(--accent); text-decoration: none; }
+    .rv-section { margin-bottom: 1.5rem; }
+    .rv-section-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--subtle); padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); margin-bottom: 0.9rem; display: block; }
+    .rv-summary { font-size: 0.8rem; color: var(--muted); line-height: 1.7; }
+    .rv-job { margin-bottom: 1.1rem; }
+    .rv-job:last-child { margin-bottom: 0; }
+    .rv-job-row { display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; }
+    .rv-job-role { font-size: 0.825rem; font-weight: 600; color: var(--text); }
+    .rv-job-date { font-size: 0.72rem; color: var(--subtle); white-space: nowrap; flex-shrink: 0; }
+    .rv-job-co { font-size: 0.75rem; color: var(--muted); margin: 0.1rem 0 0.35rem; }
+    .rv-job ul { padding-left: 1em; display: flex; flex-direction: column; gap: 0.2rem; }
+    .rv-job li { font-size: 0.75rem; color: var(--muted); line-height: 1.6; }
+    .rv-skills { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+    .rv-skill { font-size: 0.67rem; padding: 0.18rem 0.5rem; border: 1px solid var(--border); border-radius: 4px; color: var(--muted); background: var(--bg); }
+    .rv-edu { display: flex; flex-direction: column; gap: 0.6rem; }
+    .rv-edu-item .rv-job-role { font-size: 0.8rem; }
+    .rv-edu-item .rv-job-co { margin-bottom: 0; }
+
+    /* ── Tray ── */
+    .tray-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.25);
+      z-index: 300; opacity: 0; pointer-events: none;
+      transition: opacity 0.25s ease; backdrop-filter: blur(2px);
+    }
+    .tray-overlay.open { opacity: 1; pointer-events: all; }
+    .tray {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 301;
+      background: var(--white); border-top: 1px solid var(--border);
+      border-radius: 20px 20px 0 0; padding: 2rem 2rem 2.5rem;
+      max-width: 520px; margin: 0 auto;
+      transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
+      box-shadow: 0 -8px 40px rgba(0,0,0,0.12);
+    }
+    .tray.open { transform: translateY(0); }
+    .tray-handle {
+      width: 36px; height: 4px; border-radius: 2px; background: var(--border);
+      margin: 0 auto 1.75rem; cursor: grab;
+    }
+    .tray-title {
+      font-size: 1.05rem; font-weight: 600; color: var(--text);
+      margin-bottom: 1.25rem; letter-spacing: -0.01em;
+    }
+    .tray-close {
+      position: absolute; top: 1.5rem; right: 1.5rem;
+      background: var(--bg); border: 1px solid var(--border); border-radius: 50%;
+      width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 0.75rem; color: var(--muted); transition: background 0.15s;
+    }
+    .tray-close:hover { background: var(--border); }
+    .hero-stats {
+      display: grid; grid-template-columns: repeat(4, auto); gap: 0;
+      border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+      width: fit-content; background: var(--border);
+    }
+    .stat {
+      background: var(--white); padding: 1.25rem 2rem;
+      display: flex; flex-direction: column; gap: 0.2rem;
+    }
+    .stat-num {
+      font-size: 1.5rem; font-weight: 700; letter-spacing: -0.03em;
+      color: var(--text); line-height: 1;
+    }
+    .stat-label { font-size: 0.72rem; color: var(--subtle); font-weight: 500; }
+
+    /* ── Work ── */
+    .work-list { display: flex; flex-direction: column; }
+    .work-item {
+      display: grid; grid-template-columns: 130px 1fr;
+      gap: 2rem; padding: 2.25rem 0; border-bottom: 1px solid var(--border);
+      border-left: 2px solid transparent;
+      padding-left: 1rem; margin-left: -1rem;
+      transition: border-color 0.2s;
+    }
+    .work-item:hover { border-left-color: var(--accent); }
+    .work-item:last-child { border-bottom: none; }
+    .work-date { font-size: 0.775rem; color: var(--subtle); padding-top: 0.15rem; font-variant-numeric: tabular-nums; }
+    .work-body { display: flex; flex-direction: column; gap: 0.6rem; }
+    .work-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+    .work-role { font-size: 0.975rem; font-weight: 600; color: var(--text); line-height: 1.3; }
+    .work-company { font-size: 0.825rem; color: var(--muted); }
+    .work-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.7; max-width: 560px; }
+    .tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .tag {
+      font-size: 0.68rem; font-weight: 500; padding: 0.2rem 0.55rem;
+      border-radius: 4px; background: var(--bg); border: 1px solid var(--border); color: var(--muted);
+    }
+    .tag-hi { background: var(--accent-light); border-color: #bfdbfe; color: var(--accent-text); }
+
+    /* ── Thinking ── */
+    #thinking { background: var(--white); }
+    .thinking-stack { display: flex; flex-direction: column; gap: 1.25rem; }
+    .t-card {
+      border: 1px solid var(--border); border-radius: 12px; padding: 2rem;
+      background: var(--bg); transition: box-shadow 0.25s, border-color 0.25s, transform 0.25s;
+    }
+    .t-card:hover { box-shadow: 0 8px 28px rgba(0,0,0,0.08); border-color: #d4d4d8; transform: translateY(-2px); }
+    .t-tag {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--accent); background: var(--accent-light); border-radius: 4px;
+      padding: 0.2rem 0.55rem; display: inline-block; margin-bottom: 0.75rem;
+    }
+    .t-q { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 1.5rem; line-height: 1.45; }
+    .t-steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.25rem; }
+    .t-step { display: flex; flex-direction: column; gap: 0.35rem; }
+    .t-lbl { font-size: 0.63rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--subtle); }
+    .t-body { font-size: 0.8rem; color: var(--muted); line-height: 1.65; }
+    .t-body strong { color: var(--text); font-weight: 600; }
+
+    /* ── Numbers ── */
+    .numbers-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+    }
+    .n-card {
+      padding: 2rem; background: var(--white);
+      transition: background 0.2s, box-shadow 0.2s;
+      position: relative; overflow: hidden;
+    }
+    .n-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 2px; background: var(--accent);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    .n-card:hover { background: #fafeff; box-shadow: inset 0 0 0 1px var(--accent-light); }
+    .n-card:hover::before { transform: scaleX(1); }
+    .n-num {
+      font-size: clamp(1.8rem, 3.5vw, 2.5rem); font-weight: 700;
+      letter-spacing: -0.04em; color: var(--text); line-height: 1; margin-bottom: 0.35rem;
+      transition: color 0.2s;
+    }
+    .n-card:hover .n-num { color: var(--accent); }
+    .n-label { font-size: 0.825rem; font-weight: 600; color: var(--text); margin-bottom: 0.2rem; }
+    .n-ctx { font-size: 0.73rem; color: var(--subtle); line-height: 1.5; }
+
+    /* ── Projects ── */
+    #projects { background: var(--white); }
+
+    /* ── Project selector ── */
+    .p-selector {
+      display: inline-flex; gap: 0.25rem;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 10px; padding: 0.25rem; margin-bottom: 2.5rem;
+    }
+    .p-sel-btn {
+      font-size: 0.78rem; font-weight: 600; padding: 0.45rem 1.1rem;
+      border-radius: 7px; border: none; background: transparent;
+      color: var(--muted); cursor: pointer; transition: all 0.18s; letter-spacing: -0.01em;
+    }
+    .p-sel-btn.active {
+      background: var(--white); color: var(--text);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08), 0 0 0 1px var(--border);
+    }
+    .p-sel-btn:not(.active):hover { color: var(--text); }
+
+    /* ── Project pane ── */
+    .p-pane { display: none; }
+    .p-pane.active { display: block; }
+
+    .p-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 1.25rem; }
+    .p-card {
+      perspective: 1000px; height: 340px; cursor: pointer;
+    }
+    .p-card-inner {
+      position: relative; width: 100%; height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.55s cubic-bezier(0.4, 0.2, 0.2, 1);
+    }
+    .p-card:hover .p-card-inner { transform: rotateY(180deg); }
+    .p-front, .p-back {
+      position: absolute; inset: 0;
+      border-radius: 12px; padding: 1.5rem;
+      display: flex; flex-direction: column; gap: 0.6rem;
+      backface-visibility: hidden; -webkit-backface-visibility: hidden;
+      overflow: hidden;
+    }
+    .p-front {
+      border: 1px solid var(--border); background: var(--bg);
+    }
+    .p-back {
+      background: #18181b;
+      border: 1px solid #2a2a2e;
+      transform: rotateY(180deg);
+    }
+    .p-icon { height: 40px; display: flex; align-items: center; }
+    .p-name { font-size: 1rem; font-weight: 600; color: var(--text); line-height: 1.3; }
+    .p-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.6; flex: 1; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; }
+    .p-back-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
+    .p-back-insight { font-size: 0.85rem; color: rgba(255,255,255,0.82); line-height: 1.65; flex: 1; font-weight: 400; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; }
+    .p-status { display: flex; align-items: center; gap: 0.4rem; font-size: 0.7rem; color: var(--subtle); font-weight: 500; }
+    .p-status-back { display: flex; align-items: center; gap: 0.4rem; font-size: 0.7rem; color: rgba(255,255,255,0.35); font-weight: 500; }
+    .p-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: #f59e0b;
+      animation: pulse-dot 2.5s ease-in-out infinite;
+    }
+
+    /* ── Accomplishments ── */
+    #accomplishments { background: var(--bg); }
+    .accom-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 1.25rem; }
+    .accom-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.75rem;
+      border-top: 2px solid var(--accent);
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .accom-card:hover { box-shadow: 0 8px 28px rgba(0,0,0,0.07); transform: translateY(-2px); }
+    .accom-headline { font-size: 0.9rem; font-weight: 700; color: var(--text); margin-bottom: 0.5rem; line-height: 1.4; letter-spacing: -0.01em; }
+    .accom-body { font-size: 0.8rem; color: var(--muted); line-height: 1.7; }
+
+    /* ── Connect ── */
+    #connect { border-bottom: none; }
+    .connect-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    .connect-intro { font-size: 0.875rem; color: var(--muted); line-height: 1.7; margin-bottom: 2rem; }
+    .beliefs { display: flex; flex-direction: column; gap: 1.5rem; }
+    .b-item { display: flex; gap: 1rem; }
+    .b-num { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; color: var(--subtle); min-width: 22px; padding-top: 0.15rem; }
+    .b-strong { font-size: 0.875rem; font-weight: 600; color: var(--text); display: block; margin-bottom: 0.2rem; }
+    .b-body { font-size: 0.8rem; color: var(--muted); line-height: 1.65; }
+
+    form { display: flex; flex-direction: column; gap: 1rem; }
+    .f-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .f-group { display: flex; flex-direction: column; gap: 0.35rem; }
+    .f-label { font-size: 0.775rem; font-weight: 500; color: var(--text); }
+    .f-input {
+      padding: 0.6rem 0.85rem; border: 1px solid var(--border); border-radius: 8px;
+      font-size: 0.875rem; font-family: var(--font); background: var(--white);
+      color: var(--text); outline: none; transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .f-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+    textarea.f-input { resize: vertical; min-height: 110px; }
+    .f-submit {
+      background: var(--text); color: #fff; border: none;
+      padding: 0.65rem 1.25rem; border-radius: 8px; font-size: 0.875rem;
+      font-weight: 500; font-family: var(--font); cursor: pointer;
+      transition: background 0.15s; align-self: flex-start;
+    }
+    .f-submit:hover { background: #27272a; }
+    .f-success {
+      display: none; padding: 1.25rem; background: var(--bg);
+      border: 1px solid var(--border); border-radius: 8px;
+      font-size: 0.875rem; color: var(--muted);
+    }
+
+    /* ── Highlighted Work ── */
+    #highlights { background: var(--white); }
+    .highlights-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 1.25rem;
+    }
+    .hl-card {
+      border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: box-shadow 0.25s, transform 0.25s, border-color 0.25s;
+      background: var(--bg);
+    }
+    .hl-card:hover { box-shadow: 0 10px 36px rgba(0,0,0,0.09); transform: translateY(-2px); border-color: #d4d4d8; }
+    .hl-card.wide { grid-column: span 2; }
+    .hl-visual {
+      height: 160px; position: relative; overflow: hidden; flex-shrink: 0;
+    }
+    .hl-card.wide .hl-visual { height: 200px; }
+    /* Visual themes */
+    .hl-visual-bh {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    }
+    .hl-visual-bh::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 48px),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 48px);
+    }
+    .hl-visual-bh::after {
+      content: '$11.1M'; position: absolute; right: 2rem; top: 50%; transform: translateY(-50%);
+      font-size: 2.8rem; font-weight: 700; letter-spacing: -0.04em;
+      color: rgba(255,255,255,0.12); font-family: var(--font);
+    }
+    .hl-visual-bh-inner {
+      position: absolute; inset: 0; display: flex; align-items: center; padding: 2rem;
+    }
+    .hl-pdp-mock {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px; width: 260px; padding: 1rem;
+      display: flex; flex-direction: column; gap: 0.5rem;
+    }
+    .hl-pdp-img { height: 48px; background: rgba(255,255,255,0.08); border-radius: 4px; }
+    .hl-pdp-title { height: 8px; background: rgba(255,255,255,0.2); border-radius: 3px; width: 70%; }
+    .hl-pdp-sub { height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; width: 50%; }
+    .hl-pdp-bar { height: 5px; background: rgba(255,255,255,0.07); border-radius: 3px; }
+    .hl-pdp-btn { height: 22px; background: rgba(37,99,235,0.6); border-radius: 4px; width: 80px; margin-top: 0.25rem; }
+
+    .hl-visual-promenade {
+      background: linear-gradient(135deg, #0d2b1a 0%, #1a4a2e 60%, #2d6a45 100%);
+    }
+    .hl-visual-promenade::after {
+      content: '1.8M'; position: absolute; right: 1.5rem; bottom: 1rem;
+      font-size: 3.5rem; font-weight: 700; letter-spacing: -0.04em;
+      color: rgba(255,255,255,0.1); font-family: var(--font);
+    }
+    .hl-promenade-inner {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    }
+    .hl-flower {
+      width: 72px; height: 72px; position: relative; opacity: 0.6;
+    }
+    .hl-petal {
+      position: absolute; width: 24px; height: 36px;
+      background: rgba(255,255,255,0.2); border-radius: 50% 50% 50% 0;
+      left: 50%; top: 50%; transform-origin: 0 0;
+    }
+
+    .hl-visual-demandforce {
+      background: linear-gradient(135deg, #0c1b3a 0%, #1a2f5e 60%, #1e3a7a 100%);
+    }
+    .hl-visual-demandforce::after {
+      content: '+34%'; position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%);
+      font-size: 3.2rem; font-weight: 700; letter-spacing: -0.04em;
+      color: rgba(255,255,255,0.12); font-family: var(--font);
+    }
+    .hl-df-inner {
+      position: absolute; inset: 0; display: flex; align-items: center; padding: 1.75rem;
+    }
+    .hl-funnel {
+      display: flex; flex-direction: column; gap: 6px; width: 130px;
+    }
+    .hl-funnel-step {
+      background: rgba(255,255,255,0.12); border-radius: 3px; height: 14px;
+    }
+
+    .hl-visual-wh {
+      background: linear-gradient(135deg, #2d1a0e 0%, #4a2c18 60%, #6b3f22 100%);
+    }
+    .hl-visual-wh::after {
+      content: '0→1'; position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%);
+      font-size: 3.2rem; font-weight: 700; letter-spacing: -0.04em;
+      color: rgba(255,255,255,0.12); font-family: var(--font);
+    }
+    .hl-wh-inner {
+      position: absolute; inset: 0; display: flex; align-items: center; padding: 1.75rem; gap: 0.75rem;
+    }
+    .hl-wh-icon {
+      width: 56px; height: 56px; border-radius: 12px;
+      background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem; flex-shrink: 0;
+    }
+    .hl-wh-text { display: flex; flex-direction: column; gap: 0.3rem; }
+    .hl-wh-line1 { height: 8px; background: rgba(255,255,255,0.2); border-radius: 3px; width: 100px; }
+    .hl-wh-line2 { height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; width: 70px; }
+
+    .hl-content { padding: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; flex: 1; }
+    .hl-tag {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--accent); background: var(--accent-light); border-radius: 4px;
+      padding: 0.2rem 0.55rem; display: inline-block; width: fit-content;
+    }
+    .hl-title { font-size: 0.975rem; font-weight: 600; color: var(--text); line-height: 1.35; }
+    .hl-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.65; flex: 1; }
+    .hl-outcome {
+      display: flex; align-items: center; gap: 0.5rem; margin-top: 0.25rem;
+      padding-top: 0.75rem; border-top: 1px solid var(--border);
+    }
+    .hl-outcome-num { font-size: 1.1rem; font-weight: 700; letter-spacing: -0.03em; color: var(--text); }
+    .hl-outcome-label { font-size: 0.72rem; color: var(--subtle); }
+    .hl-link {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      font-size: 0.75rem; font-weight: 500; color: var(--accent);
+      text-decoration: none; border: 1px solid var(--accent-light);
+      background: var(--accent-light); border-radius: 6px;
+      padding: 0.25rem 0.65rem; white-space: nowrap; flex-shrink: 0;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .hl-link:hover { background: #bfdbfe; border-color: #93c5fd; }
+
+    @media (max-width: 600px) {
+      .highlights-grid { grid-template-columns: 1fr; }
+      .hl-card.wide { grid-column: span 1; }
+    }
+
+    /* ── Footer ── */
+    footer { padding: 2rem 0; border-top: 1px solid var(--border); }
+    .footer-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-text { font-size: 0.775rem; color: var(--subtle); }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { font-size: 0.775rem; color: var(--muted); text-decoration: none; transition: color 0.15s; }
+    .footer-links a:hover { color: var(--text); }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .hero-photo-wrap { width: 140px; height: 140px; margin: 0 auto; order: -1; }
+      .work-item { grid-template-columns: 1fr; gap: 0.4rem; }
+      .work-date { padding-top: 0; }
+      .work-top { flex-direction: column; }
+      .hero-stats { grid-template-columns: repeat(2, auto); }
+      .numbers-grid { grid-template-columns: repeat(2,1fr); }
+      .connect-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .t-steps { grid-template-columns: 1fr 1fr; }
+      .f-row { grid-template-columns: 1fr; }
+      .nav-links li:not(:last-child) { display: none; }
+    }
+    @media (max-width: 480px) {
+      h1 { font-size: 2.6rem; }
+      .hero-stats { grid-template-columns: 1fr 1fr; width: 100%; }
+      .stat { padding: 1rem 1.25rem; }
+      .numbers-grid { grid-template-columns: 1fr 1fr; }
+      .t-steps { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#hero" class="nav-name">Timothy Cocores</a>
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#accomplishments">Wins</a></li>
+      <li><a href="#thinking">Thinking</a></li>
+      <li><a href="#numbers">Numbers</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#connect" class="nav-cta">Let's talk</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ── Hero ── -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-text">
+        <div class="hero-badge reveal">
+          <span class="hero-dot"></span>
+          Open to new opportunities
+        </div>
+        <h1 class="reveal d1">Timothy<br>Cocores</h1>
+        <p class="hero-sub reveal d2">Product manager with 8+ years turning messy problems into products people actually use — and measuring whether they do.</p>
+        <div class="hero-actions reveal d3">
+          <a href="https://www.linkedin.com/in/timothycocores/" target="_blank" rel="noopener" class="btn btn-dark">LinkedIn ↗</a>
+          <button onclick="openTray()" class="btn btn-outline">Send a note</button>
+        </div>
+        <div class="hero-stats reveal d4">
+          <div class="stat">
+            <span class="stat-num">8+</span>
+            <span class="stat-label">Years in product</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num">1.8M</span>
+            <span class="stat-label">Users at peak</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num">$5M+</span>
+            <span class="stat-label">ARR from zero</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num">0→1</span>
+            <span class="stat-label">Specialty</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-photo-wrap reveal d2">
+        <img
+          src="photo.jpg"
+          alt="Timothy Cocores"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+        >
+        <div class="hero-photo-initials">TC</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Work ── -->
+<section id="work">
+  <div class="container">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:3rem;">
+      <div>
+        <span class="eyebrow reveal">Experience</span>
+        <h2 class="section-title reveal d1" style="margin-bottom:0;">Where I've worked</h2>
+      </div>
+      <button onclick="openResumeTray()" class="resume-link reveal d2">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6.5 1v8M3 6l3.5 3.5L10 6M1 11h11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        View resume
+      </button>
+    </div>
+    <div class="work-list">
+
+      <div class="work-item reveal">
+        <div class="work-date">2024 — Present</div>
+        <div class="work-body">
+          <div class="work-top">
+            <div>
+              <div class="work-role">Chief Product Officer &amp; Co-Founder</div>
+              <div class="work-company">Welcome Home · Brooklyn, NY</div>
+            </div>
+            <img src="https://images.squarespace-cdn.com/content/v1/623de37721c138214aaa7a48/f7b6b612-e62b-42ea-a973-bb5bcd5ed74e/WelcomeHome_Logo-03-large+new+color+%283%29.png?format=300w"
+                 alt="Welcome Home" style="height:22px;width:auto;flex-shrink:0;opacity:0.9;">
+          </div>
+          <p class="work-desc">Co-founded a meal delivery service for postpartum families — building the product, brand, and go-to-market from zero. Focused on reducing the cognitive load on new parents during recovery with nutritious, ready-to-eat meals.</p>
+          <div class="tags">
+            <span class="tag tag-hi">Current</span>
+            <span class="tag">0→1</span>
+            <span class="tag">Founder</span>
+            <span class="tag">Consumer</span>
+            <span class="tag">Operations</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="work-item reveal">
+        <div class="work-date">2023 — Present</div>
+        <div class="work-body">
+          <div class="work-top">
+            <div>
+              <div class="work-role">Product Manager</div>
+              <div class="work-company">B&amp;H Photo Video · New York, NY</div>
+            </div>
+            <svg viewBox="0 0 178 26" height="18" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+              <text x="0" y="21" font-family="'Arial Black',sans-serif" font-size="21" font-weight="900" fill="#111" letter-spacing="-0.5">B&amp;H</text>
+              <text x="55" y="21" font-family="Arial,sans-serif" font-size="11" font-weight="400" fill="#555" letter-spacing="1.5">PHOTO VIDEO</text>
+            </svg>
+          </div>
+          <p class="work-desc">Led product detail page strategy for bhphotovideo.com — owning the learn-and-decide customer journey through richer content, deeper specs, and educational material. Contributed to $1.3B in annual sales and drove a 225% lift in leasing applications, generating $11.1M in additional revenue.</p>
+          <div class="tags">
+            <span class="tag tag-hi">Current</span>
+            <span class="tag">Ecommerce</span>
+            <span class="tag">Customer Journey</span>
+            <span class="tag">Revenue Growth</span>
+            <span class="tag">Agile</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="work-item reveal">
+        <div class="work-date">2022 — 2023</div>
+        <div class="work-body">
+          <div class="work-top">
+            <div>
+              <div class="work-role">Senior Product Manager</div>
+              <div class="work-company">Promenade · Remote</div>
+            </div>
+            <svg viewBox="0 0 168 26" height="18" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+              <path d="M4 22 L4 4 L13 4 C18 4 21 7 21 11 C21 15 18 18 13 18 L8 18 L8 22 Z M8 8 L8 14 L12 14 C15 14 17 13 17 11 C17 9 15 8 12 8 Z" fill="#2c2c2c"/>
+              <text x="26" y="20" font-family="'Helvetica Neue',Arial,sans-serif" font-size="14" font-weight="400" fill="#2c2c2c" letter-spacing="0.3">promenade</text>
+            </svg>
+          </div>
+          <p class="work-desc">Led cross-functional teams across the full product lifecycle for a floral marketplace. Drove product adoption through close collaboration with engineering, design, sales, and customer success. Scaled the platform to 1.8M users and $5M+ ARR.</p>
+          <div class="tags">
+            <span class="tag">Cross-functional</span>
+            <span class="tag">Roadmapping</span>
+            <span class="tag">Go-to-Market</span>
+            <span class="tag">Data-Driven</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="work-item reveal">
+        <div class="work-date">2020 — 2022</div>
+        <div class="work-body">
+          <div class="work-top">
+            <div>
+              <div class="work-role">Product Manager</div>
+              <div class="work-company">Demandforce · Remote</div>
+            </div>
+            <svg viewBox="0 0 180 26" height="18" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+              <text x="0" y="20" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#a0a0a8">Demand</text>
+              <text x="88" y="20" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#2a56c6">force</text>
+            </svg>
+          </div>
+          <p class="work-desc">Defined product roadmaps and prioritized features across engineering, design, and sales. Redesigned onboarding to lift Day-7 activation by 34% and reduced support tickets in week one by 50%.</p>
+          <div class="tags">
+            <span class="tag">SaaS</span>
+            <span class="tag">Retention</span>
+            <span class="tag">Analytics</span>
+            <span class="tag">Go-to-Market</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="work-item reveal">
+        <div class="work-date">2018 — 2020</div>
+        <div class="work-body">
+          <div class="work-top">
+            <div>
+              <div class="work-role">Product Manager</div>
+              <div class="work-company">InVision App · New York, NY</div>
+            </div>
+            <svg viewBox="0 0 118 26" height="18" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+              <rect x="0" y="0" width="24" height="24" rx="6" fill="#FF3366"/>
+              <text x="12" y="17.5" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif" font-size="11" font-weight="800" fill="white" letter-spacing="0.5">in</text>
+              <text x="31" y="19" font-family="'Helvetica Neue',Arial,sans-serif" font-size="15" font-weight="300" fill="#2a2a2a" letter-spacing="-0.3">InVision</text>
+            </svg>
+          </div>
+          <p class="work-desc">Spearheaded features for Freehand — InVision's collaborative whiteboard product. Set product strategy and direction, built and executed roadmaps, and measured success post-launch using behavior data and customer feedback.</p>
+          <div class="tags">
+            <span class="tag">Product Strategy</span>
+            <span class="tag">0→1</span>
+            <span class="tag">UX</span>
+            <span class="tag">Behavior Data</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ── Accomplishments ── -->
+<section id="accomplishments">
+  <div class="container">
+    <span class="eyebrow reveal">Highlights</span>
+    <h2 class="section-title reveal d1">Shipped things that moved the needle</h2>
+    <div class="accom-grid">
+
+      <div class="accom-card reveal d1">
+        <div class="accom-headline">Centralized leasing on the PDP and generated $11.1M in new revenue.</div>
+        <p class="accom-body">The feature existed — it just wasn't visible. Moved leasing from buried to first-class on the B&H product detail page. Applications lifted 225% in the first quarter after launch.</p>
+      </div>
+
+      <div class="accom-card reveal d2">
+        <div class="accom-headline">Broke the marketplace cold-start problem with a SaaS-first strategy.</div>
+        <p class="accom-body">Instead of acquiring both sides of the Promenade marketplace in parallel, built standalone tools for florists first to seed supply density — then flipped the marketplace switch. Grew to $5M+ ARR.</p>
+      </div>
+
+      <div class="accom-card reveal d3">
+        <div class="accom-headline">Built Explora into a content-to-commerce engine serving 14M customers.</div>
+        <p class="accom-body">Turned B&H's editorial platform from a standalone content destination into a conversion driver — connecting learning content directly to product pages for high-consideration buyers.</p>
+      </div>
+
+      <div class="accom-card reveal d4">
+        <div class="accom-headline">Drove a 34% lift in Day-7 activation at Welcome Home.</div>
+        <p class="accom-body">Redesigned the new-user onboarding experience based on cohort analysis. Focused on reducing time-to-value rather than adding features — the lift came from removing friction, not adding steps.</p>
+      </div>
+
+      <div class="accom-card reveal d1">
+        <div class="accom-headline">Cut support ticket volume in half at Demandforce.</div>
+        <p class="accom-body">Audited the top support categories, identified three root-cause product gaps, and shipped targeted fixes. Ticket volume dropped 50% within six weeks — without a single new feature added.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Thinking ── -->
+<section id="thinking">
+  <div class="container">
+    <span class="eyebrow reveal">Case Studies</span>
+    <h2 class="section-title reveal d1">How I think through hard calls</h2>
+    <div class="thinking-stack">
+
+      <div class="t-card reveal">
+        <span class="t-tag">Ecommerce · B&amp;H Photo Video · 2023–Present</span>
+        <p class="t-q">Leasing existed — but nobody could find it. Do we fix discoverability or redesign the whole experience?</p>
+        <div class="t-steps">
+          <div class="t-step">
+            <span class="t-lbl">Problem</span>
+            <span class="t-body">B&amp;H offered equipment leasing for professionals, but it was scattered across the site, inconsistently surfaced, and rarely visible at the moment a customer was actually deciding to buy.</span>
+          </div>
+          <div class="t-step">
+            <span class="t-lbl">Options</span>
+            <span class="t-body"><strong>A)</strong> Surface leasing links more prominently on existing pages — low lift, low impact. <strong>B)</strong> Centralize the entire leasing experience on the PDP as a first-class purchase option alongside buy and rent.</span>
+          </div>
+          <div class="t-step">
+            <span class="t-lbl">Decision</span>
+            <span class="t-body">Chose B. The data showed high-consideration buyers made financing decisions at the product level, not after clicking through menus. The PDP was the right moment — we just weren't showing up there.</span>
+          </div>
+          <div class="t-step">
+            <span class="t-lbl">Outcome</span>
+            <span class="t-body"><strong>225% increase</strong> in leasing application submissions and <strong>$11.1M</strong> in additional revenue. We didn't invent leasing — we just gave it a home.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="t-card reveal d1">
+        <span class="t-tag">Collaborative Design · InVision · 2018–2020</span>
+        <p class="t-q">When the roadmap is overloaded, how do you decide what to cut — features or speed?</p>
+        <div class="t-steps">
+          <div class="t-step">
+            <span class="t-lbl">Problem</span>
+            <span class="t-body">Freehand was competing in a fast-moving market. The team faced constant pressure to ship — but cramming the roadmap with features risked shipping things half-baked and losing credibility with design-obsessed users.</span>
+          </div>
+          <div class="t-step">
+            <span class="t-lbl">Options</span>
+            <span class="t-body"><strong>A)</strong> Ship fast and broad — match competitors feature-for-feature, iterate on feedback. <strong>B)</strong> Ship fewer things, but with greater depth and polish — protect the product's reputation for quality.</span>
+          </div>
+          <div class="t-step">
+            <span class="t-lbl">Decision</span>
+            <span class="t-body">Made deliberate trade-offs between features and speed-to-market based on user behavior data and stakeholder alignment. Defined what "done" meant before writing a single story, not after.</span>
+          </div>
+          <div class="t-step">
+            <span class="t-lbl">Outcome</span>
+            <span class="t-body">Continuous improvement across Freehand with a track record of shipping well, not just shipping fast. Post-launch metrics became the input loop for the next cycle — not an afterthought.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="t-card reveal d2">
+        <span class="t-tag">SaaS · InternetBrands Demandforce · 2020–2022</span>
+        <p class="t-q">User engagement is dropping. Do you optimize the existing flow or go back to first principles?</p>
+        <div class="t-steps">
+          <div class="t-step">
+            <span class="t-lbl">Problem</span>
+            <span class="t-body">Key engagement and retention metrics were declining. The pressure was to patch the funnel — add tooltips, tweak copy, run a quick A/B test — and ship something fast to show progress.</span>
+          </div>
+          <div class="t-step">
+            <span class="t-lbl">Options</span>
+            <span class="t-body"><strong>A)</strong> Optimize the existing flow with targeted fixes based on where users were dropping. <strong>B)</strong> Conduct user research first, reframe the problem, and build the roadmap around what customers actually needed.</span>
+          </div>
+          <div class="t-step">
+            <span class="t-lbl">Decision</span>
+            <span class="t-body">Chose B. Defined the product roadmap based on customer feedback and market trends, not instinct. Created detailed user stories and ran user acceptance testing before anything went to dev.</span>
+          </div>
+          <div class="t-step">
+            <span class="t-lbl">Outcome</span>
+            <span class="t-body">Improved user engagement and retention metrics. Go-to-market strategy developed in lockstep with marketing and sales drove meaningful adoption growth — not just a one-week spike.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Numbers ── -->
+<section id="numbers">
+  <div class="container">
+    <span class="eyebrow reveal">Impact</span>
+    <h2 class="section-title reveal d1">By the numbers</h2>
+    <div class="numbers-grid reveal d2">
+      <div class="n-card">
+        <div class="n-num">1.8M+</div>
+        <div class="n-label">Users at Peak</div>
+        <div class="n-ctx">Promenade marketplace, scaled from zero over 3 years</div>
+      </div>
+      <div class="n-card">
+        <div class="n-num">$5M+</div>
+        <div class="n-label">ARR from Zero</div>
+        <div class="n-ctx">Built the florist SaaS product line from 0 → $5M+</div>
+      </div>
+      <div class="n-card">
+        <div class="n-num">225%</div>
+        <div class="n-label">Leasing Lift</div>
+        <div class="n-ctx">Increase in leasing applications at B&amp;H, generating $11.1M</div>
+      </div>
+      <div class="n-card">
+        <div class="n-num">34%</div>
+        <div class="n-label">Activation Lift</div>
+        <div class="n-ctx">Day-7 retention after onboarding redesign at Demandforce</div>
+      </div>
+      <div class="n-card">
+        <div class="n-num">50%</div>
+        <div class="n-label">Support Drop</div>
+        <div class="n-ctx">Week-1 support ticket volume after onboarding overhaul</div>
+      </div>
+      <div class="n-card">
+        <div class="n-num">8+</div>
+        <div class="n-label">Products Shipped</div>
+        <div class="n-ctx">Across B2B and B2C, from MVP to full public launch</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Projects ── -->
+<section id="projects">
+  <div class="container">
+    <span class="eyebrow reveal">Projects</span>
+    <h2 class="section-title reveal d1">Things I've built &amp; things I'm building</h2>
+
+    <!-- Selector -->
+    <div class="p-selector reveal d2">
+      <button class="p-sel-btn active" onclick="switchProjects('work', this)">Work Projects</button>
+      <button class="p-sel-btn" onclick="switchProjects('personal', this)">Personal Projects</button>
+    </div>
+
+    <!-- Work projects -->
+    <div class="p-pane active" id="pane-work">
+      <div class="p-grid">
+
+        <div class="p-card" onclick="window.location='bh-explora.html'">
+          <div class="p-card-inner">
+            <div class="p-front">
+              <div class="p-icon">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="6" fill="#cc0000"/><text x="16" y="22" font-size="14" font-weight="800" text-anchor="middle" fill="white" font-family="Arial,sans-serif">B&H</text></svg>
+              </div>
+              <div class="p-name">Learn &amp; Decide Journey</div>
+              <div class="p-desc">Built the editorial infrastructure behind Explora — B&H's learning platform — and connected it directly to the product detail page for high-consideration buyers.</div>
+              <div class="tags">
+                <span class="tag">Ecommerce</span>
+                <span class="tag">Editorial</span>
+                <span class="tag">PDP</span>
+              </div>
+              <div class="p-status"><span class="p-dot" style="background:#22c55e;animation:none;"></span>Shipped</div>
+              <div style="font-size:0.65rem;color:var(--subtle);margin-top:auto;text-align:right;letter-spacing:0.04em;">flip me →</div>
+            </div>
+            <div class="p-back">
+              <div class="p-back-label">The outcome</div>
+              <div class="p-back-insight">Centralized leasing on the PDP and connected Explora content to product pages — generating $11.1M in additional revenue and a 225% lift in leasing applications across 14M annual customers.</div>
+              <div class="tags">
+                <span class="tag" style="border-color:#2a2a2e;color:rgba(255,255,255,0.4);background:transparent;">Ecommerce</span>
+                <span class="tag" style="border-color:#2a2a2e;color:rgba(255,255,255,0.4);background:transparent;">Editorial</span>
+              </div>
+              <div class="p-status-back"><span class="p-dot" style="background:#22c55e;animation:none;"></span>B&amp;H Photo Video · 2023–Present</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-card" onclick="window.location='portfolio.html#work'">
+          <div class="p-card-inner">
+            <div class="p-front">
+              <div class="p-icon">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="6" fill="#7c3aed"/><text x="16" y="22" font-size="12" font-weight="800" text-anchor="middle" fill="white" font-family="Arial,sans-serif">PRO</text></svg>
+              </div>
+              <div class="p-name">Marketplace Cold Start</div>
+              <div class="p-desc">Solved the chicken-and-egg problem for Promenade by building standalone SaaS tools for florists first — growing supply density before flipping the marketplace switch.</div>
+              <div class="tags">
+                <span class="tag">Marketplace</span>
+                <span class="tag">0→1</span>
+                <span class="tag">SaaS</span>
+              </div>
+              <div class="p-status"><span class="p-dot" style="background:#22c55e;animation:none;"></span>Shipped</div>
+              <div style="font-size:0.65rem;color:var(--subtle);margin-top:auto;text-align:right;letter-spacing:0.04em;">flip me →</div>
+            </div>
+            <div class="p-back">
+              <div class="p-back-label">The outcome</div>
+              <div class="p-back-insight">Bootstrapped a two-sided florist marketplace to $5M+ ARR. Served 1.8M+ users at peak by building the supply side first and using that density to unlock sustainable marketplace liquidity.</div>
+              <div class="tags">
+                <span class="tag" style="border-color:#2a2a2e;color:rgba(255,255,255,0.4);background:transparent;">Marketplace</span>
+                <span class="tag" style="border-color:#2a2a2e;color:rgba(255,255,255,0.4);background:transparent;">0→1</span>
+              </div>
+              <div class="p-status-back"><span class="p-dot" style="background:#22c55e;animation:none;"></span>Promenade · 2020–2022</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-card" onclick="window.location='portfolio.html#work'">
+          <div class="p-card-inner">
+            <div class="p-front">
+              <div class="p-icon">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="6" fill="#0ea5e9"/><text x="16" y="22" font-size="11" font-weight="800" text-anchor="middle" fill="white" font-family="Arial,sans-serif">WH</text></svg>
+              </div>
+              <div class="p-name">Welcome Home Platform</div>
+              <div class="p-desc">Co-founded and led product for a real estate discovery platform connecting buyers to off-market homes — building 0→1 across mobile, web, and agent tooling.</div>
+              <div class="tags">
+                <span class="tag">Real Estate</span>
+                <span class="tag">0→1</span>
+                <span class="tag">Mobile</span>
+              </div>
+              <div class="p-status"><span class="p-dot"></span>In Development</div>
+              <div style="font-size:0.65rem;color:var(--subtle);margin-top:auto;text-align:right;letter-spacing:0.04em;">flip me →</div>
+            </div>
+            <div class="p-back">
+              <div class="p-back-label">The mission</div>
+              <div class="p-back-insight">Most homes sell before they hit Zillow. Welcome Home surfaces those off-market opportunities for buyers who are serious — pairing them with agents who specialize in exactly what they're looking for.</div>
+              <div class="tags">
+                <span class="tag" style="border-color:#2a2a2e;color:rgba(255,255,255,0.4);background:transparent;">Real Estate</span>
+                <span class="tag" style="border-color:#2a2a2e;color:rgba(255,255,255,0.4);background:transparent;">0→1</span>
+              </div>
+              <div class="p-status-back"><span class="p-dot"></span>Welcome Home · 2022–Present</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Personal projects -->
+    <div class="p-pane" id="pane-personal">
+      <div class="p-grid">
+
+        <!-- Wingd -->
+        <div class="p-card" onclick="window.location='wingd.html'">
+          <div class="p-card-inner">
+            <div class="p-front">
+              <div class="p-icon">
+                <svg viewBox="0 0 120 80" width="56" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#3d6ec8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M60 28 C50 24 36 15 18 8 C24 18 28 26 30 36 C22 32 12 30 4 32 C12 34 20 38 26 44 C18 44 10 46 6 50 C14 50 22 50 28 48" stroke-width="2.5"/>
+                  <path d="M60 28 C70 24 84 15 102 8 C96 18 92 26 90 36 C98 32 108 30 116 32 C108 34 100 38 94 44 C102 44 110 46 114 50 C106 50 98 50 92 48" stroke-width="2.5"/>
+                  <path d="M60 58 C60 58 46 49 46 40 C46 35 50 31 55 33 C57.5 34 60 37 60 37 C60 37 62.5 34 65 33 C70 31 74 35 74 40 C74 49 60 58 60 58 Z" stroke-width="2.5"/>
+                </svg>
+              </div>
+              <div class="p-name">Wingd</div>
+              <div class="p-desc">A dating app where your friends have to approve before you can start matching and chatting. Your inner circle becomes an active part of finding a connection.</div>
+              <div class="tags">
+                <span class="tag">0→1</span>
+                <span class="tag">Social</span>
+                <span class="tag">Mobile</span>
+              </div>
+              <div class="p-status"><span class="p-dot"></span>In Development</div>
+              <div style="font-size:0.65rem;color:var(--subtle);margin-top:auto;text-align:right;letter-spacing:0.04em;">flip me →</div>
+            </div>
+            <div class="p-back">
+              <div class="p-back-label">The insight</div>
+              <div class="p-back-insight">Modern dating is broken by algorithmic strangers. Friends add accountability, warmth, and a sense of shared investment — making every match feel meaningful before it even starts.</div>
+              <div class="tags">
+                <span class="tag" style="border-color:#2a2a2e;color:rgba(255,255,255,0.4);background:transparent;">0→1</span>
+                <span class="tag" style="border-color:#2a2a2e;color:rgba(255,255,255,0.4);background:transparent;">Social</span>
+                <span class="tag" style="border-color:#2a2a2e;color:rgba(255,255,255,0.4);background:transparent;">Mobile</span>
+              </div>
+              <div class="p-status-back"><span class="p-dot"></span>In Development</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hot Spot Tool -->
+        <div class="p-card" onclick="window.location='hot-spot-tool.html'">
+          <div class="p-card-inner">
+            <div class="p-front">
+              <div class="p-icon" style="font-size:2rem;">🔥</div>
+              <div class="p-name">Hot Spot Tool</div>
+              <div class="p-desc">A tool for identifying interaction hot spots across product surfaces — so teams know exactly where users are engaged, confused, or dropping off before writing a single line of code.</div>
+              <div class="tags">
+                <span class="tag">Product</span>
+                <span class="tag">Analytics</span>
+                <span class="tag">UX</span>
+              </div>
+              <div class="p-status"><span class="p-dot"></span>In Development</div>
+              <div style="font-size:0.65rem;color:var(--subtle);margin-top:auto;text-align:right;letter-spacing:0.04em;">flip me →</div>
+            </div>
+            <div class="p-back">
+              <div class="p-back-label">The insight</div>
+              <div class="p-back-insight">Most product teams make roadmap decisions based on gut or backlog pressure. Hot Spot surfaces where attention is actually concentrated — turning behavioral signal into a prioritization input.</div>
+              <div class="tags">
+                <span class="tag" style="border-color:#2a2a2e;color:rgba(255,255,255,0.4);background:transparent;">Product</span>
+                <span class="tag" style="border-color:#2a2a2e;color:rgba(255,255,255,0.4);background:transparent;">Analytics</span>
+                <span class="tag" style="border-color:#2a2a2e;color:rgba(255,255,255,0.4);background:transparent;">UX</span>
+              </div>
+              <div class="p-status-back"><span class="p-dot"></span>In Development</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resume Reviewer -->
+        <div class="p-card" onclick="window.location='resume-reviewer.html'">
+          <div class="p-card-inner">
+            <div class="p-front">
+              <div class="p-icon" style="font-size:2rem;">📄</div>
+              <div class="p-name">Resume Reviewer</div>
+              <div class="p-desc">An AI-powered resume review tool built for product managers — gives specific, actionable feedback on impact language, metric clarity, and how well your experience tells a cohesive story.</div>
+              <div class="tags">
+                <span class="tag">AI</span>
+                <span class="tag">Career</span>
+                <span class="tag">Tool</span>
+              </div>
+              <div class="p-status"><span class="p-dot"></span>In Development</div>
+              <div style="font-size:0.65rem;color:var(--subtle);margin-top:auto;text-align:right;letter-spacing:0.04em;">flip me →</div>
+            </div>
+            <div class="p-back">
+              <div class="p-back-label">The insight</div>
+              <div class="p-back-insight">Most PM resumes bury the lead. They describe responsibilities instead of outcomes. Resume Reviewer reads your resume the way a hiring manager does — and tells you exactly where you lost them.</div>
+              <div class="tags">
+                <span class="tag" style="border-color:#2a2a2e;color:rgba(255,255,255,0.4);background:transparent;">AI</span>
+                <span class="tag" style="border-color:#2a2a2e;color:rgba(255,255,255,0.4);background:transparent;">Career</span>
+                <span class="tag" style="border-color:#2a2a2e;color:rgba(255,255,255,0.4);background:transparent;">Tool</span>
+              </div>
+              <div class="p-status-back"><span class="p-dot"></span>In Development</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bathroom Codes -->
+        <div class="p-card" onclick="window.location='bathroom-codes.html'">
+          <div class="p-card-inner">
+            <div class="p-front">
+              <div class="p-icon" style="font-size:2rem;">🚻</div>
+              <div class="p-name">Bathroom Codes</div>
+              <div class="p-desc">Crowdsourced bathroom code sharing for those times in need. Pee freely.</div>
+              <div class="tags">
+                <span class="tag">Community</span>
+                <span class="tag">Utility</span>
+                <span class="tag">Consumer</span>
+              </div>
+              <div class="p-status"><span class="p-dot"></span>In Development</div>
+              <div style="font-size:0.65rem;color:var(--subtle);margin-top:auto;text-align:right;letter-spacing:0.04em;">flip me →</div>
+            </div>
+            <div class="p-back">
+              <div class="p-back-label">The insight</div>
+              <div class="p-back-insight">Cities are full of clean, accessible bathrooms that nobody knows about. One crowdsourced database — and a little community trust — changes that forever. Simple problems, real relief.<br><br>Ace Hotel Midtown: <strong style="color:rgba(255,255,255,0.7);font-family:monospace;">1524</strong></div>
+              <div class="tags">
+                <span class="tag" style="border-color:#2a2a2e;color:rgba(255,255,255,0.4);background:transparent;">Community</span>
+                <span class="tag" style="border-color:#2a2a2e;color:rgba(255,255,255,0.4);background:transparent;">Utility</span>
+                <span class="tag" style="border-color:#2a2a2e;color:rgba(255,255,255,0.4);background:transparent;">Consumer</span>
+              </div>
+              <div class="p-status-back"><span class="p-dot"></span>In Development</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── Connect ── -->
+<section id="connect">
+  <div class="container">
+    <span class="eyebrow reveal">Connect</span>
+    <h2 class="section-title reveal d1">Let's talk product</h2>
+    <div class="connect-grid">
+
+      <div class="reveal d1">
+        <p class="connect-intro">Whether you want to talk product, swap ideas, or just say hi — I'm always happy to connect.</p>
+        <div class="beliefs">
+          <div class="b-item">
+            <span class="b-num">01</span>
+            <div>
+              <strong class="b-strong">Activation beats acquisition every time.</strong>
+              <span class="b-body">Most teams overfund signup and starve what comes after. The best growth lever is fixing what happens once someone is in.</span>
+            </div>
+          </div>
+          <div class="b-item">
+            <span class="b-num">02</span>
+            <div>
+              <strong class="b-strong">A roadmap is a hypothesis, not a promise.</strong>
+              <span class="b-body">Optimize for outcomes over predictability. Update the plan when evidence changes — not when the quarter ends.</span>
+            </div>
+          </div>
+          <div class="b-item">
+            <span class="b-num">03</span>
+            <div>
+              <strong class="b-strong">The best feature is the one you don't build.</strong>
+              <span class="b-body">Scope creep is usually fear. Ruthless simplicity is a competitive advantage.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal d2">
+        <form id="contact-form" onsubmit="handleForm(event)">
+          <div class="f-row">
+            <div class="f-group">
+              <label class="f-label" for="f-name">Name</label>
+              <input class="f-input" id="f-name" type="text" placeholder="Your name" required autocomplete="off">
+            </div>
+            <div class="f-group">
+              <label class="f-label" for="f-email">Email</label>
+              <input class="f-input" id="f-email" type="email" placeholder="your@email.com" required autocomplete="off">
+            </div>
+          </div>
+          <div class="f-group">
+            <label class="f-label" for="f-msg">Message</label>
+            <textarea class="f-input" id="f-msg" placeholder="What's on your mind?" required></textarea>
+          </div>
+          <button type="submit" class="f-submit">Send message ↗</button>
+        </form>
+        <div class="f-success" id="f-success">✓ Got it — I'll be in touch soon.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Resume Drawer ── -->
+<div class="tray-overlay" id="resume-tray-overlay" onclick="closeResumeTray()"></div>
+<div class="resume-tray" id="resume-tray" role="dialog" aria-modal="true" aria-label="Resume">
+  <div class="resume-tray-header">
+    <span class="resume-tray-title">Timothy Cocores — Resume</span>
+    <div class="resume-tray-actions">
+      <a class="resume-tray-dl" href="TimothyMCocoresProductResume.pdf" download="TimothyMCocoresProductResume.pdf">
+        <svg width="11" height="11" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v8M3 6l3.5 3.5L10 6M1 11h11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Download PDF
+      </a>
+      <button class="resume-tray-close" onclick="closeResumeTray()" aria-label="Close">✕</button>
+    </div>
+  </div>
+  <div class="resume-tray-body">
+
+    <div class="rv-name">Timothy Cocores</div>
+    <div class="rv-title">Product Manager</div>
+    <div class="rv-contact">
+      <span>415-640-0398</span>
+      <a href="mailto:timothycocores@gmail.com">timothycocores@gmail.com</a>
+      <span>233 Jefferson Ave., Brooklyn NY 11216</span>
+    </div>
+
+    <div class="rv-section">
+      <span class="rv-section-label">Summary</span>
+      <p class="rv-summary">An accomplished Senior Product Manager with a proven track record in spearheading SaaS and Digital product initiatives, while holding key leadership positions. Proficient in leveraging agile methodologies to seize upon evolving market trends and maintain a competitive edge. Renowned for forward-thinking strategies, astute decision-making, and adept problem-solving in navigating complex product landscapes.</p>
+    </div>
+
+    <div class="rv-section">
+      <span class="rv-section-label">Strengths &amp; Expertise</span>
+      <div class="rv-skills">
+        <span class="rv-skill">Product Strategy &amp; Roadmapping</span>
+        <span class="rv-skill">Cross-Functional Team Leadership</span>
+        <span class="rv-skill">Market Research</span>
+        <span class="rv-skill">Agile Methodologies</span>
+        <span class="rv-skill">User Experience Design Methods</span>
+        <span class="rv-skill">Stakeholder Management</span>
+        <span class="rv-skill">Data Analysis &amp; Metrics</span>
+        <span class="rv-skill">Team &amp; Process Development</span>
+        <span class="rv-skill">Priority Prioritization</span>
+      </div>
+    </div>
+
+    <div class="rv-section">
+      <span class="rv-section-label">Professional Experience</span>
+
+      <div class="rv-job">
+        <div class="rv-job-row"><span class="rv-job-role">Chief Product Officer &amp; Co-Founder</span><span class="rv-job-date">2024 – Present</span></div>
+        <div class="rv-job-co">Welcome Home · Brooklyn, NY</div>
+        <ul>
+          <li>Co-founded a meal delivery service for postpartum families, building product, brand, and go-to-market from zero.</li>
+          <li>Designed operational and customer experience systems to reduce cognitive load on new parents during recovery.</li>
+        </ul>
+      </div>
+
+      <div class="rv-job">
+        <div class="rv-job-row"><span class="rv-job-role">Product Manager — Learn and Decide Journey</span><span class="rv-job-date">2023 – Present</span></div>
+        <div class="rv-job-co">B&amp;H Photo Video · bhphotovideo.com</div>
+        <ul>
+          <li>Spearheaded the learn-and-decide customer journey, optimizing product descriptions, visuals, reviews, specifications, and educational content, resulting in a 14 million customer annual influx.</li>
+          <li>Leveraged data insights to enhance customer experience, driving a 10% increase in customer-submitted reviews.</li>
+          <li>Oversaw all aspects of the customer journey from product discovery to checkout, contributing to $1.3 billion in annual sales.</li>
+          <li>Led a project centralizing leasing on the PDP, resulting in a 225% increase in application submissions and $11,128,000 in additional revenue.</li>
+          <li>Defined and prioritized product requirements in collaboration with engineering, design, and marketing.</li>
+          <li>Implemented agile methodologies, enhancing team productivity and accelerating time-to-market.</li>
+        </ul>
+      </div>
+
+      <div class="rv-job">
+        <div class="rv-job-row"><span class="rv-job-role">Senior Product Manager</span><span class="rv-job-date">2022 – 2023</span></div>
+        <div class="rv-job-co">Promenade · getpromenade.com</div>
+        <ul>
+          <li>Led cross-functional teams in the development and execution of product strategy and roadmap, overseeing market research, user testing, competitive analysis, and customer feedback initiatives.</li>
+          <li>Managed the complete product lifecycle, from ideation to launch and post-launch activities.</li>
+          <li>Collaborated closely with engineering, design, sales, marketing, and customer success teams.</li>
+          <li>Analyzed product performance and market trends to implement data-driven growth strategies.</li>
+        </ul>
+      </div>
+
+      <div class="rv-job">
+        <div class="rv-job-row"><span class="rv-job-role">Product Manager</span><span class="rv-job-date">2020 – 2022</span></div>
+        <div class="rv-job-co">InternetBrands – Demandforce · demandforce.com</div>
+        <ul>
+          <li>Defined product roadmaps and prioritized features based on business goals, customer feedback, and market trends.</li>
+          <li>Created detailed product specifications, user stories, and wireframes to guide development and design efforts.</li>
+          <li>Analyzed and reported on key product metrics including user engagement, retention, and revenue growth.</li>
+          <li>Developed go-to-market strategies in collaboration with marketing and sales to drive adoption.</li>
+        </ul>
+      </div>
+
+      <div class="rv-job">
+        <div class="rv-job-row"><span class="rv-job-role">Product Manager</span><span class="rv-job-date">2018 – 2020</span></div>
+        <div class="rv-job-co">InVision App · invisionapp.com</div>
+        <ul>
+          <li>Spearheaded the development of features for Freehand, ensuring continuous improvement and market relevance.</li>
+          <li>Set product strategy, defining direction and making informed trade-offs between features and speed-to-market.</li>
+          <li>Established, monitored, and measured success metrics post-launch, iterating based on user feedback and behavior data.</li>
+        </ul>
+      </div>
+
+      <div class="rv-job">
+        <div class="rv-job-row"><span class="rv-job-role">Product Owner</span><span class="rv-job-date">2016 – 2018</span></div>
+        <div class="rv-job-co">Oracle Cerner · oracle.com/health</div>
+        <ul>
+          <li>Defined product requirements and created comprehensive specifications, user stories, and documentation.</li>
+          <li>Managed product backlog, prioritizing features based on customer needs, market trends, and business goals.</li>
+          <li>Demonstrated a strong understanding of the healthcare industry to inform product decisions.</li>
+        </ul>
+      </div>
+
+      <div class="rv-job">
+        <div class="rv-job-row"><span class="rv-job-role">IT Systems Engineer</span><span class="rv-job-date">2015 – 2016</span></div>
+        <div class="rv-job-co">Refinery29 · refinery29.com</div>
+        <ul>
+          <li>Engineered and optimized mobile device management systems (Okta, Oomnitza, Jamf).</li>
+          <li>Provided dedicated "white-glove" technical support to C-Level Executives and Founders.</li>
+        </ul>
+      </div>
+
+      <div class="rv-job">
+        <div class="rv-job-row"><span class="rv-job-role">Support Specialist</span><span class="rv-job-date">2012 – 2015</span></div>
+        <div class="rv-job-co">Squarespace · squarespace.com</div>
+        <ul>
+          <li>Provided exceptional customer experiences with CSAT above 90%.</li>
+          <li>Advanced troubleshooting for a SaaS product with a focus on best web practices.</li>
+        </ul>
+      </div>
+
+      <div class="rv-job">
+        <div class="rv-job-row"><span class="rv-job-role">Intern Product Owner</span><span class="rv-job-date">2011 – 2012</span></div>
+        <div class="rv-job-co"><a href="https://www.heybubble.com" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">HeyBubble · heybubble.com</a></div>
+        <ul>
+          <li>Contributed to a user-centric product strategy by helping to define and prioritize the product backlog based on user needs and business goals.</li>
+          <li>Facilitated the development of impactful new features by collaborating with the development team to define clear user stories and requirements.</li>
+          <li>Played a key role in the agile development process through active participation in sprint planning, reviews, and retrospectives.</li>
+          <li>Championed user needs by working with cross-functional teams to gather valuable feedback and validate product ideas.</li>
+          <li>Identified opportunities for product improvement and growth by monitoring and analyzing key performance indicators, user engagement, and feedback.</li>
+          <li>Enhanced user satisfaction and adoption by assisting in the creation of clear and helpful product documentation.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="rv-section">
+      <span class="rv-section-label">Education</span>
+      <div class="rv-edu">
+        <div class="rv-job rv-edu-item">
+          <div class="rv-job-row"><span class="rv-job-role">Academy of Art University</span><span class="rv-job-date">2008 – 2010</span></div>
+          <div class="rv-job-co">Advertising</div>
+        </div>
+        <div class="rv-job rv-edu-item">
+          <div class="rv-job-row"><span class="rv-job-role">University of Missouri – Saint Louis</span><span class="rv-job-date">2010 – 2012</span></div>
+          <div class="rv-job-co">Communications</div>
+        </div>
+        <div class="rv-job rv-edu-item">
+          <div class="rv-job-row"><span class="rv-job-role">New York Code Academy</span><span class="rv-job-date">2015</span></div>
+          <div class="rv-job-co">Frontend Development Certificate</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── Tray ── -->
+<div class="tray-overlay" id="tray-overlay" onclick="closeTray()"></div>
+<div class="tray" id="tray" role="dialog" aria-modal="true" aria-label="Send a note">
+  <div class="tray-handle"></div>
+  <button class="tray-close" onclick="closeTray()" aria-label="Close">✕</button>
+  <div class="tray-title">Send a note</div>
+  <form id="tray-form" onsubmit="handleTrayForm(event)">
+    <div class="f-row">
+      <div class="f-group">
+        <label class="f-label" for="t-name">Name</label>
+        <input class="f-input" id="t-name" type="text" placeholder="Your name" required autocomplete="off">
+      </div>
+      <div class="f-group">
+        <label class="f-label" for="t-email">Email</label>
+        <input class="f-input" id="t-email" type="email" placeholder="your@email.com" required autocomplete="off">
+      </div>
+    </div>
+    <div class="f-group" style="margin-top:0.75rem;">
+      <label class="f-label" for="t-msg">Message</label>
+      <textarea class="f-input" id="t-msg" placeholder="What's on your mind?" required style="min-height:90px;"></textarea>
+    </div>
+    <button type="submit" class="f-submit" style="margin-top:0.75rem;">Send message ↗</button>
+  </form>
+  <div class="f-success" id="tray-success">✓ Got it — I'll be in touch soon.</div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <span class="footer-text">© 2025 Timothy Cocores · Brooklyn, NY</span>
+      <div class="footer-links">
+        <a href="https://www.linkedin.com/in/timothycocores/" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a href="mailto:timothy@getwelcomehome.co">Email ↗</a>
+        <a href="https://getwelcomehome.co" target="_blank" rel="noopener">Welcome Home ↗</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function switchProjects(tab, btn) {
+    document.querySelectorAll('.p-pane').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.p-sel-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('pane-' + tab).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  // Scroll progress bar
+  window.addEventListener('scroll', function() {
+    var p = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+    document.getElementById('progress').style.width = Math.min(p, 100) + '%';
+  }, { passive: true });
+
+  // Reveal on scroll
+  var revealObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(function(el) { revealObs.observe(el); });
+
+  // Count-up numbers
+  var counted = false;
+  function countUp() {
+    if (counted) return;
+    var grid = document.querySelector('.numbers-grid');
+    if (!grid) return;
+    var rect = grid.getBoundingClientRect();
+    if (rect.top > window.innerHeight) return;
+    counted = true;
+    var nums = [
+      { el: document.querySelectorAll('.n-num')[0], target: 1.8, suffix: 'M+', decimals: 1 },
+      { el: document.querySelectorAll('.n-num')[1], target: 5,   suffix: 'M+', prefix: '$', decimals: 0 },
+      { el: document.querySelectorAll('.n-num')[2], target: 225, suffix: '%', decimals: 0 },
+      { el: document.querySelectorAll('.n-num')[3], target: 34,  suffix: '%', decimals: 0 },
+      { el: document.querySelectorAll('.n-num')[4], target: 50,  suffix: '%', decimals: 0 },
+      { el: document.querySelectorAll('.n-num')[5], target: 8,   suffix: '+', decimals: 0 },
+    ];
+    nums.forEach(function(n, i) {
+      var start = null, duration = 1200;
+      var delay = i * 80;
+      setTimeout(function() {
+        function step(ts) {
+          if (!start) start = ts;
+          var p = Math.min((ts - start) / duration, 1);
+          var ease = 1 - Math.pow(1 - p, 3);
+          var val = (n.target * ease).toFixed(n.decimals);
+          n.el.textContent = (n.prefix || '') + val + n.suffix;
+          if (p < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      }, delay);
+    });
+  }
+  window.addEventListener('scroll', countUp, { passive: true });
+  countUp();
+
+  // Active nav highlight
+  var sections = document.querySelectorAll('section[id]');
+  var navLinks = document.querySelectorAll('.nav-links a');
+  function updateNav() {
+    var pos = window.scrollY + 80;
+    sections.forEach(function(s) {
+      if (pos >= s.offsetTop && pos < s.offsetTop + s.offsetHeight) {
+        navLinks.forEach(function(l) { l.classList.remove('active'); });
+        var lnk = document.querySelector('.nav-links a[href="#' + s.id + '"]');
+        if (lnk) lnk.classList.add('active');
+      }
+    });
+  }
+  window.addEventListener('scroll', updateNav, { passive: true });
+
+  // Contact form
+  function handleForm(e) {
+    e.preventDefault();
+    document.getElementById('contact-form').style.display = 'none';
+    document.getElementById('f-success').style.display = 'block';
+  }
+
+  // Resume
+  function openResume() {
+    var html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Timothy Cocores — Resume</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: #18181b; background: #fff;
+    font-size: 10.5pt; line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page {
+    max-width: 750px; margin: 0 auto;
+    padding: 2.5cm 2cm 2cm;
+  }
+  /* Header */
+  .r-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.4rem; padding-bottom: 1rem; border-bottom: 1.5px solid #18181b; }
+  .r-name { font-size: 22pt; font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
+  .r-title { font-size: 10pt; color: #71717a; margin-top: 0.3rem; font-weight: 400; }
+  .r-contact { text-align: right; font-size: 8.5pt; color: #52525b; line-height: 1.8; }
+  .r-contact a { color: #2563eb; text-decoration: none; }
+  /* Section */
+  .r-section { margin-bottom: 1.2rem; }
+  .r-section-title {
+    font-size: 7.5pt; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: #71717a;
+    border-bottom: 1px solid #e7e5e4; padding-bottom: 0.25rem;
+    margin-bottom: 0.75rem;
+  }
+  /* Experience */
+  .r-job { margin-bottom: 0.85rem; }
+  .r-job-header { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+  .r-job-role { font-size: 10pt; font-weight: 600; color: #18181b; }
+  .r-job-date { font-size: 8.5pt; color: #71717a; white-space: nowrap; flex-shrink: 0; }
+  .r-job-company { font-size: 8.5pt; color: #52525b; margin-bottom: 0.3rem; }
+  .r-job ul { padding-left: 1.1em; }
+  .r-job li { font-size: 8.5pt; color: #3f3f46; line-height: 1.55; margin-bottom: 0.15rem; }
+  /* Skills */
+  .r-skills { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+  .r-skill {
+    font-size: 7.5pt; padding: 0.15rem 0.55rem;
+    border: 1px solid #e7e5e4; border-radius: 3px;
+    color: #52525b; background: #fafaf9;
+  }
+  /* Projects */
+  .r-project { margin-bottom: 0.6rem; }
+  .r-project-name { font-size: 9.5pt; font-weight: 600; }
+  .r-project-desc { font-size: 8.5pt; color: #52525b; line-height: 1.55; }
+  /* Print */
+  @media print {
+    body { background: #fff; }
+    .page { padding: 1.8cm 1.8cm 1.6cm; max-width: 100%; }
+    a { color: #2563eb !important; }
+  }
+  @page { size: letter; margin: 0; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="r-header">
+    <div>
+      <div class="r-name">Timothy Cocores</div>
+      <div class="r-title">Product Manager · Brooklyn, NY</div>
+    </div>
+    <div class="r-contact">
+      <a href="mailto:timothy@getwelcomehome.co">timothy@getwelcomehome.co</a><br>
+      <a href="https://www.linkedin.com/in/timothycocores/" target="_blank">linkedin.com/in/timothycocores</a><br>
+      <a href="https://getwelcomehome.co" target="_blank">getwelcomehome.co</a>
+    </div>
+  </div>
+
+  <div class="r-section">
+    <div class="r-section-title">Summary</div>
+    <p style="font-size:8.5pt;color:#3f3f46;line-height:1.6;">Product manager with 8+ years of experience taking products from 0 to 1 and scaling them to millions of users. Proven track record across ecommerce, SaaS, and consumer — with a focus on activation, retention, and data-informed roadmapping.</p>
+  </div>
+
+  <div class="r-section">
+    <div class="r-section-title">Experience</div>
+
+    <div class="r-job">
+      <div class="r-job-header">
+        <div class="r-job-role">Chief Product Officer &amp; Co-Founder</div>
+        <div class="r-job-date">2024 — Present</div>
+      </div>
+      <div class="r-job-company">Welcome Home · Brooklyn, NY</div>
+      <ul>
+        <li>Co-founded a meal delivery service for postpartum families, building product, brand, and go-to-market from zero.</li>
+        <li>Designed operational and customer experience systems to reduce cognitive load on new parents during recovery.</li>
+      </ul>
+    </div>
+
+    <div class="r-job">
+      <div class="r-job-header">
+        <div class="r-job-role">Product Manager</div>
+        <div class="r-job-date">2023 — Present</div>
+      </div>
+      <div class="r-job-company">B&amp;H Photo Video · New York, NY</div>
+      <ul>
+        <li>Led product detail page strategy for bhphotovideo.com, optimizing the learn-and-decide customer journey.</li>
+        <li>Drove 225% lift in leasing application submissions, generating $11.1M in additional revenue.</li>
+        <li>Contributed to $1.3B in annual sales through improved product content, specs, and editorial material.</li>
+      </ul>
+    </div>
+
+    <div class="r-job">
+      <div class="r-job-header">
+        <div class="r-job-role">Senior Product Manager</div>
+        <div class="r-job-date">2022 — 2023</div>
+      </div>
+      <div class="r-job-company">Promenade · Remote</div>
+      <ul>
+        <li>Led cross-functional teams across the full product lifecycle for a floral marketplace platform.</li>
+        <li>Scaled the platform to 1.8M users and $5M+ ARR through a supply-first go-to-market strategy.</li>
+        <li>Collaborated closely with engineering, design, sales, and customer success to drive adoption.</li>
+      </ul>
+    </div>
+
+    <div class="r-job">
+      <div class="r-job-header">
+        <div class="r-job-role">Product Manager</div>
+        <div class="r-job-date">2020 — 2022</div>
+      </div>
+      <div class="r-job-company">Demandforce · Remote</div>
+      <ul>
+        <li>Defined roadmaps and prioritized features across engineering, design, and sales for an SMB SaaS platform.</li>
+        <li>Redesigned onboarding around a "first win" milestone, lifting Day-7 activation by 34% in 8 weeks.</li>
+        <li>Reduced week-1 support ticket volume by 50% following the onboarding overhaul.</li>
+      </ul>
+    </div>
+
+    <div class="r-job">
+      <div class="r-job-header">
+        <div class="r-job-role">Product Manager</div>
+        <div class="r-job-date">2018 — 2020</div>
+      </div>
+      <div class="r-job-company">InVision App · New York, NY</div>
+      <ul>
+        <li>Spearheaded features for Freehand, InVision's collaborative whiteboard product.</li>
+        <li>Set product strategy and direction, built roadmaps, and measured success using post-launch behavior data.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="r-section">
+    <div class="r-section-title">Key Results</div>
+    <p style="font-size:8.5pt;color:#3f3f46;line-height:1.7;">
+      1.8M+ users at peak &nbsp;·&nbsp; $5M+ ARR built from zero &nbsp;·&nbsp; 225% leasing lift ($11.1M revenue) &nbsp;·&nbsp; 34% Day-7 activation lift &nbsp;·&nbsp; 50% support ticket reduction &nbsp;·&nbsp; 8+ products shipped
+    </p>
+  </div>
+
+  <div class="r-section">
+    <div class="r-section-title">Skills</div>
+    <div class="r-skills">
+      <span class="r-skill">Product Strategy</span>
+      <span class="r-skill">0→1 / New Products</span>
+      <span class="r-skill">Roadmapping</span>
+      <span class="r-skill">User Research</span>
+      <span class="r-skill">A/B Testing</span>
+      <span class="r-skill">Data Analysis</span>
+      <span class="r-skill">Cross-functional Leadership</span>
+      <span class="r-skill">Go-to-Market</span>
+      <span class="r-skill">Agile / Scrum</span>
+      <span class="r-skill">Ecommerce</span>
+      <span class="r-skill">SaaS</span>
+      <span class="r-skill">Consumer</span>
+      <span class="r-skill">SQL</span>
+      <span class="r-skill">Figma</span>
+      <span class="r-skill">Mixpanel</span>
+      <span class="r-skill">Amplitude</span>
+    </div>
+  </div>
+
+  <div class="r-section">
+    <div class="r-section-title">Projects</div>
+    <div class="r-project">
+      <div class="r-project-name">Wingd</div>
+      <div class="r-project-desc">Dating app where friends must approve matches before chatting begins. Brings your inner circle into the connection process.</div>
+    </div>
+    <div class="r-project">
+      <div class="r-project-name">Bathroom Codes</div>
+      <div class="r-project-desc">Crowdsourced bathroom code directory for city dwellers in need. Community-driven utility product.</div>
+    </div>
+  </div>
+
+</div>
+<script>window.onload = function() { window.print(); };<\/script>
+</body>
+</html>`;
+    var w = window.open('', '_blank');
+    w.document.write(html);
+    w.document.close();
+  }
+
+  // Resume tray
+  function openResumeTray() {
+    document.getElementById('resume-tray').classList.add('open');
+    document.getElementById('resume-tray-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeResumeTray() {
+    document.getElementById('resume-tray').classList.remove('open');
+    document.getElementById('resume-tray-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Tray
+  function openTray() {
+    document.getElementById('tray').classList.add('open');
+    document.getElementById('tray-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    setTimeout(function() { document.getElementById('t-name').focus(); }, 300);
+  }
+  function closeTray() {
+    document.getElementById('tray').classList.remove('open');
+    document.getElementById('tray-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { closeTray(); closeResumeTray(); } });
+  function handleTrayForm(e) {
+    e.preventDefault();
+    document.getElementById('tray-form').style.display = 'none';
+    document.getElementById('tray-success').style.display = 'block';
+  }
+</script>
+
+</body>
+</html>

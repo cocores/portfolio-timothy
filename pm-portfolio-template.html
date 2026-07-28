@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alex Morgan — Product Manager</title>
+  <style>
+    /* ── Reset & base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+      background: #f8f7f4;
+      color: #1c1c1e;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.6;
+    }
+
+    /* ── Variables ── */
+    :root {
+      --accent: #5b7fa6;
+      --accent-light: #e8eef5;
+      --text: #1c1c1e;
+      --muted: #6b6b6e;
+      --subtle: #9a9a9d;
+      --border: #e2e0db;
+      --bg: #f8f7f4;
+      --white: #ffffff;
+      --max: 800px;
+    }
+
+    /* ── Typography ── */
+    h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; }
+    h2 { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--subtle); margin-bottom: 2.5rem; }
+    h3 { font-size: 1rem; font-weight: 600; color: var(--text); }
+    p { color: var(--muted); font-size: 0.925rem; line-height: 1.75; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Layout ── */
+    .container { max-width: var(--max); margin: 0 auto; padding: 0 2rem; }
+    section { padding: 5rem 0; }
+    .section-rule { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(248, 247, 244, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: var(--max); margin: 0 auto; padding: 0 2rem;
+      height: 52px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-name { font-size: 0.8rem; font-weight: 600; color: var(--text); letter-spacing: -0.01em; }
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links a {
+      font-size: 0.78rem; font-weight: 500; color: var(--muted);
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
+
+    /* ── Hero ── */
+    #hero { padding: 6rem 0 5rem; }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 4rem;
+      align-items: center;
+    }
+    .hero-title { font-size: clamp(1.75rem, 4vw, 2.4rem); font-weight: 700; letter-spacing: -0.03em; margin-bottom: 0.4rem; }
+    .hero-role { font-size: 0.875rem; font-weight: 500; color: var(--accent); letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 1rem; }
+    .hero-tagline { font-size: 1.025rem; color: var(--muted); margin-bottom: 2rem; max-width: 420px; line-height: 1.65; }
+    .hero-links { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .hero-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.78rem; font-weight: 500;
+      padding: 0.45rem 0.9rem; border-radius: 6px;
+      border: 1px solid var(--border); background: var(--white);
+      color: var(--text); transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .hero-link:hover { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-light); text-decoration: none; }
+    .hero-link svg { flex-shrink: 0; }
+
+    /* ── Photo ── */
+    .photo-wrap {
+      width: 160px; height: 160px; flex-shrink: 0;
+      border-radius: 50%;
+      border: 3px solid var(--accent);
+      overflow: hidden; position: relative;
+      background: var(--accent-light);
+    }
+    .photo-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      border-radius: 50%;
+    }
+    .photo-initials {
+      display: none;
+      position: absolute; inset: 0;
+      align-items: center; justify-content: center;
+      font-size: 1.5rem; font-weight: 700;
+      color: var(--accent); letter-spacing: -0.02em;
+    }
+
+    /* ── Resume ── */
+    .timeline { display: flex; flex-direction: column; gap: 0; }
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 1.5rem;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .timeline-item:first-child { border-top: 1px solid var(--border); }
+    .timeline-dates { font-size: 0.75rem; font-weight: 500; color: var(--subtle); padding-top: 0.15rem; white-space: nowrap; }
+    .timeline-company { font-size: 0.8rem; font-weight: 600; color: var(--text); margin-bottom: 0.1rem; }
+    .timeline-role { font-size: 0.825rem; color: var(--muted); }
+    .timeline-desc { font-size: 0.825rem; color: var(--subtle); margin-top: 0.35rem; line-height: 1.6; }
+
+    /* ── Accomplishments ── */
+    .accom-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; }
+    .accom-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.5rem;
+      border-top: 2px solid var(--accent);
+    }
+    .accom-headline { font-size: 0.875rem; font-weight: 600; color: var(--text); margin-bottom: 0.5rem; line-height: 1.4; }
+    .accom-body { font-size: 0.8rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── Featured work ── */
+    .work-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; }
+    .work-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.75rem;
+      display: flex; flex-direction: column; gap: 0.75rem;
+    }
+    .work-tag {
+      font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--accent);
+    }
+    .work-name { font-size: 1rem; font-weight: 600; color: var(--text); }
+    .work-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.7; flex: 1; }
+    .work-link {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      font-size: 0.75rem; font-weight: 600; color: var(--accent);
+      margin-top: 0.25rem; transition: gap 0.15s;
+    }
+    .work-link:hover { gap: 0.5rem; text-decoration: none; }
+    .work-link::after { content: '→'; }
+
+    /* ── Metrics ── */
+    #metrics { background: var(--white); }
+    .metrics-strip {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
+    }
+    .metric-cell {
+      padding: 2.5rem 1.5rem; text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .metric-cell:last-child { border-right: none; }
+    .metric-num {
+      font-size: 2.2rem; font-weight: 700; letter-spacing: -0.04em;
+      color: var(--text); line-height: 1;
+    }
+    .metric-label { font-size: 0.72rem; color: var(--muted); margin-top: 0.5rem; line-height: 1.4; }
+
+    /* ── Footer ── */
+    footer {
+      padding: 2.5rem 0; border-top: 1px solid var(--border);
+      text-align: center;
+    }
+    footer p { font-size: 0.75rem; color: var(--subtle); }
+
+    /* ── Mobile ── */
+    @media (max-width: 600px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .hero-grid { flex-direction: column-reverse; }
+      .photo-wrap { margin: 0 auto; }
+      .hero-text { order: 2; }
+      .photo-wrap { order: 1; }
+      .timeline-item { grid-template-columns: 1fr; gap: 0.25rem; }
+      .timeline-dates { order: 2; margin-top: 0.25rem; }
+      .metrics-strip { grid-template-columns: 1fr 1fr; }
+      .metric-cell:nth-child(2) { border-right: none; }
+      .metric-cell:nth-child(3) { border-right: 1px solid var(--border); border-top: 1px solid var(--border); }
+      .metric-cell:nth-child(4) { border-right: none; border-top: 1px solid var(--border); }
+      .nav-links { gap: 1.25rem; }
+    }
+    @media (max-width: 400px) {
+      .metrics-strip { grid-template-columns: 1fr; }
+      .metric-cell { border-right: none; border-bottom: 1px solid var(--border); }
+      .metric-cell:last-child { border-bottom: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Nav ── -->
+<nav>
+  <div class="nav-inner">
+    <span class="nav-name">Alex Morgan</span>
+    <div class="nav-links">
+      <a href="#resume">Resume</a>
+      <a href="#accomplishments">Work</a>
+      <a href="#featured">Case Studies</a>
+      <a href="#metrics">Metrics</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── Hero ── -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-grid">
+
+      <div class="hero-text">
+        <div class="hero-role">Product Manager</div>
+        <h1 class="hero-title">Alex Morgan</h1>
+        <p class="hero-tagline">I build products that people actually use — by focusing on the problem before the solution, and the user before the roadmap.</p>
+        <div class="hero-links">
+          <a href="https://linkedin.com" class="hero-link" target="_blank" rel="noopener">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            LinkedIn
+          </a>
+          <a href="mailto:alex@example.com" class="hero-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            alex@example.com
+          </a>
+        </div>
+      </div>
+
+      <div class="photo-wrap">
+        <img
+          src="photo.jpg"
+          alt="Alex Morgan"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+        >
+        <div class="photo-initials">AM</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="section-rule">
+
+<!-- ── Resume ── -->
+<section id="resume">
+  <div class="container">
+    <h2>Experience</h2>
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-dates">2022 – Present</div>
+        <div>
+          <div class="timeline-company">Acme Corp</div>
+          <div class="timeline-role">Senior Product Manager</div>
+          <p class="timeline-desc">Led the core consumer product from 0 to 1M users. Owned the full roadmap, worked across eng, design, and data to ship 12 major features in 18 months.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dates">2020 – 2022</div>
+        <div>
+          <div class="timeline-company">Helios Systems</div>
+          <div class="timeline-role">Product Manager</div>
+          <p class="timeline-desc">Owned the onboarding and activation funnel. Ran 40+ A/B tests. Drove a 34% lift in day-7 retention through targeted personalization experiments.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dates">2018 – 2020</div>
+        <div>
+          <div class="timeline-company">Meridian Health</div>
+          <div class="timeline-role">Associate Product Manager</div>
+          <p class="timeline-desc">Built patient-facing scheduling and messaging features for a telehealth platform serving 200K monthly active users.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dates">2016 – 2018</div>
+        <div>
+          <div class="timeline-company">Foundry Labs</div>
+          <div class="timeline-role">Product Analyst</div>
+          <p class="timeline-desc">Started as an analyst and moved into product. Owned the analytics dashboard product end-to-end by the end of year one.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="section-rule">
+
+<!-- ── Accomplishments ── -->
+<section id="accomplishments">
+  <div class="container">
+    <h2>Highlights</h2>
+    <div class="accom-grid">
+
+      <div class="accom-card">
+        <div class="accom-headline">Shipped onboarding that lifted retention by 34%.</div>
+        <p class="accom-body">Redesigned the new-user activation flow based on cohort analysis and five rounds of usability testing. Day-7 retention went from 28% to 42% in three months.</p>
+      </div>
+
+      <div class="accom-card">
+        <div class="accom-headline">Took a marketplace from zero to $8M ARR.</div>
+        <p class="accom-body">Solved the cold-start problem by building a standalone tool for supply-side users first. Once density hit, flipped the marketplace switch. ARR grew 4× in year two.</p>
+      </div>
+
+      <div class="accom-card">
+        <div class="accom-headline">Cut support ticket volume by 50%.</div>
+        <p class="accom-body">Audited the top 30 support categories, identified three root-cause product gaps, and shipped fixes. Ticket volume dropped in half within six weeks of launch.</p>
+      </div>
+
+      <div class="accom-card">
+        <div class="accom-headline">Launched in two new markets in under six months.</div>
+        <p class="accom-body">Led the localization, compliance, and go-to-market workstream for the EU and Canada expansions. Both markets hit their 90-day activation targets.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="section-rule">
+
+<!-- ── Featured work ── -->
+<section id="featured">
+  <div class="container">
+    <h2>Case Studies</h2>
+    <div class="work-grid">
+
+      <div class="work-card">
+        <div class="work-tag">Growth</div>
+        <div class="work-name">Activation Redesign</div>
+        <p class="work-desc">How I diagnosed a leaky onboarding funnel, ran a series of targeted experiments, and drove a 34% lift in day-7 retention without shipping a single new feature — just removing friction from the ones we already had.</p>
+        <a href="#" class="work-link">Read more</a>
+      </div>
+
+      <div class="work-card">
+        <div class="work-tag">0 → 1</div>
+        <div class="work-name">Marketplace Cold Start</div>
+        <p class="work-desc">Building a two-sided marketplace is a chicken-and-egg problem. This is the strategy we used to seed supply before launch, and how we structured the first 90 days to hit liquidity thresholds that made retention stick.</p>
+        <a href="#" class="work-link">Read more</a>
+      </div>
+
+      <div class="work-card">
+        <div class="work-tag">Platform</div>
+        <div class="work-name">API Developer Experience</div>
+        <p class="work-desc">Enterprise customers were churning because the integration experience was too painful. I led the effort to redesign the API, documentation, and SDKs — and got activation time from 14 days to under 2.</p>
+        <a href="#" class="work-link">Read more</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="section-rule">
+
+<!-- ── Metrics ── -->
+<section id="metrics">
+  <div class="container">
+    <h2>By the numbers</h2>
+    <div class="metrics-strip">
+      <div class="metric-cell">
+        <div class="metric-num">2M+</div>
+        <div class="metric-label">Users across products shipped</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-num">34%</div>
+        <div class="metric-label">Day-7 retention lift</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-num">$8M</div>
+        <div class="metric-label">ARR built from zero</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-num">50%</div>
+        <div class="metric-label">Reduction in support volume</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer>
+  <div class="container">
+    <p>Alex Morgan &nbsp;·&nbsp; 2025</p>
+  </div>
+</footer>
+
+</body>
+</html>
