@@ -165,7 +165,9 @@
 
     /* INFOGRAPHIC: Funnel */
     .infographic { margin-bottom: 1.25rem; }
-    .infographic-title { font-size: .68rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--gray-5); margin-bottom: .75rem; }
+    .infographic-title { font-size: .68rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--gray-5); margin-bottom: 1.25rem; }
+    .infographic-title--spaced { margin-bottom: 2.5rem; }
+    @media(min-width:641px){ .infographic-title--spaced { margin-bottom: 3.5rem; } }
     .funnel-rows { display: flex; flex-direction: column; gap: .45rem; }
     .funnel-row { display: flex; align-items: center; gap: .75rem; }
     .funnel-step-name { font-size: .72rem; color: var(--gray-5); width: 80px; flex-shrink: 0; }
@@ -711,7 +713,7 @@
         <p class="project-desc">Demandforce's support queue was overwhelmed — mostly onboarding confusion from SMB customers new to marketing automation. Instead of patching the funnel, I ran a first-principles research sprint to find the real causes. Rebuilt the onboarding flow from findings, cutting support tickets by 50% and improving early activation.</p>
 
         <div class="infographic">
-          <div class="infographic-title">Support load — before vs. after onboarding rebuild</div>
+          <div class="infographic-title infographic-title--spaced">Support load — before vs. after onboarding rebuild</div>
           <div class="ltv-bars">
             <div class="ltv-col">
               <div class="ltv-bar" id="ltv-high" style="height:0" data-h="110px"></div>
