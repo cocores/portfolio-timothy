@@ -144,6 +144,19 @@
 
     .divider { border: none; border-top: 1px solid var(--border); margin: 3rem 0; }
 
+    /* ── Screenshots ── */
+    .screenshots-section { margin: 3rem 0; }
+    .screenshots-label { font-size: .65rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--subtle); margin-bottom: 1.25rem; display: block; }
+    .screenshots-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start; }
+    .phone-wrap {
+      position: relative; border-radius: 28px; overflow: hidden;
+      box-shadow: 0 0 0 1.5px rgba(0,0,0,0.12), 0 20px 60px rgba(0,0,0,0.15);
+      background: #111;
+    }
+    .phone-wrap img { width: 100%; display: block; border-radius: 28px; }
+    .phone-wrap.offset { margin-top: 2.5rem; }
+    @media(max-width:540px){ .screenshots-grid { grid-template-columns: 1fr; } .phone-wrap.offset { margin-top: 0; } }
+
     .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 1.25rem 0 2rem; }
     .chip { font-size: 0.68rem; font-weight: 500; padding: 0.25rem 0.65rem; border-radius: 99px; background: var(--bg); border: 1px solid var(--border); color: var(--muted); }
 
@@ -246,6 +259,18 @@
       <span class="chip">Coffee Shops</span>
       <span class="chip">Transit Hubs</span>
       <span class="chip">Community Verified</span>
+    </div>
+
+    <div class="screenshots-section reveal">
+      <span class="screenshots-label">The App</span>
+      <div class="screenshots-grid">
+        <div class="phone-wrap">
+          <img src="loocodes-screen1.png" alt="LooCodes app — location list view">
+        </div>
+        <div class="phone-wrap offset">
+          <img src="loocodes-screen2.png" alt="LooCodes app — location detail cards">
+        </div>
+      </div>
     </div>
 
     <h2 class="reveal">How It Works</h2>
