@@ -48,10 +48,16 @@
     .wrap { max-width: 800px; margin: 0 auto; padding: 0 max(2rem, 5vw); }
     section { padding: 6rem 0; }
     section + section { border-top: 1px solid var(--gray-3); }
-    .label {
-      font-size: .7rem; font-weight: 600; letter-spacing: .12em;
-      text-transform: uppercase; color: var(--gray-5); margin-bottom: 2rem; display: block;
+
+    .section-label {
+      font-size: .7rem; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: .5rem; display: block;
     }
+    .section-heading {
+      font-size: clamp(1.4rem, 3vw, 1.9rem); font-weight: 800;
+      letter-spacing: -.03em; color: var(--black); margin-bottom: 2.5rem; line-height: 1.15;
+    }
+    .section-heading span { color: var(--accent); }
 
     /* HERO */
     .hero { padding: 13rem 0 7rem; border-bottom: 1px solid var(--gray-3); }
@@ -73,22 +79,15 @@
     .hero-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--gray-3); }
 
     /* ABOUT */
-    .about-body { font-size: 1.05rem; color: var(--gray-7); line-height: 1.8; max-width: 620px; }
-    .about-body p + p { margin-top: 1.25rem; }
-    .about-body strong { color: var(--black); font-weight: 600; }
-
-    /* ABOUT GRID */
     .about-grid {
       display: grid; grid-template-columns: 200px 1fr;
       gap: 3rem; align-items: start; margin-bottom: 2.5rem;
     }
-    .photo-col { display: flex; flex-direction: column; gap: 1rem; }
     .photo-frame {
       width: 200px; height: 240px;
       border-radius: 10px; overflow: hidden;
       background: var(--gray-1);
       border: 1px solid var(--gray-3);
-      position: relative;
     }
     .photo-frame img {
       width: 100%; height: 100%; object-fit: cover; object-position: center top;
@@ -98,29 +97,39 @@
       width: 100%; height: 100%;
       display: flex; flex-direction: column;
       align-items: center; justify-content: flex-end;
-      padding-bottom: 0;
       background: linear-gradient(160deg, #EEF2FF 0%, #E0E7FF 100%);
     }
     .photo-placeholder svg { width: 120px; color: #A5B4FC; }
-    @media(max-width:640px){
-      .about-grid { grid-template-columns: 1fr; }
-      .photo-frame { width: 140px; height: 168px; }
-      .photo-col { flex-direction: row; align-items: flex-start; gap: 1.25rem; }
-    }
+    .about-body { font-size: 1.05rem; color: var(--gray-7); line-height: 1.8; }
+    .about-body p + p { margin-top: 1.25rem; }
+    .about-body strong { color: var(--black); font-weight: 600; }
 
-    /* SKILL ICONS GRID */
-    .skills-icon-grid {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;
-      margin-top: 2.5rem;
+    /* SKILL PILLS */
+    .skill-pills { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: 2rem; }
+    .skill-pill {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .72rem; font-weight: 500; color: var(--gray-7);
+      background: var(--gray-1); border: 1px solid var(--gray-3);
+      padding: .35rem .75rem; border-radius: 100px;
+      transition: border-color .15s, color .15s;
     }
-    .skill-icon-card {
-      border: 1px solid var(--gray-3); border-radius: 8px;
-      padding: 1rem; display: flex; flex-direction: column; gap: .5rem;
-      transition: border-color .2s, box-shadow .2s;
+    .skill-pill:hover { border-color: var(--accent); color: var(--accent); }
+    .skill-pill svg { width: 13px; height: 13px; color: var(--accent); }
+
+    /* NUMBERS — bold dark scoreboard */
+    .numbers-sect {
+      background: var(--black); border-top: none !important;
+      padding: 5rem 0;
     }
-    .skill-icon-card:hover { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-lt); }
-    .skill-icon-card svg { width: 20px; height: 20px; color: var(--accent); }
-    .skill-icon-name { font-size: .75rem; font-weight: 600; color: var(--black); line-height: 1.3; }
+    .numbers-sect .section-label { color: #6366F1; }
+    .numbers-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0; }
+    .num-cell { padding: 2rem 0; border-right: 1px solid rgba(255,255,255,.08); }
+    .num-cell:last-child { border-right: none; }
+    .num-cell + .num-cell { padding-left: 2rem; }
+    .num-icon { width: 20px; height: 20px; color: var(--accent); margin-bottom: .6rem; opacity: .7; }
+    .n-val { font-size: 3rem; font-weight: 900; letter-spacing: -.04em; line-height: 1; color: #fff; }
+    .n-val span { color: var(--accent); }
+    .n-label { font-size: .72rem; font-weight: 400; color: rgba(255,255,255,.45); margin-top: .4rem; line-height: 1.5; }
 
     /* PROJECTS */
     .project-list { display: flex; flex-direction: column; }
@@ -181,10 +190,10 @@
 
     /* INFOGRAPHIC: Radial Progress */
     .radial-wrap { display: flex; align-items: center; gap: 1.25rem; }
-    .radial-svg { width: 64px; height: 64px; flex-shrink: 0; }
-    .radial-track { fill: none; stroke: var(--gray-1); stroke-width: 6; }
+    .radial-svg { width: 80px; height: 80px; flex-shrink: 0; }
+    .radial-track { fill: none; stroke: var(--gray-3); stroke-width: 7; }
     .radial-fill {
-      fill: none; stroke: var(--accent); stroke-width: 6;
+      fill: none; stroke: var(--accent); stroke-width: 7;
       stroke-linecap: round; stroke-dasharray: 163; stroke-dashoffset: 163;
       transition: stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1);
       transform-origin: center; transform: rotate(-90deg);
@@ -194,34 +203,33 @@
     .radial-desc { font-size: .72rem; color: var(--gray-5); margin-top: .2rem; }
 
     /* INFOGRAPHIC: Bar comparison */
-    .ltv-bars { display: flex; gap: 1.5rem; align-items: flex-end; height: 80px; margin-bottom: .5rem; }
+    .ltv-bars { display: flex; gap: 1.5rem; align-items: flex-end; height: 110px; margin-bottom: .5rem; overflow: visible; }
     .ltv-col { display: flex; flex-direction: column; align-items: center; gap: .4rem; }
     .ltv-bar {
-      width: 36px; border-radius: 4px 4px 0 0;
+      width: 44px; border-radius: 6px 6px 0 0;
       background: var(--gray-3); position: relative;
       transition: height 1s cubic-bezier(.4,0,.2,1);
     }
     .ltv-bar.hi { background: var(--accent); }
     .ltv-col-label { font-size: .65rem; color: var(--gray-5); text-align: center; line-height: 1.3; }
-
     .project-tags { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: 1rem; }
     .ptag { font-size: .68rem; font-weight: 500; color: var(--gray-5); letter-spacing: .04em; }
     .ptag::before { content: '·'; margin-right: .35rem; color: var(--gray-3); }
     .ptag:first-child::before { display: none; }
 
-    /* CURRENT PROJECTS SECTION */
-    .current-sect { background: var(--white); }
+    /* CURRENTLY BUILDING */
+    .current-sect { background: #FAFAFA; }
     .current-grid {
       display: grid; grid-template-columns: repeat(2, 1fr);
-      gap: 1.25rem; margin-top: 0;
+      gap: 1.25rem;
     }
     .cur-card {
-      border: 1.5px solid var(--gray-3); border-radius: 10px;
+      border: 1.5px solid var(--gray-3); border-radius: 12px;
       padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem;
-      transition: border-color .2s, box-shadow .2s; position: relative; overflow: hidden;
-      text-decoration: none; color: inherit;
+      transition: border-color .2s, box-shadow .2s, transform .2s; position: relative; overflow: hidden;
+      text-decoration: none; color: inherit; background: var(--white);
     }
-    .cur-card:hover { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-lt); }
+    .cur-card:hover { border-color: var(--accent); box-shadow: 0 4px 24px rgba(99,102,241,.1); transform: translateY(-2px); }
     .cur-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: .75rem; }
     .cur-icon-wrap {
       width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
@@ -239,8 +247,6 @@
     .cur-name { font-size: 1rem; font-weight: 700; color: var(--black); letter-spacing: -.01em; line-height: 1.2; }
     .cur-tagline { font-size: .78rem; color: var(--accent); font-weight: 500; margin-top: .1rem; }
     .cur-desc { font-size: .825rem; color: var(--gray-5); line-height: 1.7; }
-
-    /* progress pill */
     .cur-progress-wrap { margin-top: auto; }
     .cur-progress-label {
       display: flex; justify-content: space-between;
@@ -252,60 +258,52 @@
       height: 100%; border-radius: 3px; background: var(--accent);
       width: 0; transition: width 1.1s cubic-bezier(.4,0,.2,1);
     }
-    .cur-tags { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .75rem; }
+    .cur-tags { display: flex; flex-wrap: wrap; gap: .35rem; }
     .cur-tag {
       font-size: .65rem; font-weight: 500; color: var(--gray-5);
       background: var(--gray-1); border: 1px solid var(--gray-3);
       padding: .2rem .55rem; border-radius: 100px;
     }
 
-    @media(max-width:640px){ .current-grid { grid-template-columns: 1fr; } }
-
-    /* NUMBERS SECTION */
-    .numbers-sect { background: var(--gray-1); }
-    .numbers-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0; }
-    .num-cell { padding: 2rem 0; border-right: 1px solid var(--gray-3); }
-    .num-cell:last-child { border-right: none; }
-    .num-cell + .num-cell { padding-left: 2rem; }
-    .num-icon { width: 22px; height: 22px; color: var(--accent); margin-bottom: .5rem; opacity: .75; }
-    .n-val { font-size: 2.8rem; font-weight: 900; letter-spacing: -.04em; line-height: 1; color: var(--black); }
-    .n-label { font-size: .72rem; font-weight: 500; color: var(--gray-5); margin-top: .35rem; line-height: 1.5; text-transform: uppercase; letter-spacing: .04em; }
-
-    /* TOOLS */
-    .tools-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 2.5rem 3rem; }
-    .tool-group-name {
-      font-size: .7rem; font-weight: 600; letter-spacing: .1em;
-      text-transform: uppercase; color: var(--gray-5); margin-bottom: .75rem;
-      display: flex; align-items: center; gap: .5rem;
-    }
-    .tool-group-name svg { width: 14px; height: 14px; color: var(--accent); }
-    .tool-list { display: flex; flex-direction: column; gap: .4rem; }
-    .tool-item { font-size: .875rem; color: var(--gray-7); padding: .3rem 0; border-bottom: 1px solid var(--gray-1); }
-
-    /* EXPERIENCE */
+    /* EXPERIENCE — timeline */
     .exp-list { display: flex; flex-direction: column; }
     .exp-item {
       display: grid; grid-template-columns: 130px 1fr; gap: 2rem;
       padding: 2rem 0; border-bottom: 1px solid var(--gray-3);
+      position: relative;
     }
     .exp-dates { font-size: .775rem; color: var(--gray-5); padding-top: .15rem; }
     .exp-role-wrap { display: flex; align-items: flex-start; gap: .75rem; }
-    .exp-icon-wrap {
-      width: 32px; height: 32px; border-radius: 8px;
-      background: var(--accent-lt); display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; margin-top: .1rem;
+    .exp-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--accent); flex-shrink: 0; margin-top: .45rem;
+      box-shadow: 0 0 0 3px var(--accent-lt);
     }
-    .exp-icon-wrap svg { width: 16px; height: 16px; color: var(--accent); }
     .exp-role { font-size: .975rem; font-weight: 700; letter-spacing: -.01em; margin-bottom: .2rem; }
     .exp-company { font-size: .8rem; color: var(--accent); font-weight: 500; margin-bottom: .6rem; }
     .exp-desc { font-size: .85rem; color: var(--gray-5); line-height: 1.7; }
+
+    /* TOOLS — compact chip groups */
+    .tools-sect { background: var(--gray-1); }
+    .tools-compact { display: flex; flex-direction: column; gap: 1.5rem; }
+    .tool-row { display: flex; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
+    .tool-row-label {
+      font-size: .65rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--gray-5); width: 110px; flex-shrink: 0; padding-top: .15rem;
+    }
+    .tool-chips { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .tool-chip {
+      font-size: .75rem; color: var(--gray-7); font-weight: 500;
+      background: var(--white); border: 1px solid var(--gray-3);
+      padding: .3rem .7rem; border-radius: 6px;
+    }
 
     /* CONTACT — coffee theme */
     #contact {
       background: #1C1008;
       color: #F5ECD7;
     }
-    #contact .label { color: #A0835A; }
+    #contact .section-label { color: #A0835A; }
     .contact-head {
       font-size: clamp(2rem,5vw,3.4rem); font-weight: 900;
       letter-spacing: -.03em; line-height: 1.05; margin-bottom: 1rem;
@@ -313,7 +311,6 @@
     }
     .contact-head em { font-style: normal; color: #D4A96A; }
     .contact-sub { font-size: 1rem; color: #A0835A; max-width: 460px; margin-bottom: 2.5rem; line-height: 1.7; }
-
     .coffee-cup-wrap { margin-bottom: 2.5rem; display: flex; align-items: flex-end; gap: 1.25rem; }
     .cup-svg { width: 64px; flex-shrink: 0; }
     .steam { animation: steamRise 2s ease-in-out infinite; transform-origin: bottom center; }
@@ -325,7 +322,6 @@
       100% { opacity: 0;   transform: translateY(-14px) scaleX(.8); }
     }
     .cup-tagline { font-size: 1rem; color: #C8A878; line-height: 1.6; font-style: italic; }
-
     .coffee-orders { display: flex; flex-wrap: wrap; gap: .75rem; margin-bottom: 2.5rem; }
     .coffee-btn {
       display: inline-flex; align-items: center; gap: .5rem;
@@ -341,7 +337,6 @@
       background: #D4A96A; color: #1C1008; border-color: #D4A96A; font-weight: 600;
     }
     .coffee-btn.primary:hover { background: #E2BC87; border-color: #E2BC87; }
-
     .contact-divider { height: 1px; background: rgba(255,255,255,.07); margin: 2rem 0; }
     .contact-fine { font-size: .75rem; color: #5C4A30; }
 
@@ -353,75 +348,52 @@
 
     /* RESPONSIVE */
     @media(max-width:640px){
-      /* Nav */
       .nav-links { display: none; }
       nav { padding: 0 1.25rem; }
-      .nav-name { font-size: .8rem; }
-
-      /* Layout */
       .wrap { padding: 0 1.25rem; }
       section { padding: 3.5rem 0; }
 
-      /* Hero */
       .hero { padding: 7rem 0 3.5rem; }
       .hero-impact { font-size: clamp(4rem, 22vw, 6rem); margin-bottom: 1.25rem; }
       .hero-desc { font-size: .975rem; margin-bottom: 1.75rem; }
       .hero-meta { gap: .9rem; }
-      .hero-link { font-size: .82rem; }
 
-      /* About */
       .about-grid { grid-template-columns: 90px 1fr; gap: 1.25rem; }
       .photo-frame { width: 90px; height: 108px; }
       .about-body { font-size: .875rem; }
-      .about-body p + p { margin-top: .9rem; }
+      .section-heading { font-size: 1.35rem; margin-bottom: 1.75rem; }
 
-      /* Skills */
-      .skills-icon-grid { grid-template-columns: repeat(2,1fr); gap: .6rem; margin-top: 1.75rem; }
-      .skill-icon-card { padding: .75rem; }
-      .skill-icon-name { font-size: .7rem; }
+      .numbers-grid { grid-template-columns: 1fr 1fr; }
+      .num-cell + .num-cell { padding-left: 1.25rem; }
+      .num-cell:nth-child(2){ border-right: none; }
+      .num-cell:last-child { grid-column: 1/-1; border-top: 1px solid rgba(255,255,255,.08); padding-left: 0; }
+      .n-val { font-size: 2rem; }
 
-      /* Projects */
       .project { padding: 1.75rem 0; }
       .project-header { grid-template-columns: 1fr; gap: .6rem; }
       .project-badge { align-self: flex-start; width: fit-content; }
-      .project-desc { font-size: .825rem; }
-      .infographic-title { font-size: .62rem; }
       .funnel-step-name { width: 72px; font-size: .68rem; }
       .funnel-pct { width: 30px; font-size: .68rem; }
       .funnel-delta { width: 34px; font-size: .6rem; }
 
-      /* Currently building */
       .current-grid { grid-template-columns: 1fr; gap: 1rem; }
       .cur-card { padding: 1.25rem; }
-      .cur-desc { font-size: .78rem; }
 
-      /* Numbers */
-      .numbers-grid { grid-template-columns: 1fr 1fr; }
-      .num-cell + .num-cell { padding-left: 1.25rem; }
-      .num-cell:nth-child(2){ border-right: none; }
-      .num-cell:last-child { grid-column: 1/-1; border-top: 1px solid var(--gray-3); padding-left: 0; }
-      .n-val { font-size: 1.9rem; }
-
-      /* Tools */
-      .tools-grid { grid-template-columns: 1fr; gap: 1.75rem; }
-
-      /* Experience */
       .exp-item { grid-template-columns: 1fr; gap: .35rem; padding: 1.5rem 0; }
       .exp-dates { font-size: .72rem; color: var(--accent); }
-      .exp-role-wrap { gap: .6rem; }
-      .exp-role { font-size: .9rem; }
-      .exp-desc { font-size: .8rem; }
 
-      /* Contact */
+      .tool-row { flex-direction: column; gap: .5rem; }
+      .tool-row-label { width: auto; }
+
       .contact-head { font-size: clamp(1.6rem,8vw,2.2rem); }
       .coffee-orders { gap: .5rem; }
       .coffee-btn { font-size: .76rem; padding: .5rem .9rem; }
-
       footer { flex-direction: column; gap: .5rem; text-align: center; }
     }
     @media(prefers-reduced-motion:reduce){
       .project,.funnel-bar,.spark-bar,.radial-fill,.ltv-bar { transition: none; }
       .project { opacity: 1; transform: none; }
+      .cur-card:hover { transform: none; }
     }
   </style>
 </head>
@@ -438,7 +410,7 @@
   <a href="#contact" class="nav-open">Open to roles</a>
 </nav>
 
-<!-- HERO -->
+<!-- ① HERO -->
 <section class="hero">
   <div class="wrap">
     <div class="hero-impact">$11<span>M</span></div>
@@ -453,14 +425,13 @@
   </div>
 </section>
 
-<!-- ABOUT -->
+<!-- ② ABOUT -->
 <section>
   <div class="wrap">
-    <span class="label">About</span>
+    <span class="section-label">About</span>
+    <h2 class="section-heading">Senior PM. <span>10+ years shipping.</span></h2>
     <div class="about-grid">
-
-      <!-- PHOTO COLUMN -->
-      <div class="photo-col">
+      <div>
         <div class="photo-frame">
           <img src="photo.jpg" alt="Timothy Cocores"
             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
@@ -474,62 +445,81 @@
           </div>
         </div>
       </div>
-
-      <!-- BIO COLUMN -->
-      <div>
-        <div class="about-body">
-          <p>I'm <strong>Timothy Cocores</strong>, a Senior Product Manager with 10+ years shipping SaaS and digital products. I've led product at companies across e-commerce, design tools, marketing automation, and healthcare — always grounded in the same thing: clear decisions, measurable outcomes, and teams that can move fast.</p>
-          <p>At <strong>B&H Photo Video</strong>, I own the learn-and-decide customer journey — connecting editorial content to purchase intent across a $1.3B annual sales pipeline. My background spans the full stack from analytics and user research to roadmap execution and stakeholder alignment.</p>
-        </div>
+      <div class="about-body">
+        <p>I'm <strong>Timothy Cocores</strong>, a Senior Product Manager with 10+ years shipping SaaS and digital products. I've led product at companies across e-commerce, design tools, marketing automation, and healthcare — always grounded in the same thing: clear decisions, measurable outcomes, and teams that can move fast.</p>
+        <p>At <strong>B&H Photo Video</strong>, I own the learn-and-decide customer journey — connecting editorial content to purchase intent across a $1.3B annual sales pipeline. My background spans the full stack from analytics and user research to roadmap execution and stakeholder alignment.</p>
       </div>
-
     </div>
 
-    <!-- SKILL ICON GRID -->
-    <div class="skills-icon-grid">
-      <div class="skill-icon-card">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-        <span class="skill-icon-name">Product Strategy</span>
+    <div class="skill-pills">
+      <span class="skill-pill">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        Product Strategy
+      </span>
+      <span class="skill-pill">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Data & Analytics
+      </span>
+      <span class="skill-pill">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        User Research
+      </span>
+      <span class="skill-pill">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        SaaS Products
+      </span>
+      <span class="skill-pill">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Stakeholder Management
+      </span>
+      <span class="skill-pill">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+        Agile & Scrum
+      </span>
+      <span class="skill-pill">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        E-Commerce
+      </span>
+      <span class="skill-pill">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        A/B Testing
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- ③ NUMBERS -->
+<section class="numbers-sect">
+  <div class="wrap">
+    <span class="section-label">By the numbers</span>
+    <div class="numbers-grid">
+      <div class="num-cell">
+        <svg class="num-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        <div class="n-val">$11<span>M</span>+</div>
+        <div class="n-label">Revenue from B&H leasing project</div>
       </div>
-      <div class="skill-icon-card">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        <span class="skill-icon-name">Data & Analytics</span>
+      <div class="num-cell">
+        <svg class="num-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <div class="n-val">14<span>M</span></div>
+        <div class="n-label">Customers reached via Explora journey</div>
       </div>
-      <div class="skill-icon-card">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <span class="skill-icon-name">User Research</span>
-      </div>
-      <div class="skill-icon-card">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-        <span class="skill-icon-name">SaaS Products</span>
-      </div>
-      <div class="skill-icon-card">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        <span class="skill-icon-name">Stakeholder Management</span>
-      </div>
-      <div class="skill-icon-card">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-        <span class="skill-icon-name">Agile & Scrum</span>
-      </div>
-      <div class="skill-icon-card">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-        <span class="skill-icon-name">E-Commerce</span>
-      </div>
-      <div class="skill-icon-card">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-        <span class="skill-icon-name">A/B Testing</span>
+      <div class="num-cell">
+        <svg class="num-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        <div class="n-val">10<span>+</span></div>
+        <div class="n-label">Years shipping SaaS & digital products</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- WORK -->
+<!-- ④ WORK -->
 <section id="work">
   <div class="wrap">
-    <span class="label">Selected Work</span>
+    <span class="section-label">Selected Work</span>
+    <h2 class="section-heading">Projects that <span>moved the needle.</span></h2>
     <div class="project-list">
 
-      <!-- PROJECT 1: B&H Leasing — funnel infographic -->
+      <!-- PROJECT 1: B&H Leasing -->
       <div class="project" data-animate="funnel">
         <div class="project-header">
           <div>
@@ -584,7 +574,7 @@
         </div>
       </div>
 
-      <!-- PROJECT 2: B&H Explora — radial + sparkline -->
+      <!-- PROJECT 2: B&H Explora -->
       <div class="project" data-animate="radial">
         <div class="project-header">
           <div>
@@ -642,7 +632,7 @@
         </div>
       </div>
 
-      <!-- PROJECT 3: Promenade — bar chart -->
+      <!-- PROJECT 3: Promenade -->
       <div class="project" data-animate="bars">
         <div class="project-header">
           <div>
@@ -706,7 +696,7 @@
         </div>
       </div>
 
-      <!-- PROJECT 4: Demandforce — LTV / ticket reduction -->
+      <!-- PROJECT 4: Demandforce -->
       <div class="project" data-animate="ltv">
         <div class="project-header">
           <div>
@@ -724,11 +714,11 @@
           <div class="infographic-title">Support load — before vs. after onboarding rebuild</div>
           <div class="ltv-bars">
             <div class="ltv-col">
-              <div class="ltv-bar" id="ltv-high" style="height:0" data-h="80px"></div>
+              <div class="ltv-bar" id="ltv-high" style="height:0" data-h="110px"></div>
               <span class="ltv-col-label">Before<br>Rebuild</span>
             </div>
             <div class="ltv-col">
-              <div class="ltv-bar hi" id="ltv-low2" style="height:0" data-h="40px"></div>
+              <div class="ltv-bar hi" id="ltv-low2" style="height:0" data-h="55px"></div>
               <span class="ltv-col-label">After<br>−50%</span>
             </div>
             <div style="flex:1;display:flex;align-items:center;padding-left:.5rem;">
@@ -757,14 +747,11 @@
   </div>
 </section>
 
-<!-- CURRENT PROJECTS -->
+<!-- ⑤ CURRENTLY BUILDING -->
 <section class="current-sect" id="current">
   <div class="wrap">
-    <span class="label">Currently Building</span>
-    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:2rem;flex-wrap:wrap;gap:.5rem;">
-      <h2 style="font-size:clamp(1.6rem,3vw,2.2rem);">Side projects & proposals.</h2>
-      <span style="font-size:.8rem;color:var(--gray-5);">Work in progress — the fun stuff.</span>
-    </div>
+    <span class="section-label">Currently Building</span>
+    <h2 class="section-heading">Side projects & <span>proposals.</span></h2>
     <div class="current-grid">
 
       <!-- WINGD -->
@@ -783,7 +770,6 @@
           <div class="cur-tagline">Dating app with a social wingman twist</div>
         </div>
         <p class="cur-desc">A dating app where friends vouch for you — your "wing" sends the first message on your behalf to break the ice. Designing the matching algorithm, trust & safety model, and the dual-profile UX that balances your identity with your wing's endorsement.</p>
-
         <div class="infographic" style="margin-bottom:0;">
           <div class="infographic-title">Core loop</div>
           <div style="display:flex;align-items:center;gap:.3rem;font-size:.68rem;flex-wrap:wrap;">
@@ -796,13 +782,12 @@
             <span style="background:#FFF0F6;padding:.25rem .6rem;border-radius:4px;color:#EC4899;font-weight:600;">You connect ♥</span>
           </div>
         </div>
-
         <div class="cur-progress-wrap">
           <div class="cur-progress-label"><span>Progress</span><span>65%</span></div>
           <div class="cur-progress-track"><div class="cur-progress-fill" data-w="65" style="background:#EC4899;"></div></div>
         </div>
         <div class="cur-tags">
-          <span class="cur-tag">Dating · Social</span><span class="cur-tag">iOS</span><span class="cur-tag">Trust & Safety</span><span class="cur-tag">Matching</span>
+          <span class="cur-tag">Dating · Social</span><span class="cur-tag">iOS</span><span class="cur-tag">Trust & Safety</span>
         </div>
       </a>
 
@@ -826,7 +811,6 @@
           <div class="cur-tagline">AI resume & job description critique tool</div>
         </div>
         <p class="cur-desc">Scores resumes against job descriptions, flags keyword mismatches, and gives applicants a brutally honest gap analysis — before they apply. Also scores job postings for vague language, unrealistic requirements, and red flags that waste candidate time.</p>
-
         <div class="infographic" style="margin-bottom:0;">
           <div class="infographic-title">Resume match score example</div>
           <div style="display:flex;gap:1.5rem;align-items:flex-end;">
@@ -844,13 +828,12 @@
             </div>
           </div>
         </div>
-
         <div class="cur-progress-wrap">
           <div class="cur-progress-label"><span>Progress</span><span>80%</span></div>
           <div class="cur-progress-track"><div class="cur-progress-fill" data-w="80" style="background:#16A34A;"></div></div>
         </div>
         <div class="cur-tags">
-          <span class="cur-tag">AI / LLM</span><span class="cur-tag">Job Search</span><span class="cur-tag">Web App</span><span class="cur-tag">NLP</span>
+          <span class="cur-tag">AI / LLM</span><span class="cur-tag">Job Search</span><span class="cur-tag">Web App</span>
         </div>
       </a>
 
@@ -874,7 +857,6 @@
           <div class="cur-tagline">Visual heatmap tool for product decision-making</div>
         </div>
         <p class="cur-desc">A lightweight tool for PMs and designers to overlay engagement heatmaps directly on product screenshots — making it easy to annotate, share, and discuss where users focus, click, and drop off without exporting to separate analytics tools.</p>
-
         <div class="infographic" style="margin-bottom:0;">
           <div class="infographic-title">Use case flow</div>
           <div style="display:flex;align-items:center;gap:.3rem;font-size:.68rem;flex-wrap:wrap;">
@@ -885,7 +867,6 @@
             <span style="background:#FFF7ED;padding:.25rem .6rem;border-radius:4px;color:#EA580C;font-weight:600;">Share insights</span>
           </div>
         </div>
-
         <div class="cur-progress-wrap">
           <div class="cur-progress-label"><span>Progress</span><span>40%</span></div>
           <div class="cur-progress-track"><div class="cur-progress-fill" data-w="40" style="background:#EA580C;"></div></div>
@@ -910,8 +891,7 @@
           <div class="cur-name">Bathroom Codes</div>
           <div class="cur-tagline">Community-sourced restroom access codes</div>
         </div>
-        <p class="cur-desc">A crowdsourced directory of bathroom door codes for cafes, hotels, and stores. Users submit codes, the community validates them, and a trust score surfaces the most reliable ones. Designing the reputation system and anti-gaming mechanics to keep data accurate.</p>
-
+        <p class="cur-desc">A crowdsourced directory of bathroom door codes for cafes, hotels, and stores. Users submit codes, the community validates them, and a trust score surfaces the most reliable ones. Designing the reputation system and anti-gaming mechanics.</p>
         <div class="infographic" style="margin-bottom:0;">
           <div class="infographic-title">Community trust loop</div>
           <div style="display:flex;align-items:center;gap:.3rem;font-size:.68rem;flex-wrap:wrap;">
@@ -922,16 +902,14 @@
             <span style="background:#F0FDF4;padding:.25rem .6rem;border-radius:4px;color:#16a34a;font-weight:600;">Score rises ✓</span>
           </div>
         </div>
-
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin:.75rem 0;align-items:start;">
-          <div style="border-radius:16px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,0.1),0 8px 24px rgba(0,0,0,0.12);">
-            <img src="loocodes-screen1.png" alt="LooCodes list view" style="width:100%;display:block;border-radius:16px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin:.25rem 0;align-items:start;">
+          <div style="border-radius:14px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,0.1),0 8px 24px rgba(0,0,0,0.12);">
+            <img src="loocodes-screen1.png" alt="LooCodes list view" style="width:100%;display:block;border-radius:14px;">
           </div>
-          <div style="border-radius:16px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,0.1),0 8px 24px rgba(0,0,0,0.12);margin-top:1.25rem;">
-            <img src="loocodes-screen2.png" alt="LooCodes detail view" style="width:100%;display:block;border-radius:16px;">
+          <div style="border-radius:14px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,0.1),0 8px 24px rgba(0,0,0,0.12);margin-top:1rem;">
+            <img src="loocodes-screen2.png" alt="LooCodes detail view" style="width:100%;display:block;border-radius:14px;">
           </div>
         </div>
-
         <div class="cur-progress-wrap">
           <div class="cur-progress-label"><span>Progress</span><span>90%</span></div>
           <div class="cur-progress-track"><div class="cur-progress-fill" data-w="90" style="background:#16a34a;"></div></div>
@@ -945,106 +923,24 @@
   </div>
 </section>
 
-<!-- NUMBERS -->
-<section class="numbers-sect">
-  <div class="wrap">
-    <span class="label">By the numbers</span>
-    <div class="numbers-grid">
-      <div class="num-cell">
-        <svg class="num-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-        <div class="n-val">$11M+</div>
-        <div class="n-label">Revenue from B&H leasing project</div>
-      </div>
-      <div class="num-cell">
-        <svg class="num-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        <div class="n-val">14M</div>
-        <div class="n-label">Customers reached via Explora journey</div>
-      </div>
-      <div class="num-cell">
-        <svg class="num-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-        <div class="n-val">10+ yrs</div>
-        <div class="n-label">Shipping SaaS & digital products</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- TOOLS -->
-<section>
-  <div class="wrap">
-    <span class="label">Tools & stack</span>
-    <div class="tools-grid">
-      <div>
-        <div class="tool-group-name">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          Analytics
-        </div>
-        <div class="tool-list">
-          <div class="tool-item">Amplitude</div>
-          <div class="tool-item">Mixpanel</div>
-          <div class="tool-item">Google Analytics 4</div>
-          <div class="tool-item">SQL — BigQuery</div>
-          <div class="tool-item">Looker</div>
-        </div>
-      </div>
-      <div>
-        <div class="tool-group-name">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-          Design & Research
-        </div>
-        <div class="tool-list">
-          <div class="tool-item">Figma</div>
-          <div class="tool-item">InVision / Freehand</div>
-          <div class="tool-item">UserTesting</div>
-          <div class="tool-item">Hotjar</div>
-        </div>
-      </div>
-      <div>
-        <div class="tool-group-name">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
-          Experimentation
-        </div>
-        <div class="tool-list">
-          <div class="tool-item">Optimizely</div>
-          <div class="tool-item">LaunchDarkly</div>
-          <div class="tool-item">A/B test design & analysis</div>
-        </div>
-      </div>
-      <div>
-        <div class="tool-group-name">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
-          Process
-        </div>
-        <div class="tool-list">
-          <div class="tool-item">Jira & Linear</div>
-          <div class="tool-item">Notion & Confluence</div>
-          <div class="tool-item">Shape Up</div>
-          <div class="tool-item">Agile / Scrum</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- EXPERIENCE -->
+<!-- ⑥ EXPERIENCE -->
 <section id="experience">
   <div class="wrap">
-    <span class="label">Experience</span>
+    <span class="section-label">Experience</span>
+    <h2 class="section-heading">Where I've <span>shipped.</span></h2>
     <div class="exp-list">
 
       <div class="exp-item">
         <div class="exp-dates">2023 – Present</div>
         <div>
           <div class="exp-role-wrap">
-            <div class="exp-icon-wrap">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-            </div>
+            <div class="exp-dot"></div>
             <div>
               <div class="exp-role">Product Manager — Learn & Decide Journey</div>
               <div class="exp-company">B&H Photo Video</div>
+              <p class="exp-desc">Spearhead the learn-and-decide customer journey connecting Explora editorial content to product discovery and checkout across a $1.3B annual sales pipeline. Led the leasing PDP centralization project: 225% increase in applications, $11.1M in new revenue.</p>
             </div>
           </div>
-          <p class="exp-desc">Spearhead the learn-and-decide customer journey connecting Explora editorial content to product discovery and checkout across a $1.3B annual sales pipeline. Led the leasing PDP centralization project: 225% increase in applications, $11.1M in new revenue.</p>
         </div>
       </div>
 
@@ -1052,15 +948,13 @@
         <div class="exp-dates">2022 – 2023</div>
         <div>
           <div class="exp-role-wrap">
-            <div class="exp-icon-wrap">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            </div>
+            <div class="exp-dot"></div>
             <div>
               <div class="exp-role">Senior Product Manager</div>
               <div class="exp-company">Promenade</div>
+              <p class="exp-desc">Led cross-functional product strategy for a local commerce marketplace. Owned discovery, seller tooling, and retention. Drove platform from cold start to $5M ARR through curated geographic expansion and high-touch merchant onboarding.</p>
             </div>
           </div>
-          <p class="exp-desc">Led cross-functional product strategy for a local commerce marketplace. Owned discovery, seller tooling, and retention. Drove platform from cold start to $5M ARR through curated geographic expansion and high-touch merchant onboarding.</p>
         </div>
       </div>
 
@@ -1068,15 +962,13 @@
         <div class="exp-dates">2020 – 2022</div>
         <div>
           <div class="exp-role-wrap">
-            <div class="exp-icon-wrap">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            </div>
+            <div class="exp-dot"></div>
             <div>
               <div class="exp-role">Product Manager</div>
               <div class="exp-company">InternetBrands – Demandforce</div>
+              <p class="exp-desc">Defined roadmaps and shipped features for an SMB marketing automation platform. Led a research-first onboarding rebuild that reduced support tickets by 50%. Owned the full product lifecycle from discovery through post-launch iteration.</p>
             </div>
           </div>
-          <p class="exp-desc">Defined roadmaps and shipped features for an SMB marketing automation platform. Led a research-first onboarding rebuild that reduced support tickets by 50%. Owned the full product lifecycle from discovery through post-launch iteration.</p>
         </div>
       </div>
 
@@ -1084,15 +976,13 @@
         <div class="exp-dates">2018 – 2020</div>
         <div>
           <div class="exp-role-wrap">
-            <div class="exp-icon-wrap">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-            </div>
+            <div class="exp-dot"></div>
             <div>
               <div class="exp-role">Product Manager — Freehand</div>
               <div class="exp-company">InVision App</div>
+              <p class="exp-desc">Spearheaded feature development for Freehand — InVision's real-time collaboration canvas. Set product strategy, navigated features vs. speed-to-market trade-offs, and established success metrics post-launch.</p>
             </div>
           </div>
-          <p class="exp-desc">Spearheaded feature development for Freehand — InVision's real-time collaboration canvas. Set product strategy, navigated features vs. speed-to-market trade-offs, and established success metrics post-launch. Worked closely with design and engineering to ship iteratively.</p>
         </div>
       </div>
 
@@ -1100,15 +990,13 @@
         <div class="exp-dates">2016 – 2018</div>
         <div>
           <div class="exp-role-wrap">
-            <div class="exp-icon-wrap">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-            </div>
+            <div class="exp-dot"></div>
             <div>
               <div class="exp-role">Product Owner</div>
               <div class="exp-company">Oracle Cerner</div>
+              <p class="exp-desc">Defined product requirements and managed the backlog for healthcare SaaS tooling. Prioritized features against compliance requirements, market trends, and customer feedback. Collaborated with sales and marketing on GTM strategies for new product launches.</p>
             </div>
           </div>
-          <p class="exp-desc">Defined product requirements and managed the backlog for healthcare SaaS tooling. Prioritized features against compliance requirements, market trends, and customer feedback. Collaborated with sales and marketing on GTM strategies for new product launches.</p>
         </div>
       </div>
 
@@ -1116,10 +1004,56 @@
   </div>
 </section>
 
-<!-- CONTACT -->
+<!-- ⑦ TOOLS -->
+<section class="tools-sect">
+  <div class="wrap">
+    <span class="section-label">Tools & Stack</span>
+    <h2 class="section-heading">How I <span>get things done.</span></h2>
+    <div class="tools-compact">
+      <div class="tool-row">
+        <span class="tool-row-label">Analytics</span>
+        <div class="tool-chips">
+          <span class="tool-chip">Amplitude</span>
+          <span class="tool-chip">Mixpanel</span>
+          <span class="tool-chip">Google Analytics 4</span>
+          <span class="tool-chip">BigQuery / SQL</span>
+          <span class="tool-chip">Looker</span>
+        </div>
+      </div>
+      <div class="tool-row">
+        <span class="tool-row-label">Design & Research</span>
+        <div class="tool-chips">
+          <span class="tool-chip">Figma</span>
+          <span class="tool-chip">InVision / Freehand</span>
+          <span class="tool-chip">UserTesting</span>
+          <span class="tool-chip">Hotjar</span>
+        </div>
+      </div>
+      <div class="tool-row">
+        <span class="tool-row-label">Experimentation</span>
+        <div class="tool-chips">
+          <span class="tool-chip">Optimizely</span>
+          <span class="tool-chip">LaunchDarkly</span>
+          <span class="tool-chip">A/B test design & analysis</span>
+        </div>
+      </div>
+      <div class="tool-row">
+        <span class="tool-row-label">Process</span>
+        <div class="tool-chips">
+          <span class="tool-chip">Jira & Linear</span>
+          <span class="tool-chip">Notion & Confluence</span>
+          <span class="tool-chip">Shape Up</span>
+          <span class="tool-chip">Agile / Scrum</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑧ CONTACT -->
 <section id="contact">
   <div class="wrap">
-    <span class="label">Get in touch</span>
+    <span class="section-label">Get in touch</span>
 
     <div class="coffee-cup-wrap">
       <svg class="cup-svg" viewBox="0 0 64 72" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1169,7 +1103,6 @@
 </footer>
 
 <script>
-  // Scroll reveal for projects
   const revealObs = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (!e.isIntersecting) return;
@@ -1179,20 +1112,16 @@
       el.querySelectorAll('.funnel-bar[data-w]').forEach(bar => {
         setTimeout(() => { bar.style.width = bar.dataset.w + '%'; }, 100);
       });
-
       el.querySelectorAll('.stat-bar-after[data-w]').forEach(bar => {
         setTimeout(() => { bar.style.width = bar.dataset.w + '%'; }, 200);
       });
-
       el.querySelectorAll('.radial-fill[data-pct]').forEach(circle => {
         const pct = parseFloat(circle.dataset.pct);
-        const circumference = 163;
         setTimeout(() => {
-          circle.style.strokeDashoffset = circumference - (pct / 100) * circumference;
+          circle.style.strokeDashoffset = 163 - (pct / 100) * 163;
         }, 200);
       });
 
-      // Bar comparison (Demandforce)
       const ltvHigh = el.querySelector('#ltv-high');
       const ltvLow2 = el.querySelector('#ltv-low2');
       if (ltvHigh && ltvLow2) {
@@ -1213,7 +1142,6 @@
     revealObs.observe(el);
   });
 
-  // Current project cards — animate progress bars on scroll
   const cardObs = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (!e.isIntersecting) return;
