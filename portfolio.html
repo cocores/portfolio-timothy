@@ -198,7 +198,6 @@
       fill: none; stroke: var(--accent); stroke-width: 7;
       stroke-linecap: round; stroke-dasharray: 163; stroke-dashoffset: 163;
       transition: stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1);
-      transform-origin: center; transform: rotate(-90deg);
     }
     .radial-label { font-size: 1.1rem; font-weight: 800; fill: var(--black); dominant-baseline: middle; text-anchor: middle; }
     .radial-val { font-size: 1.5rem; font-weight: 800; color: var(--black); letter-spacing: -.02em; line-height: 1; }
@@ -596,7 +595,7 @@
             <div class="radial-wrap">
               <svg class="radial-svg" viewBox="-4 -4 64 64">
                 <circle class="radial-track" cx="28" cy="28" r="26"/>
-                <circle class="radial-fill" data-pct="87" cx="28" cy="28" r="26"/>
+                <circle class="radial-fill" data-pct="87" cx="28" cy="28" r="26" transform="rotate(-90 28 28)"/>
                 <text class="radial-label" x="28" y="29" font-family="Inter,sans-serif" font-size="9" font-weight="800" fill="#0A0A0A">+10%</text>
               </svg>
               <div>
