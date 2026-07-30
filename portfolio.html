@@ -123,13 +123,22 @@
     }
     .numbers-sect .section-label { color: #6366F1; }
     .numbers-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0; }
-    .num-cell { padding: 2rem 0; border-right: 1px solid rgba(255,255,255,.08); }
+    .num-cell {
+      padding: 2.5rem 1.5rem;
+      border-right: 1px solid rgba(255,255,255,.08);
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+    }
     .num-cell:last-child { border-right: none; }
-    .num-cell + .num-cell { padding-left: 2rem; }
-    .num-icon { width: 20px; height: 20px; color: var(--accent); margin-bottom: .6rem; opacity: .7; }
+    .num-icon-wrap {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: rgba(99,102,241,.15); border: 1px solid rgba(99,102,241,.25);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.25rem;
+    }
+    .num-icon { width: 22px; height: 22px; color: var(--accent); }
     .n-val { font-size: 3rem; font-weight: 900; letter-spacing: -.04em; line-height: 1; color: #fff; }
     .n-val span { color: var(--accent); }
-    .n-label { font-size: .72rem; font-weight: 400; color: rgba(255,255,255,.45); margin-top: .4rem; line-height: 1.5; }
+    .n-label { font-size: .78rem; font-weight: 400; color: rgba(255,255,255,.6); margin-top: .5rem; line-height: 1.5; max-width: 140px; }
 
     /* PROJECTS */
     .project-list { display: flex; flex-direction: column; }
@@ -451,8 +460,6 @@
 <!-- ② ABOUT -->
 <section>
   <div class="wrap">
-    <span class="section-label">About</span>
-    <h2 class="section-heading">Senior PM. <span>10+ years shipping.</span></h2>
     <div class="about-grid">
       <div>
         <div class="photo-frame">
@@ -469,8 +476,7 @@
         </div>
       </div>
       <div class="about-body">
-        <p>I'm <strong>Timothy Cocores</strong>, a Senior Product Manager with 10+ years shipping SaaS and digital products. I've led product at companies across e-commerce, design tools, and healthcare — always grounded in the same thing: clear decisions, measurable outcomes, and teams that can move fast.</p>
-        <p>At <strong>B&H Photo Video</strong>, I own the learn-and-decide customer journey — connecting editorial content to purchase intent across a $1.3B annual sales pipeline. My background spans the full stack from analytics and user research to roadmap execution and stakeholder alignment.</p>
+        <p>Senior PM with 10+ years shipping SaaS, e-commerce, and healthcare products. At <strong>B&H Photo Video</strong>, I own the learn-and-decide customer journey across a $1.3B sales pipeline — connecting editorial content to purchase intent. I care about clear decisions, measurable outcomes, and teams that move fast.</p>
       </div>
     </div>
 
@@ -517,17 +523,23 @@
     <span class="section-label">By the numbers</span>
     <div class="numbers-grid">
       <div class="num-cell">
-        <svg class="num-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        <div class="num-icon-wrap">
+          <svg class="num-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
         <div class="n-val">$11<span>M</span>+</div>
         <div class="n-label">Revenue from B&H leasing project</div>
       </div>
       <div class="num-cell">
-        <svg class="num-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <div class="num-icon-wrap">
+          <svg class="num-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
         <div class="n-val">14<span>M</span></div>
         <div class="n-label">Customers reached via Explora journey</div>
       </div>
       <div class="num-cell">
-        <svg class="num-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        <div class="num-icon-wrap">
+          <svg class="num-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
         <div class="n-val">10<span>+</span></div>
         <div class="n-label">Years shipping SaaS & digital products</div>
       </div>
@@ -554,7 +566,7 @@
             +225% Applications
           </div>
         </div>
-        <p class="project-desc">Leasing was buried across B&H's catalog — a financing option most shoppers never found. Led discovery, strategy, and centralization of leasing onto the Product Detail Page, creating a single authoritative path to apply. Application submissions jumped 225%, generating $11.1M in additional annual revenue.</p>
+        <p class="project-desc">B&H offered business financing, but low awareness among both customers and internal staff left the program severely underutilized. To solve this, I redesigned the user experience around a single, friction-free application path and improved program discovery.<br><br><strong>The Result:</strong> Application volume surged by 225%, driving $11.1M in new annual revenue.</p>
 
         <div class="infographic">
           <div class="infographic-title">Leasing funnel — before vs. after centralization</div>
@@ -590,7 +602,7 @@
           <div class="project-tags">
             <span class="ptag">PDP Strategy</span><span class="ptag">Conversion</span><span class="ptag">Fintech</span><span class="ptag">B&H Leasing</span>
           </div>
-          <a href="bh-explora.html" class="project-link">
+          <a href="bh-leasing.html" class="project-link">
             Full case study
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>

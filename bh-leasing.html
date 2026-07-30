@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leasing Discoverability & PDP Centralization — Timothy Cocores</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --black: #0A0A0A;
+    --gray-7: #374151;
+    --gray-5: #6B7280;
+    --gray-3: #D1D5DB;
+    --gray-1: #F5F5F5;
+    --white: #FFFFFF;
+    --accent: #6366F1;
+    --accent-lt: #EEF2FF;
+    --green: #16A34A;
+  }
+  body { font-family: 'Inter', system-ui, sans-serif; color: var(--black); background: var(--white); -webkit-font-smoothing: antialiased; }
+  a { text-decoration: none; }
+  img { max-width: 100%; display: block; }
+
+  /* NAV */
+  nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--gray-3); padding: 0 2rem; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+  .nav-back { display: flex; align-items: center; gap: .5rem; font-size: .875rem; font-weight: 500; color: var(--gray-5); transition: color .15s; }
+  .nav-back:hover { color: var(--black); }
+  .nav-back svg { width: 16px; height: 16px; }
+  .nav-name { font-weight: 700; font-size: .9rem; color: var(--black); }
+
+  /* WRAP */
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 2rem; }
+  .wrap-wide { max-width: 960px; margin: 0 auto; padding: 0 2rem; }
+
+  /* HERO */
+  .case-hero { padding: 5rem 0 3.5rem; border-bottom: 1px solid var(--gray-3); }
+  .case-company { font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+  .case-title { font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; letter-spacing: -.03em; line-height: 1.1; margin-bottom: 1.25rem; }
+  .case-subtitle { font-size: 1.1rem; color: var(--gray-5); line-height: 1.7; max-width: 580px; }
+  .case-meta { display: flex; flex-wrap: wrap; gap: 2rem; margin-top: 2.5rem; }
+  .meta-item { display: flex; flex-direction: column; gap: .25rem; }
+  .meta-label { font-size: .65rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--gray-3); }
+  .meta-val { font-size: .875rem; font-weight: 600; color: var(--black); }
+
+  /* STAT BAND */
+  .stat-band { background: var(--black); padding: 3rem 0; }
+  .stat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0; }
+  .stat-cell { padding: 1.5rem 2rem; border-right: 1px solid rgba(255,255,255,.08); text-align: center; }
+  .stat-cell:last-child { border-right: none; }
+  .stat-num { font-size: 2.5rem; font-weight: 900; letter-spacing: -.04em; color: #fff; line-height: 1; }
+  .stat-num span { color: var(--accent); }
+  .stat-desc { font-size: .72rem; color: rgba(255,255,255,.5); margin-top: .4rem; line-height: 1.5; }
+
+  /* BODY SECTIONS */
+  section.body-sect { padding: 4rem 0; border-bottom: 1px solid var(--gray-3); }
+  section.body-sect:last-of-type { border-bottom: none; }
+  .sect-label { font-size: .65rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: .75rem; }
+  .sect-heading { font-size: 1.5rem; font-weight: 800; letter-spacing: -.02em; margin-bottom: 1.25rem; }
+  .body-text { font-size: 1rem; color: var(--gray-7); line-height: 1.8; }
+  .body-text + .body-text { margin-top: 1rem; }
+
+  /* CALLOUT */
+  .callout { background: var(--accent-lt); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 1.25rem 1.5rem; margin: 2rem 0; }
+  .callout p { font-size: .95rem; color: var(--gray-7); line-height: 1.7; }
+  .callout strong { color: var(--black); }
+
+  /* PROBLEM LIST */
+  .problem-list { list-style: none; display: flex; flex-direction: column; gap: .75rem; margin-top: 1.25rem; }
+  .problem-list li { display: flex; align-items: flex-start; gap: .75rem; font-size: .95rem; color: var(--gray-7); line-height: 1.6; }
+  .problem-list li::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex-shrink: 0; margin-top: .45rem; }
+
+  /* SCREENSHOTS */
+  .screenshot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; }
+  .screenshot-frame { border-radius: 12px; overflow: hidden; border: 1px solid var(--gray-3); box-shadow: 0 4px 24px rgba(0,0,0,.08); }
+  .screenshot-frame img { width: 100%; display: block; }
+  .screenshot-caption { font-size: .72rem; color: var(--gray-5); margin-top: .6rem; text-align: center; }
+  .screenshot-full { margin-top: 2rem; border-radius: 12px; overflow: hidden; border: 1px solid var(--gray-3); box-shadow: 0 4px 24px rgba(0,0,0,.08); }
+
+  /* RESULT HIGHLIGHT */
+  .result-box { background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 12px; padding: 2rem; margin-top: 2rem; display: flex; align-items: flex-start; gap: 1.25rem; }
+  .result-icon { width: 40px; height: 40px; background: #DCFCE7; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .result-icon svg { width: 20px; height: 20px; color: var(--green); }
+  .result-text h4 { font-size: 1rem; font-weight: 700; color: var(--black); margin-bottom: .4rem; }
+  .result-text p { font-size: .9rem; color: var(--gray-7); line-height: 1.6; }
+
+  /* TAGS */
+  .tag-row { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 2.5rem; }
+  .tag { font-size: .72rem; font-weight: 500; color: var(--gray-5); background: var(--gray-1); border: 1px solid var(--gray-3); border-radius: 999px; padding: .3rem .8rem; }
+
+  /* FOOTER NAV */
+  .foot-nav { padding: 3rem 0 5rem; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--gray-3); margin-top: 0; }
+  .foot-link { display: inline-flex; align-items: center; gap: .4rem; font-size: .875rem; font-weight: 600; color: var(--accent); }
+  .foot-link svg { width: 16px; height: 16px; }
+  .foot-link:hover { opacity: .75; }
+
+  @media(max-width:640px) {
+    .stat-grid { grid-template-columns: 1fr; }
+    .stat-cell { border-right: none; border-bottom: 1px solid rgba(255,255,255,.08); }
+    .screenshot-grid { grid-template-columns: 1fr; }
+    .case-meta { gap: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="portfolio.html" class="nav-back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+    Back
+  </a>
+  <span class="nav-name">Timothy Cocores</span>
+</nav>
+
+<!-- HERO -->
+<div class="case-hero">
+  <div class="wrap">
+    <div class="case-company">B&H Photo Video · 2023–Present</div>
+    <h1 class="case-title">Leasing Discoverability &<br>PDP Centralization</h1>
+    <p class="case-subtitle">B&H offered business financing, but low awareness among customers and internal staff left the program severely underutilized. I redesigned discovery and the application experience to fix it.</p>
+    <div class="case-meta">
+      <div class="meta-item"><span class="meta-label">Role</span><span class="meta-val">Senior Product Manager</span></div>
+      <div class="meta-item"><span class="meta-label">Company</span><span class="meta-val">B&H Photo Video</span></div>
+      <div class="meta-item"><span class="meta-label">Timeline</span><span class="meta-val">2023–Present</span></div>
+      <div class="meta-item"><span class="meta-label">Outcome</span><span class="meta-val">+225% Applications · $11.1M Revenue</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- STAT BAND -->
+<div class="stat-band">
+  <div class="wrap-wide">
+    <div class="stat-grid">
+      <div class="stat-cell">
+        <div class="stat-num">+225<span>%</span></div>
+        <div class="stat-desc">Application volume increase</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">$11<span>M</span>+</div>
+        <div class="stat-desc">New annual revenue generated</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">1<span>x</span></div>
+        <div class="stat-desc">Single centralized application path</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section class="body-sect">
+  <div class="wrap">
+    <div class="sect-label">The Problem</div>
+    <h2 class="sect-heading">A valuable program that no one could find</h2>
+    <p class="body-text">B&H has offered business financing for years — competitive rates, flexible terms, and access to world-class gear. But the program was invisible. Customers browsing product pages had no clear path to apply, and internal staff weren't consistently surfacing it either.</p>
+    <ul class="problem-list">
+      <li>Leasing information was fragmented across multiple pages with no clear entry point</li>
+      <li>The Product Detail Page — where purchase decisions happen — had no financing CTA</li>
+      <li>Internal awareness was low, meaning sales and support teams weren't driving applicants</li>
+      <li>Application drop-off was high due to a multi-step, friction-heavy flow</li>
+    </ul>
+
+    <div class="callout">
+      <p><strong>The insight:</strong> This wasn't a demand problem. Customers buying $5K+ gear absolutely want financing options. It was a discovery and experience problem — the program existed, but the path to it didn't.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT I DID -->
+<section class="body-sect">
+  <div class="wrap">
+    <div class="sect-label">What I Did</div>
+    <h2 class="sect-heading">One path. Right where the decision happens.</h2>
+    <p class="body-text">I led discovery, strategy, and execution to centralize the leasing program onto the Product Detail Page — the highest-intent surface in B&H's catalog. Rather than asking customers to navigate to a separate financing hub, we brought the application to them.</p>
+    <p class="body-text">The redesigned experience surfaces financing options contextually alongside the product, with a streamlined single-page application flow and clear lender selection. Internal tooling was also updated so staff could reference and recommend the program confidently.</p>
+
+    <div class="screenshot-grid">
+      <div>
+        <div class="screenshot-frame">
+          <img src="hotspot-screen1.png" alt="B&H Product Detail Page">
+        </div>
+        <p class="screenshot-caption">B&H Product Detail Page — where financing now lives</p>
+      </div>
+      <div>
+        <div class="screenshot-frame" style="background:#f9fafb; display:flex; align-items:center; justify-content:center; min-height:200px;">
+          <img src="bh-leasing-page.png" alt="B&H Business Financing Page" onerror="this.parentElement.innerHTML='<div style=\'padding:2rem;text-align:center;color:#9CA3AF;font-size:.8rem;\'>B&H Business Financing Page</div>'">
+        </div>
+        <p class="screenshot-caption">Redesigned B&H Business Financing hub</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULT -->
+<section class="body-sect">
+  <div class="wrap">
+    <div class="sect-label">The Result</div>
+    <h2 class="sect-heading">225% more applications. $11.1M in new revenue.</h2>
+    <p class="body-text">Moving financing to the PDP and simplifying the application path removed the discovery barrier entirely. Customers who would have never found leasing on their own were now seeing it exactly when they needed it — at the moment of decision.</p>
+
+    <div class="result-box">
+      <div class="result-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+      </div>
+      <div class="result-text">
+        <h4>Application volume surged by 225%</h4>
+        <p>Driving $11.1M in new annual revenue — from a program that already existed. No new product, no new budget. Just better discovery and a frictionless path to apply.</p>
+      </div>
+    </div>
+
+    <div class="tag-row">
+      <span class="tag">PDP Strategy</span>
+      <span class="tag">Conversion Optimization</span>
+      <span class="tag">Business Financing</span>
+      <span class="tag">Discoverability</span>
+      <span class="tag">UX Redesign</span>
+      <span class="tag">B&H Photo Video</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER NAV -->
+<div class="wrap">
+  <div class="foot-nav">
+    <a href="portfolio.html" class="foot-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+      Back to portfolio
+    </a>
+    <a href="bh-explora.html" class="foot-link">
+      Next case study
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+  </div>
+</div>
+
+</body>
+</html>
