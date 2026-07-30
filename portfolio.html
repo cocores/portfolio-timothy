@@ -226,11 +226,33 @@
     }
     .cur-card {
       border: 1.5px solid var(--gray-3); border-radius: 12px;
-      padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem;
-      transition: border-color .2s, box-shadow .2s, transform .2s; position: relative; overflow: hidden;
-      text-decoration: none; color: inherit; background: var(--white);
+      background: var(--white); position: relative;
+      height: 400px;
+      transform-style: preserve-3d;
+      transition: border-color .2s, box-shadow .2s, transform .65s cubic-bezier(.4,0,.2,1);
+      cursor: pointer;
     }
-    .cur-card:hover { border-color: var(--accent); box-shadow: 0 4px 24px rgba(99,102,241,.1); transform: translateY(-2px); }
+    .cur-card:hover { border-color: var(--accent); transform: rotateY(180deg); box-shadow: 0 4px 24px rgba(99,102,241,.12); }
+    .cur-card.flipped { transform: rotateY(180deg); border-color: var(--accent); box-shadow: 0 4px 24px rgba(99,102,241,.12); }
+    .cur-face {
+      position: absolute; inset: 0; padding: 1.5rem;
+      border-radius: 11px; background: var(--white);
+      backface-visibility: hidden; -webkit-backface-visibility: hidden;
+      display: flex; flex-direction: column; gap: .9rem;
+      overflow: hidden;
+    }
+    .cur-back { transform: rotateY(180deg); justify-content: space-between; }
+    .flip-hint {
+      margin-top: auto; font-size: .62rem; color: var(--gray-3);
+      display: flex; align-items: center; gap: .3rem; user-select: none;
+    }
+    .cur-back-link {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .8rem; font-weight: 600; color: var(--white);
+      background: var(--accent); padding: .55rem 1.1rem; border-radius: 8px;
+      text-decoration: none; transition: background .15s; width: fit-content;
+    }
+    .cur-back-link:hover { background: #4F52C8; }
     .cur-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: .75rem; }
     .cur-icon-wrap {
       width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
@@ -414,8 +436,8 @@
 <!-- ① HERO -->
 <section class="hero">
   <div class="wrap">
-    <div class="hero-impact">$11<span>M</span></div>
-    <p class="hero-desc">Revenue generated on a single project. I'm a product manager who ships things that move the number — across SaaS, e-commerce, and content products.</p>
+    <div class="hero-impact">Timothy<br><span>Cocores.</span></div>
+    <p class="hero-desc">Senior PM who turns messy problems into clean products — and clean products into revenue. 10+ years across SaaS, e-commerce, and healthcare. I care about the decision, not just the deliverable.</p>
     <div class="hero-meta">
       <a href="#work" class="hero-link">See my work</a>
       <div class="hero-dot"></div>
@@ -447,7 +469,7 @@
         </div>
       </div>
       <div class="about-body">
-        <p>I'm <strong>Timothy Cocores</strong>, a Senior Product Manager with 10+ years shipping SaaS and digital products. I've led product at companies across e-commerce, design tools, marketing automation, and healthcare — always grounded in the same thing: clear decisions, measurable outcomes, and teams that can move fast.</p>
+        <p>I'm <strong>Timothy Cocores</strong>, a Senior Product Manager with 10+ years shipping SaaS and digital products. I've led product at companies across e-commerce, design tools, and healthcare — always grounded in the same thing: clear decisions, measurable outcomes, and teams that can move fast.</p>
         <p>At <strong>B&H Photo Video</strong>, I own the learn-and-decide customer journey — connecting editorial content to purchase intent across a $1.3B annual sales pipeline. My background spans the full stack from analytics and user research to roadmap execution and stakeholder alignment.</p>
       </div>
     </div>
@@ -756,169 +778,187 @@
     <div class="current-grid">
 
       <!-- WINGD -->
-      <a class="cur-card" href="wingd.html" data-progress="65">
-        <div class="cur-card-top">
-          <div class="cur-icon-wrap" style="background:#FFF0F6;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#EC4899" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-              <path d="M17 3 Q22 6 20 12" stroke="#F9A8D4" stroke-width="1.2" fill="none"/>
-            </svg>
+      <div class="cur-card" data-progress="65">
+        <div class="cur-face cur-front">
+          <div class="cur-card-top">
+            <div class="cur-icon-wrap" style="background:#FFF0F6;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#EC4899" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/><path d="M17 3 Q22 6 20 12" stroke="#F9A8D4" stroke-width="1.2" fill="none"/></svg>
+            </div>
+            <span class="cur-status status-building">In Development</span>
           </div>
-          <span class="cur-status status-building">In Development</span>
-        </div>
-        <div>
-          <div class="cur-name">Wingd</div>
-          <div class="cur-tagline">Dating app with a social wingman twist</div>
-        </div>
-        <p class="cur-desc">A dating app where friends vouch for you — your "wing" sends the first message on your behalf to break the ice. Designing the matching algorithm, trust & safety model, and the dual-profile UX that balances your identity with your wing's endorsement.</p>
-        <div class="infographic" style="margin-bottom:0;">
-          <div class="infographic-title">Core loop</div>
-          <div style="display:flex;align-items:center;gap:.3rem;font-size:.68rem;flex-wrap:wrap;">
-            <span style="background:var(--gray-1);padding:.25rem .6rem;border-radius:4px;color:var(--gray-7);font-weight:500;">You join</span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-            <span style="background:var(--gray-1);padding:.25rem .6rem;border-radius:4px;color:var(--gray-7);font-weight:500;">Wing vouches</span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-            <span style="background:var(--gray-1);padding:.25rem .6rem;border-radius:4px;color:var(--gray-7);font-weight:500;">Wing opens</span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-            <span style="background:#FFF0F6;padding:.25rem .6rem;border-radius:4px;color:#EC4899;font-weight:600;">You connect ♥</span>
+          <div>
+            <div class="cur-name">Wingd</div>
+            <div class="cur-tagline">Dating app with a social wingman twist</div>
           </div>
+          <p class="cur-desc">A dating app where friends vouch for you — your "wing" sends the first message on your behalf to break the ice. Designing the matching algorithm, trust & safety model, and the dual-profile UX.</p>
+          <div class="cur-progress-wrap" style="margin-top:auto;">
+            <div class="cur-progress-label"><span>Progress</span><span>65%</span></div>
+            <div class="cur-progress-track"><div class="cur-progress-fill" data-w="65" style="background:#EC4899;"></div></div>
+          </div>
+          <span class="flip-hint">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.06-4.65"/></svg>
+            Hover to flip
+          </span>
         </div>
-        <div class="cur-progress-wrap">
-          <div class="cur-progress-label"><span>Progress</span><span>65%</span></div>
-          <div class="cur-progress-track"><div class="cur-progress-fill" data-w="65" style="background:#EC4899;"></div></div>
+        <div class="cur-face cur-back">
+          <div>
+            <div class="infographic-title">Core loop</div>
+            <div style="display:flex;align-items:center;gap:.3rem;font-size:.68rem;flex-wrap:wrap;">
+              <span style="background:var(--gray-1);padding:.25rem .6rem;border-radius:4px;color:var(--gray-7);font-weight:500;">You join</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+              <span style="background:var(--gray-1);padding:.25rem .6rem;border-radius:4px;color:var(--gray-7);font-weight:500;">Wing vouches</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+              <span style="background:var(--gray-1);padding:.25rem .6rem;border-radius:4px;color:var(--gray-7);font-weight:500;">Wing opens</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+              <span style="background:#FFF0F6;padding:.25rem .6rem;border-radius:4px;color:#EC4899;font-weight:600;">You connect ♥</span>
+            </div>
+          </div>
+          <div class="cur-tags">
+            <span class="cur-tag">Dating · Social</span><span class="cur-tag">iOS</span><span class="cur-tag">Trust & Safety</span>
+          </div>
+          <a href="wingd.html" class="cur-back-link">
+            View Wingd
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
         </div>
-        <div class="cur-tags">
-          <span class="cur-tag">Dating · Social</span><span class="cur-tag">iOS</span><span class="cur-tag">Trust & Safety</span>
-        </div>
-      </a>
+      </div>
 
       <!-- RESUME REVIEWER -->
-      <a class="cur-card" href="resume-reviewer.html" data-progress="80">
-        <div class="cur-card-top">
-          <div class="cur-icon-wrap" style="background:#F0FDF4;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-              <polyline points="14 2 14 8 20 8"/>
-              <line x1="9" y1="13" x2="15" y2="13"/>
-              <line x1="9" y1="17" x2="12" y2="17"/>
-              <circle cx="18" cy="18" r="5" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
-              <polyline points="15.5 18 17 19.5 20.5 16" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+      <div class="cur-card" data-progress="80">
+        <div class="cur-face cur-front">
+          <div class="cur-card-top">
+            <div class="cur-icon-wrap" style="background:#F0FDF4;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="12" y2="17"/><circle cx="18" cy="18" r="5" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/><polyline points="15.5 18 17 19.5 20.5 16" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <span class="cur-status status-beta">Beta Testing</span>
           </div>
-          <span class="cur-status status-beta">Beta Testing</span>
+          <div>
+            <div class="cur-name">Resume Reviewer</div>
+            <div class="cur-tagline">AI resume & job description critique tool</div>
+          </div>
+          <p class="cur-desc">Scores resumes against job descriptions, flags keyword mismatches, and gives applicants a brutally honest gap analysis — before they apply. Also scores job postings for red flags.</p>
+          <div class="cur-progress-wrap" style="margin-top:auto;">
+            <div class="cur-progress-label"><span>Progress</span><span>80%</span></div>
+            <div class="cur-progress-track"><div class="cur-progress-fill" data-w="80" style="background:#16A34A;"></div></div>
+          </div>
+          <span class="flip-hint">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.06-4.65"/></svg>
+            Hover to flip
+          </span>
         </div>
-        <div>
-          <div class="cur-name">Resume Reviewer</div>
-          <div class="cur-tagline">AI resume & job description critique tool</div>
-        </div>
-        <p class="cur-desc">Scores resumes against job descriptions, flags keyword mismatches, and gives applicants a brutally honest gap analysis — before they apply. Also scores job postings for vague language, unrealistic requirements, and red flags that waste candidate time.</p>
-        <div class="infographic" style="margin-bottom:0;">
-          <div class="infographic-title">Resume match score example</div>
-          <div style="display:flex;gap:1.5rem;align-items:flex-end;">
-            <div style="flex:1;">
-              <div style="display:flex;justify-content:space-between;font-size:.65rem;color:var(--gray-5);margin-bottom:.3rem;"><span>Keywords</span><span style="color:#16A34A;font-weight:700;">82%</span></div>
-              <div style="height:6px;background:var(--gray-1);border-radius:3px;overflow:hidden;"><div class="cur-progress-fill" data-w="82" style="background:#16A34A;width:0;"></div></div>
-            </div>
-            <div style="flex:1;">
-              <div style="display:flex;justify-content:space-between;font-size:.65rem;color:var(--gray-5);margin-bottom:.3rem;"><span>Experience fit</span><span style="color:#F59E0B;font-weight:700;">61%</span></div>
-              <div style="height:6px;background:var(--gray-1);border-radius:3px;overflow:hidden;"><div class="cur-progress-fill" data-w="61" style="background:#F59E0B;width:0;"></div></div>
-            </div>
-            <div style="flex:1;">
-              <div style="display:flex;justify-content:space-between;font-size:.65rem;color:var(--gray-5);margin-bottom:.3rem;"><span>Tone & clarity</span><span style="color:#16A34A;font-weight:700;">90%</span></div>
-              <div style="height:6px;background:var(--gray-1);border-radius:3px;overflow:hidden;"><div class="cur-progress-fill" data-w="90" style="background:#16A34A;width:0;"></div></div>
+        <div class="cur-face cur-back">
+          <div>
+            <div class="infographic-title">Resume match score example</div>
+            <div style="display:flex;flex-direction:column;gap:.6rem;">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:.65rem;color:var(--gray-5);margin-bottom:.3rem;"><span>Keywords</span><span style="color:#16A34A;font-weight:700;">82%</span></div>
+                <div style="height:6px;background:var(--gray-1);border-radius:3px;overflow:hidden;"><div class="back-bar" data-w="82" style="height:100%;border-radius:3px;background:#16A34A;width:0;transition:width 1s ease;"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:.65rem;color:var(--gray-5);margin-bottom:.3rem;"><span>Experience fit</span><span style="color:#F59E0B;font-weight:700;">61%</span></div>
+                <div style="height:6px;background:var(--gray-1);border-radius:3px;overflow:hidden;"><div class="back-bar" data-w="61" style="height:100%;border-radius:3px;background:#F59E0B;width:0;transition:width 1s ease .1s;"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:.65rem;color:var(--gray-5);margin-bottom:.3rem;"><span>Tone & clarity</span><span style="color:#16A34A;font-weight:700;">90%</span></div>
+                <div style="height:6px;background:var(--gray-1);border-radius:3px;overflow:hidden;"><div class="back-bar" data-w="90" style="height:100%;border-radius:3px;background:#16A34A;width:0;transition:width 1s ease .2s;"></div></div>
+              </div>
             </div>
           </div>
+          <div class="cur-tags">
+            <span class="cur-tag">AI / LLM</span><span class="cur-tag">Job Search</span><span class="cur-tag">Web App</span>
+          </div>
+          <a href="resume-reviewer.html" class="cur-back-link">
+            View Resume Reviewer
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
         </div>
-        <div class="cur-progress-wrap">
-          <div class="cur-progress-label"><span>Progress</span><span>80%</span></div>
-          <div class="cur-progress-track"><div class="cur-progress-fill" data-w="80" style="background:#16A34A;"></div></div>
-        </div>
-        <div class="cur-tags">
-          <span class="cur-tag">AI / LLM</span><span class="cur-tag">Job Search</span><span class="cur-tag">Web App</span>
-        </div>
-      </a>
+      </div>
 
       <!-- HOT SPOT TOOL -->
-      <a class="cur-card" href="hot-spot-tool.html" data-progress="40">
-        <div class="cur-card-top">
-          <div class="cur-icon-wrap" style="background:#FFF7ED;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#EA580C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/>
-              <circle cx="12" cy="12" r="4"/>
-              <line x1="12" y1="2" x2="12" y2="4"/>
-              <line x1="12" y1="20" x2="12" y2="22"/>
-              <line x1="2" y1="12" x2="4" y2="12"/>
-              <line x1="20" y1="12" x2="22" y2="12"/>
-            </svg>
+      <div class="cur-card" data-progress="40">
+        <div class="cur-face cur-front">
+          <div class="cur-card-top">
+            <div class="cur-icon-wrap" style="background:#FFF7ED;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#EA580C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/></svg>
+            </div>
+            <span class="cur-status status-building">In Development</span>
           </div>
-          <span class="cur-status status-building">In Development</span>
-        </div>
-        <div>
-          <div class="cur-name">Hot Spot Tool</div>
-          <div class="cur-tagline">Visual heatmap tool for product decision-making</div>
-        </div>
-        <p class="cur-desc">A lightweight tool for PMs and designers to overlay engagement heatmaps directly on product screenshots — making it easy to annotate, share, and discuss where users focus, click, and drop off without exporting to separate analytics tools.</p>
-        <div class="infographic" style="margin-bottom:0;">
-          <div class="infographic-title">Use case flow</div>
-          <div style="display:flex;align-items:center;gap:.3rem;font-size:.68rem;flex-wrap:wrap;">
-            <span style="background:var(--gray-1);padding:.25rem .6rem;border-radius:4px;color:var(--gray-7);font-weight:500;">Upload screenshot</span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-            <span style="background:var(--gray-1);padding:.25rem .6rem;border-radius:4px;color:var(--gray-7);font-weight:500;">Mark hot spots</span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-            <span style="background:#FFF7ED;padding:.25rem .6rem;border-radius:4px;color:#EA580C;font-weight:600;">Share insights</span>
+          <div>
+            <div class="cur-name">Hot Spot Tool</div>
+            <div class="cur-tagline">Visual heatmap tool for product decision-making</div>
           </div>
+          <p class="cur-desc">A browser-based annotation suite for PMs and designers — drop hotspot pins, draw measurements, create infographics, and add callouts directly on product screenshots. Export as self-contained interactive HTML to share with stakeholders, no tools required.</p>
+          <div class="cur-progress-wrap" style="margin-top:auto;">
+            <div class="cur-progress-label"><span>Progress</span><span>40%</span></div>
+            <div class="cur-progress-track"><div class="cur-progress-fill" data-w="40" style="background:#EA580C;"></div></div>
+          </div>
+          <span class="flip-hint">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.06-4.65"/></svg>
+            Hover to flip
+          </span>
         </div>
-        <div class="cur-progress-wrap">
-          <div class="cur-progress-label"><span>Progress</span><span>40%</span></div>
-          <div class="cur-progress-track"><div class="cur-progress-fill" data-w="40" style="background:#EA580C;"></div></div>
+        <div class="cur-face cur-back">
+          <div>
+            <div class="infographic-title">Use case flow</div>
+            <div style="display:flex;align-items:center;gap:.3rem;font-size:.68rem;flex-wrap:wrap;">
+              <span style="background:var(--gray-1);padding:.25rem .6rem;border-radius:4px;color:var(--gray-7);font-weight:500;">Upload screenshot</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+              <span style="background:var(--gray-1);padding:.25rem .6rem;border-radius:4px;color:var(--gray-7);font-weight:500;">Mark hot spots</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+              <span style="background:#FFF7ED;padding:.25rem .6rem;border-radius:4px;color:#EA580C;font-weight:600;">Share insights</span>
+            </div>
+          </div>
+          <div class="cur-tags">
+            <span class="cur-tag">Product Tools</span><span class="cur-tag">Analytics</span><span class="cur-tag">Web App</span>
+          </div>
+          <a href="hot-spot-tool.html" class="cur-back-link">
+            View Hot Spot Tool
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
         </div>
-        <div class="cur-tags">
-          <span class="cur-tag">Product Tools</span><span class="cur-tag">Analytics</span><span class="cur-tag">Web App</span>
-        </div>
-      </a>
+      </div>
 
       <!-- BATHROOM CODES -->
-      <a class="cur-card" href="bathroom-codes.html" data-progress="90">
-        <div class="cur-card-top">
-          <div class="cur-icon-wrap" style="background:#F0FDF4;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-            </svg>
+      <div class="cur-card" data-progress="90">
+        <div class="cur-face cur-front">
+          <div class="cur-card-top">
+            <div class="cur-icon-wrap" style="background:#F0FDF4;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <span class="cur-status status-proposal">Live MVP</span>
           </div>
-          <span class="cur-status status-proposal">Live MVP</span>
-        </div>
-        <div>
-          <div class="cur-name">Bathroom Codes</div>
-          <div class="cur-tagline">Community-sourced restroom access codes</div>
-        </div>
-        <p class="cur-desc">A crowdsourced directory of bathroom door codes for cafes, hotels, and stores. Users submit codes, the community validates them, and a trust score surfaces the most reliable ones. Designing the reputation system and anti-gaming mechanics.</p>
-        <div class="infographic" style="margin-bottom:0;">
-          <div class="infographic-title">Community trust loop</div>
-          <div style="display:flex;align-items:center;gap:.3rem;font-size:.68rem;flex-wrap:wrap;">
-            <span style="background:var(--gray-1);padding:.25rem .6rem;border-radius:4px;color:var(--gray-7);font-weight:500;">Submit code</span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-            <span style="background:var(--gray-1);padding:.25rem .6rem;border-radius:4px;color:var(--gray-7);font-weight:500;">Community confirms</span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-            <span style="background:#F0FDF4;padding:.25rem .6rem;border-radius:4px;color:#16a34a;font-weight:600;">Score rises ✓</span>
+          <div>
+            <div class="cur-name">Bathroom Codes</div>
+            <div class="cur-tagline">Community-sourced restroom access codes</div>
           </div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin:.25rem 0;align-items:start;">
-          <div style="border-radius:14px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,0.1),0 8px 24px rgba(0,0,0,0.12);">
-            <img src="loocodes-screen1.png" alt="LooCodes list view" style="width:100%;display:block;border-radius:14px;">
+          <p class="cur-desc">A crowdsourced directory of bathroom door codes for cafes, hotels, and stores. Community validates codes and a trust score surfaces the most reliable ones.</p>
+          <div class="cur-progress-wrap" style="margin-top:auto;">
+            <div class="cur-progress-label"><span>Progress</span><span>90%</span></div>
+            <div class="cur-progress-track"><div class="cur-progress-fill" data-w="90" style="background:#16a34a;"></div></div>
           </div>
-          <div style="border-radius:14px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,0.1),0 8px 24px rgba(0,0,0,0.12);margin-top:1rem;">
-            <img src="loocodes-screen2.png" alt="LooCodes detail view" style="width:100%;display:block;border-radius:14px;">
+          <span class="flip-hint">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.06-4.65"/></svg>
+            Hover to flip
+          </span>
+        </div>
+        <div class="cur-face cur-back">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;flex:1;align-items:start;">
+            <div style="border-radius:12px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,0.1),0 6px 18px rgba(0,0,0,0.12);">
+              <img src="loocodes-screen1.png" alt="LooCodes list view" style="width:100%;display:block;border-radius:12px;">
+            </div>
+            <div style="border-radius:12px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,0.1),0 6px 18px rgba(0,0,0,0.12);margin-top:1rem;">
+              <img src="loocodes-screen2.png" alt="LooCodes detail view" style="width:100%;display:block;border-radius:12px;">
+            </div>
           </div>
+          <div class="cur-tags">
+            <span class="cur-tag">Community</span><span class="cur-tag">Trust & Safety</span><span class="cur-tag">Mobile Web</span>
+          </div>
+          <a href="bathroom-codes.html" class="cur-back-link">
+            View Bathroom Codes
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
         </div>
-        <div class="cur-progress-wrap">
-          <div class="cur-progress-label"><span>Progress</span><span>90%</span></div>
-          <div class="cur-progress-track"><div class="cur-progress-fill" data-w="90" style="background:#16a34a;"></div></div>
-        </div>
-        <div class="cur-tags">
-          <span class="cur-tag">Community</span><span class="cur-tag">Trust & Safety</span><span class="cur-tag">Mobile Web</span>
-        </div>
-      </a>
+      </div>
 
     </div>
   </div>
@@ -1153,6 +1193,18 @@
     });
   }, { threshold: 0.2 });
   document.querySelectorAll('.cur-card').forEach(card => cardObs.observe(card));
+
+  document.querySelectorAll('.cur-card').forEach(card => {
+    card.addEventListener('click', e => {
+      if (e.target.closest('.cur-back-link')) return;
+      card.classList.toggle('flipped');
+      if (card.classList.contains('flipped')) {
+        card.querySelectorAll('.back-bar[data-w]').forEach(bar => {
+          bar.style.width = bar.dataset.w + '%';
+        });
+      }
+    });
+  });
 </script>
 </body>
 </html>
