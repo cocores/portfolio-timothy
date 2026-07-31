@@ -233,10 +233,14 @@
       display: grid; grid-template-columns: repeat(2, 1fr);
       gap: 1.25rem;
     }
+    .cur-card-wrap {
+      perspective: 1000px;
+      height: 400px;
+    }
     .cur-card {
       border: 1.5px solid var(--gray-3); border-radius: 12px;
-      background: var(--white); position: relative;
-      height: 400px;
+      background: transparent; position: relative;
+      height: 100%;
       transform-style: preserve-3d;
       transition: border-color .2s, box-shadow .2s, transform .65s cubic-bezier(.4,0,.2,1);
       cursor: pointer;
@@ -790,6 +794,7 @@
     <div class="current-grid">
 
       <!-- WINGD -->
+      <div class="cur-card-wrap">
       <div class="cur-card" data-progress="65">
         <div class="cur-face cur-front">
           <div class="cur-card-top">
@@ -835,7 +840,10 @@
         </div>
       </div>
 
+      </div><!-- /cur-card-wrap -->
+
       <!-- RESUME REVIEWER -->
+      <div class="cur-card-wrap">
       <div class="cur-card" data-progress="80">
         <div class="cur-face cur-front">
           <div class="cur-card-top">
@@ -886,7 +894,10 @@
         </div>
       </div>
 
+      </div><!-- /cur-card-wrap -->
+
       <!-- HOT SPOT TOOL -->
+      <div class="cur-card-wrap">
       <div class="cur-card" data-progress="40">
         <div class="cur-face cur-front">
           <div class="cur-card-top">
@@ -930,7 +941,10 @@
         </div>
       </div>
 
+      </div><!-- /cur-card-wrap -->
+
       <!-- BATHROOM CODES -->
+      <div class="cur-card-wrap">
       <div class="cur-card" data-progress="90">
         <div class="cur-face cur-front">
           <div class="cur-card-top">
@@ -971,6 +985,7 @@
           </a>
         </div>
       </div>
+      </div><!-- /cur-card-wrap -->
 
     </div>
   </div>
