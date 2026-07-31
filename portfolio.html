@@ -334,6 +334,50 @@
       padding: .3rem .7rem; border-radius: 6px;
     }
 
+    /* EMAIL MODAL */
+    .email-modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 999;
+      background: rgba(0,0,0,.55); backdrop-filter: blur(4px);
+      align-items: center; justify-content: center; padding: 1.5rem;
+    }
+    .email-modal-overlay.open { display: flex; }
+    .email-modal {
+      background: var(--white); border-radius: 16px; padding: 2.25rem;
+      width: 100%; max-width: 460px; box-shadow: 0 24px 64px rgba(0,0,0,.18);
+      position: relative; animation: modal-in .2s ease;
+    }
+    @keyframes modal-in { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
+    .email-modal-close {
+      position: absolute; top: 1rem; right: 1rem;
+      background: none; border: none; cursor: pointer;
+      color: var(--gray-5); padding: .25rem; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .email-modal-close:hover { background: var(--gray-1); color: var(--black); }
+    .email-modal h3 { font-size: 1.25rem; font-weight: 800; margin-bottom: .35rem; }
+    .email-modal p { font-size: .875rem; color: var(--gray-5); margin-bottom: 1.5rem; line-height: 1.6; }
+    .email-field { display: flex; flex-direction: column; gap: .4rem; margin-bottom: 1rem; }
+    .email-field label { font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--gray-5); }
+    .email-field input, .email-field textarea {
+      border: 1.5px solid var(--gray-3); border-radius: 8px;
+      padding: .65rem .9rem; font-size: .9rem; font-family: inherit;
+      color: var(--black); outline: none; transition: border-color .15s;
+      background: var(--white);
+    }
+    .email-field input:focus, .email-field textarea:focus { border-color: var(--accent); }
+    .email-field textarea { resize: vertical; min-height: 100px; }
+    .email-submit {
+      width: 100%; padding: .75rem; border-radius: 8px;
+      background: var(--accent); color: #fff; font-size: .9rem;
+      font-weight: 700; font-family: inherit; border: none; cursor: pointer;
+      transition: background .15s; margin-top: .5rem;
+    }
+    .email-submit:hover { background: #4F52C8; }
+    .email-success { text-align: center; padding: 1.5rem 0; }
+    .email-success svg { color: #16a34a; width: 40px; height: 40px; margin-bottom: .75rem; }
+    .email-success h4 { font-size: 1.1rem; font-weight: 800; margin-bottom: .4rem; }
+    .email-success p { font-size: .875rem; color: var(--gray-5); }
+
     /* CONTACT — coffee theme */
     #contact {
       background: #1C1008;
@@ -1142,10 +1186,10 @@
     <p class="contact-sub">I'm open to Senior PM and Lead PM roles — SaaS, digital products, e-commerce. No cold pitches, just real conversations. Pull up a chair.</p>
 
     <div class="coffee-orders">
-      <a href="mailto:timothycocores@gmail.com" class="coffee-btn primary">
+      <button class="coffee-btn primary" id="email-me-btn" onclick="document.getElementById('email-modal').classList.add('open')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        Order an espresso (email me)
-      </a>
+        Email Me
+      </button>
       <a href="https://www.linkedin.com/in/timothycocores" class="coffee-btn" target="_blank">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
         LinkedIn
@@ -1232,6 +1276,78 @@
       }
     });
   });
+</script>
+
+<!-- EMAIL MODAL -->
+<div class="email-modal-overlay" id="email-modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="email-modal">
+    <button class="email-modal-close" onclick="document.getElementById('email-modal').classList.remove('open')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div id="email-form-wrap">
+      <h3>Send me a message</h3>
+      <p>I'll get back to you faster than a pour-over. No spam, no cold pitches — just real conversation.</p>
+      <form id="email-form" onsubmit="handleEmailSubmit(event)">
+        <div class="email-field">
+          <label>Your name</label>
+          <input type="text" name="name" placeholder="Jane Smith" required>
+        </div>
+        <div class="email-field">
+          <label>Your email</label>
+          <input type="email" name="email" placeholder="jane@company.com" required>
+        </div>
+        <div class="email-field">
+          <label>Message</label>
+          <textarea name="message" placeholder="Tell me what you're working on..." required></textarea>
+        </div>
+        <button type="submit" class="email-submit">Send message →</button>
+      </form>
+    </div>
+    <div id="email-success" class="email-success" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      <h4>Message sent!</h4>
+      <p>Thanks for reaching out. I'll be in touch soon.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+async function handleEmailSubmit(e) {
+  e.preventDefault();
+  const form = e.target;
+  const btn = form.querySelector('.email-submit');
+  btn.textContent = 'Sending…';
+  btn.disabled = true;
+
+  const data = {
+    name: form.name.value,
+    email: form.email.value,
+    message: form.message.value,
+    _subject: 'Lets Connect',
+    _replyto: form.email.value,
+  };
+
+  try {
+    const res = await fetch('https://formspree.io/f/timothycocores@gmail.com', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (res.ok) {
+      document.getElementById('email-form-wrap').style.display = 'none';
+      document.getElementById('email-success').style.display = 'block';
+    } else {
+      throw new Error();
+    }
+  } catch {
+    // Fallback to mailto
+    const subject = encodeURIComponent('Lets Connect');
+    const body = encodeURIComponent('Name: ' + data.name + '\nEmail: ' + data.email + '\n\n' + data.message);
+    window.location.href = 'mailto:timothycocores@gmail.com?subject=' + subject + '&body=' + body;
+    btn.textContent = 'Send message →';
+    btn.disabled = false;
+  }
+}
 </script>
 </body>
 </html>
