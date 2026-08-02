@@ -1264,18 +1264,6 @@
     });
   }, { threshold: 0.2 });
   document.querySelectorAll('.cur-card').forEach(card => cardObs.observe(card));
-
-  document.querySelectorAll('.cur-card').forEach(card => {
-    card.addEventListener('click', e => {
-      if (e.target.closest('.cur-back-link')) return;
-      card.classList.toggle('flipped');
-      if (card.classList.contains('flipped')) {
-        card.querySelectorAll('.back-bar[data-w]').forEach(bar => {
-          bar.style.width = bar.dataset.w + '%';
-        });
-      }
-    });
-  });
 </script>
 
 <!-- EMAIL MODAL -->
