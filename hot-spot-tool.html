@@ -145,12 +145,12 @@
 <section class="body-sect">
   <div class="wrap">
     <div class="sect-label">The Problem</div>
-    <h2 class="sect-heading">Annotating UIs shouldn't require a Figma license</h2>
-    <p class="body-text">During review cycles, PMs and designers constantly need to mark up screenshots — flag spacing issues, annotate interaction areas, add callouts for stakeholders. The existing workflow meant opening Figma, importing an image, adding annotations manually, and exporting. Too many steps for a quick async handoff.</p>
-    <p class="body-text">I wanted a tool that lives in the browser, takes a screenshot, and lets you annotate in under 60 seconds.</p>
+    <h2 class="sect-heading">Product images tell half the story</h2>
+    <p class="body-text">B&H sells complex, high-consideration gear — cameras, lenses, lighting rigs, audio equipment. Customers browsing a Product Detail Page, Image Gallery, or Explora article often can't tell what they're looking at without context. Specs live in a table. Features live in a paragraph. But the actual product sits in a static image with no explanation.</p>
+    <p class="body-text">The existing options — custom dev work per image, manual graphic design, or leaving it to copy alone — were too slow and too expensive to scale across a catalog of thousands.</p>
 
     <div class="callout">
-      <p><strong>The insight:</strong> The gap wasn't design capability — it was friction. A lightweight browser tool with the right four primitives covers 90% of annotation use cases without the overhead of full design software.</p>
+      <p><strong>The insight:</strong> The gap wasn't content — it was surface. Customers are already looking at the image. Putting the annotation right there, on the product, eliminates the disconnect between what they see and what they need to know.</p>
     </div>
   </div>
 </section>
@@ -159,29 +159,30 @@
 <section class="body-sect">
   <div class="wrap">
     <div class="sect-label">What I Built</div>
-    <h2 class="sect-heading">Four tools. One tab.</h2>
-    <p class="body-text">The Annotation Suite is a React app with four annotation modes, each solving a distinct part of the review workflow.</p>
+    <h2 class="sect-heading">Annotate once. Export anywhere.</h2>
+    <p class="body-text">The Annotation Suite is a browser-based tool that lets content and merchandising teams upload any product image and layer interactive annotations directly on top — then export a finished image ready for PDPs, Image Galleries, and Explora editorial content.</p>
+    <p class="body-text">No design software. No engineering ticket. Upload, annotate, export.</p>
 
     <div class="tab-cards">
       <div class="tab-card">
-        <div class="tab-card-icon">📐</div>
-        <h4>Measurements</h4>
-        <p>Draw precise measurement overlays on any uploaded screenshot — ideal for spacing reviews and developer handoffs.</p>
-      </div>
-      <div class="tab-card">
         <div class="tab-card-icon">📍</div>
         <h4>Hotspots</h4>
-        <p>Pin numbered hotspots to specific UI regions with attached notes — great for documenting interaction areas and flagging issues.</p>
+        <p>Pin numbered callouts to specific product features — customers tap or hover to reveal details right on the image.</p>
+      </div>
+      <div class="tab-card">
+        <div class="tab-card-icon">📐</div>
+        <h4>Measurements</h4>
+        <p>Overlay precise dimension annotations on product images — critical for gear where size and form factor drive purchase decisions.</p>
       </div>
       <div class="tab-card">
         <div class="tab-card-icon">🖼</div>
         <h4>Infographics</h4>
-        <p>Layer visual callouts and highlight zones over screenshots for stakeholder presentations and async walkthroughs.</p>
+        <p>Layer highlight zones and visual callouts to turn a product photo into a feature breakdown — ideal for Explora editorial content.</p>
       </div>
       <div class="tab-card">
         <div class="tab-card-icon">✏️</div>
         <h4>Callouts</h4>
-        <p>Add labeled arrows and text callouts to draw attention to specific elements — fast markup without leaving the browser.</p>
+        <p>Add labeled arrows pointing to controls, ports, or features — bridging the gap between what the image shows and what the customer needs to know.</p>
       </div>
     </div>
   </div>
@@ -190,15 +191,14 @@
 <!-- WHY I BUILT IT -->
 <section class="body-sect">
   <div class="wrap">
-    <div class="sect-label">Why I Built It</div>
-    <h2 class="sect-heading">PMs who build move faster</h2>
-    <p class="body-text">This project started as a personal tool for my own review process. I kept reaching for Figma or Loom for things that should take 30 seconds. Building it in React let me ship exactly what I needed — and nothing more.</p>
+    <div class="sect-label">Where It Ships</div>
+    <h2 class="sect-heading">Three surfaces. One tool.</h2>
+    <p class="body-text">Annotated exports from the suite are designed to drop directly into the three highest-traffic content surfaces on B&H's site.</p>
 
     <ul class="feature-list">
-      <li>No account or install required — runs entirely in the browser</li>
-      <li>Upload any image and start annotating immediately</li>
-      <li>Export annotated screenshots for async review or Jira tickets</li>
-      <li>Built with React + Vite — fast, lightweight, no backend</li>
+      <li><strong>Product Detail Pages</strong> — hotspot-annotated hero images surface features at the moment of purchase decision</li>
+      <li><strong>Image Galleries</strong> — measurement and callout overlays give customers a richer look at gear without leaving the gallery</li>
+      <li><strong>Explora (Blog)</strong> — editorial teams use infographic exports to visually explain products inside review and how-to content</li>
     </ul>
 
     <div class="result-box">
@@ -207,17 +207,18 @@
       </div>
       <div class="result-text">
         <h4>Still actively developing</h4>
-        <p>Dogfooding it in my own workflow at B&H. Next up: shareable annotation exports and a saved sessions layer.</p>
+        <p>Currently in development with B&H's content and merchandising teams. Next up: bulk export, CMS integration, and a saved annotation library.</p>
       </div>
     </div>
 
     <div class="tag-row">
       <span class="tag">React</span>
       <span class="tag">Vite</span>
-      <span class="tag">Product Tooling</span>
+      <span class="tag">B&H Photo Video</span>
+      <span class="tag">PDP</span>
+      <span class="tag">Content Tools</span>
       <span class="tag">Annotation</span>
-      <span class="tag">Developer Handoff</span>
-      <span class="tag">Side Project</span>
+      <span class="tag">Explora</span>
     </div>
   </div>
 </section>
