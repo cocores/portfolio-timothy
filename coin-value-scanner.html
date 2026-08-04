@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coin Value Scanner — Timothy Cocores</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f9f9f8; --white: #fff; --border: #e7e5e4;
+      --text: #18181b; --muted: #71717a; --subtle: #a1a1aa;
+      --accent: #EA580C; --accent-light: #FFF7ED;
+      --dark: #0d0d0d;
+      --font: 'Inter', -apple-system, sans-serif; --max: 720px;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); background: var(--white); color: var(--text); -webkit-font-smoothing: antialiased; }
+    ::selection { background: var(--accent-light); color: var(--accent); }
+
+    .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+
+    /* ── Back bar ── */
+    .back-bar {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,13,13,0.92); backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 0 2rem; height: 52px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .back-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.45);
+      text-decoration: none; transition: color 0.15s;
+    }
+    .back-link:hover { color: rgba(255,255,255,0.9); }
+    .back-bar-tag { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.25); }
+    .back-bar-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; margin-right: 0.5rem; box-shadow: 0 0 8px rgba(234,88,12,0.7); }
+
+    /* ── Hero ── */
+    .hero {
+      background:
+        radial-gradient(ellipse at 10% 80%, rgba(234,88,12,0.12) 0%, transparent 55%),
+        radial-gradient(ellipse at 90% 10%, rgba(234,88,12,0.06) 0%, transparent 55%),
+        var(--dark);
+      padding: 6rem 2rem 0; overflow: hidden; position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 80px),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 80px);
+      pointer-events: none;
+    }
+    .hero-inner { max-width: var(--max); margin: 0 auto; position: relative; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem;
+    }
+    .hero-eyebrow-line { display: block; width: 24px; height: 1.5px; background: var(--accent); }
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 700;
+      letter-spacing: -0.04em; line-height: 1.08; color: #fff; margin-bottom: 1.25rem;
+    }
+    .hero h1 em { font-style: normal; color: rgba(255,255,255,0.4); }
+    .hero-sub { font-size: 1rem; color: rgba(255,255,255,0.5); line-height: 1.75; max-width: 540px; margin-bottom: 3rem; }
+    .hero-meta {
+      display: grid; grid-template-columns: repeat(4, auto); gap: 0;
+      width: fit-content; background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden;
+    }
+    .hero-meta-item {
+      display: flex; flex-direction: column; gap: 0.25rem;
+      padding: 1rem 1.5rem; border-right: 1px solid rgba(255,255,255,0.08);
+    }
+    .hero-meta-item:last-child { border-right: none; }
+    .hero-meta-label { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.28); }
+    .hero-meta-value { font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.72); }
+
+    /* ── Hero icon ── */
+    .hero-icon-wrap {
+      width: 100%; max-width: var(--max); margin: 3.5rem auto 0;
+      display: flex; align-items: flex-end; justify-content: center;
+    }
+    .hero-icon-card {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+      border-bottom: none; border-radius: 16px 16px 0 0;
+      padding: 3rem 2rem; display: flex; flex-direction: column; align-items: center;
+      gap: 1rem; width: 100%; max-width: 480px;
+    }
+    .hero-icon-emoji { font-size: 3.5rem; line-height: 1; }
+    .hero-icon-label { font-size: 1.4rem; font-weight: 700; color: #fff; letter-spacing: -0.03em; }
+    .hero-icon-sub { font-size: 0.8rem; color: rgba(255,255,255,0.35); }
+
+    /* ── Value display ── */
+    .value-callout {
+      background: rgba(234,88,12,0.08); border: 1px solid rgba(234,88,12,0.2);
+      border-radius: 10px; padding: 1.25rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; margin: 2rem 0; flex-wrap: wrap;
+    }
+    .value-callout-label { font-size: 0.72rem; font-weight: 600; color: var(--accent); letter-spacing: 0.04em; }
+    .value-callout-desc { font-size: 0.8rem; color: var(--muted); }
+    .value-callout-num { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text); }
+
+    /* ── Article ── */
+    .article { padding: 6rem 2rem 5rem; background: var(--white); }
+    .article-inner { max-width: var(--max); margin: 0 auto; }
+
+    .lede { font-size: 1.2rem; color: var(--text); line-height: 1.75; font-weight: 400; margin-bottom: 3rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--border); }
+
+    h2 { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.025em; color: var(--text); margin: 3rem 0 0.9rem; line-height: 1.3; }
+    h3 {
+      display: flex; align-items: center; gap: 0.75rem;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--subtle); margin: 2.5rem 0 0.75rem;
+    }
+    h3[data-n]::before {
+      content: attr(data-n);
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--accent); color: #fff; font-size: 0.6rem;
+      font-weight: 700; flex-shrink: 0; letter-spacing: 0;
+    }
+    p { font-size: 0.975rem; color: var(--muted); line-height: 1.85; margin-bottom: 1.25rem; }
+    p strong { color: var(--text); font-weight: 600; }
+    ul { padding-left: 1.25em; margin-bottom: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; }
+    li { font-size: 0.975rem; color: var(--muted); line-height: 1.75; }
+    li strong { color: var(--text); font-weight: 600; }
+
+    .pull-quote {
+      background: var(--dark); margin: 3rem -2rem; padding: 3rem 2rem; position: relative; overflow: hidden;
+    }
+    .pull-quote::before {
+      content: '\201C'; position: absolute; top: -0.5rem; left: 1.5rem;
+      font-size: 8rem; line-height: 1; color: rgba(234,88,12,0.15);
+      font-family: Georgia, serif; pointer-events: none;
+    }
+    .pull-quote p { max-width: var(--max); margin: 0 auto; font-size: 1.3rem; font-style: italic; font-weight: 400; color: rgba(255,255,255,0.85); line-height: 1.6; position: relative; margin-bottom: 0; }
+
+    .divider { border: none; border-top: 1px solid var(--border); margin: 3rem 0; }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 1.25rem 0 2rem; }
+    .chip { font-size: 0.68rem; font-weight: 500; padding: 0.25rem 0.65rem; border-radius: 99px; background: var(--bg); border: 1px solid var(--border); color: var(--muted); }
+
+    .status-card {
+      background: var(--bg); border: 1px solid var(--border); border-radius: 12px;
+      padding: 1.5rem 2rem; display: flex; align-items: center; gap: 1rem; margin: 2rem 0;
+    }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #f59e0b; flex-shrink: 0; animation: pulse-dot 2.5s ease-in-out infinite; }
+    @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+    .status-text { font-size: 0.85rem; font-weight: 500; color: var(--text); }
+    .status-sub { font-size: 0.75rem; color: var(--subtle); margin-top: 0.1rem; }
+
+    .contributions { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; margin-top: 2rem; }
+    .contributions ul { margin-bottom: 0; }
+    .contributions li { font-size: 0.9rem; }
+
+    /* ── Footer ── */
+    .cs-footer { background: var(--dark); padding: 2.5rem 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .cs-footer-text { font-size: 0.78rem; color: rgba(255,255,255,0.25); }
+    .cs-footer-back { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.6); text-decoration: none; transition: color 0.15s, gap 0.15s; }
+    .cs-footer-back:hover { color: #fff; gap: 0.7rem; }
+
+    @media (max-width: 640px) {
+      .hero-meta { grid-template-columns: 1fr 1fr; }
+      .hero-meta-item:nth-child(2) { border-right: none; }
+      .pull-quote { margin: 3rem -2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="back-bar">
+  <a href="portfolio.html" class="back-link">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Back to portfolio
+  </a>
+  <span class="back-bar-tag"><span class="back-bar-dot"></span>Side Project · Coin Value Scanner</span>
+</div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><span class="hero-eyebrow-line"></span>Side Project</div>
+    <h1>Point. Scan. <em>Know what it's worth.</em></h1>
+    <p class="hero-sub">Coin Value Scanner lets collectors instantly look up the PCGS graded market value of any slabbed or raw coin — just point your camera and get the answer in seconds.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Type</span>
+        <span class="hero-meta-value">Side Project</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Platform</span>
+        <span class="hero-meta-value">iOS</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Stage</span>
+        <span class="hero-meta-value">0 → 1</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Status</span>
+        <span class="hero-meta-value">In Development</span>
+      </div>
+    </div>
+  </div>
+  <div class="hero-icon-wrap">
+    <div class="hero-icon-card">
+      <div class="hero-icon-emoji">🪙</div>
+      <div class="hero-icon-label">Coin Value Scanner</div>
+      <div class="hero-icon-sub">PCGS graded value, instantly.</div>
+    </div>
+  </div>
+</div>
+
+<div class="article">
+  <div class="article-inner">
+
+    <p class="lede reveal">Coin collecting is a serious hobby — and a serious market. But looking up what a coin is actually worth still means digging through PCGS lookup tables, cross-referencing grade labels, and doing math in your head. <strong>Coin Value Scanner makes that instant.</strong></p>
+
+    <div class="value-callout reveal">
+      <div>
+        <div class="value-callout-label">PCGS Grade · MS-65</div>
+        <div class="value-callout-desc">1881-S Morgan Silver Dollar · Slabbed</div>
+      </div>
+      <div class="value-callout-num">$285</div>
+    </div>
+
+    <h2 class="reveal">The Problem</h2>
+    <p class="reveal">Whether you're at a coin show, a flea market, or sorting through a collection, the same question always comes up: <strong>what is this actually worth?</strong> For slabbed coins, the PCGS grade is right there on the label — but the current market value isn't. For raw (unslabbed) coins, you're estimating grade by eye before you can even start looking.</p>
+    <p class="reveal">The current workflow: take a photo, open a browser, navigate to PCGS or a similar registry, type in the coin details, find the right grade row, cross-reference recent auction data. That's a three-minute process for something that should take three seconds.</p>
+
+    <div class="pull-quote reveal"><p>"The grade is right on the label. The value shouldn't require a laptop to find."</p></div>
+
+    <h2 class="reveal">The Idea</h2>
+    <p class="reveal">Coin Value Scanner uses your camera to identify the coin and pull its current PCGS market value — for both slabbed coins (where the grade is already certified on the label) and raw coins (where the app estimates grade from the image). No typing, no lookup tables, no browser tabs.</p>
+    <p class="reveal">It's built for the moment of decision: you're holding a coin and you need to know if the price is right — <strong>right now.</strong></p>
+
+    <div class="chips">
+      <span class="chip">Slabbed Coins</span>
+      <span class="chip">Raw / Ungraded</span>
+      <span class="chip">PCGS Values</span>
+      <span class="chip">Morgan Dollars</span>
+      <span class="chip">American Eagles</span>
+      <span class="chip">Coin Shows</span>
+    </div>
+
+    <h2 class="reveal">How It Works</h2>
+
+    <h3 data-n="1" class="reveal">Point Your Camera</h3>
+    <p class="reveal">Open the app and point your camera at any coin — slabbed in its PCGS holder or raw in your hand. The scanner reads the coin's details and grade information from the label or estimates grade from the coin's surface.</p>
+
+    <h3 data-n="2" class="reveal">Coin Is Identified</h3>
+    <p class="reveal">Computer vision identifies the coin type, year, mint mark, and — for slabbed coins — reads the certified PCGS grade directly from the label. For raw coins, the app provides a grade range estimate based on visible surface quality.</p>
+
+    <h3 data-n="3" class="reveal">Get the Market Value</h3>
+    <p class="reveal">The app pulls the current PCGS population report data and price guide value for that coin and grade. You see the market value, recent auction comparables, and population data — how many coins exist at that grade and above.</p>
+
+    <h3 data-n="4" class="reveal">Save or Share</h3>
+    <p class="reveal">Add scanned coins to your personal collection tracker, export a value summary, or share a coin's details and current value with another collector. Your scanned history stays saved for future reference.</p>
+
+    <hr class="divider">
+
+    <div class="status-card reveal">
+      <span class="status-dot"></span>
+      <div>
+        <div class="status-text">In Development</div>
+        <div class="status-sub">Building the camera recognition layer and PCGS data integration</div>
+      </div>
+    </div>
+
+    <h3 class="reveal">What I'm Exploring</h3>
+    <div class="contributions reveal">
+      <ul>
+        <li><strong>Label OCR accuracy</strong> — reliably reading PCGS grade labels across different lighting conditions and holder types</li>
+        <li><strong>Raw coin grading</strong> — using computer vision to estimate grade on unslabbed coins by surface and luster</li>
+        <li><strong>PCGS data integration</strong> — connecting to population report and price guide data in real time</li>
+        <li><strong>Collection tracker</strong> — letting users build and value their full collection over time</li>
+        <li><strong>Auction comparables</strong> — surfacing recent sales data alongside the price guide value</li>
+        <li><strong>Offline mode</strong> — core lookups available without a connection for use at shows and markets</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<div class="cs-footer">
+  <span class="cs-footer-text">© Timothy Cocores · Coin Value Scanner</span>
+  <a href="portfolio.html" class="cs-footer-back">
+    Back to portfolio
+    <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
+</div>
+
+<script>
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
