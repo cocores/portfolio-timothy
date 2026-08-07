@@ -6,7 +6,18 @@
   <title>Timothy Cocores — Product Manager</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <script>
-    (function(){var y=sessionStorage.getItem('portfolio_scroll_y');if(y){history.scrollRestoration='manual';sessionStorage.removeItem('portfolio_scroll_y');document.documentElement.style.scrollBehavior='auto';window.scrollTo(0,+y);}})();
+    (function(){
+      var y=sessionStorage.getItem('portfolio_scroll_y');
+      if(y){
+        history.scrollRestoration='manual';
+        sessionStorage.removeItem('portfolio_scroll_y');
+        document.documentElement.style.opacity='0';
+        window.addEventListener('DOMContentLoaded',function(){
+          window.scrollTo(0,+y);
+          document.documentElement.style.opacity='';
+        });
+      }
+    })();
   </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
