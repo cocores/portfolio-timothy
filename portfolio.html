@@ -1163,6 +1163,18 @@
   }, { threshold: 0.2 });
   document.querySelectorAll('.cur-card').forEach(card => cardObs.observe(card));
 
+  // Scroll position memory — save when leaving to a case study, restore on return
+  const SCROLL_KEY = 'portfolio_scroll_y';
+  document.querySelectorAll('a[href$=".html"]:not([href^="http"])').forEach(a => {
+    a.addEventListener('click', () => sessionStorage.setItem(SCROLL_KEY, window.scrollY));
+  });
+  const savedY = sessionStorage.getItem(SCROLL_KEY);
+  if (savedY !== null) {
+    sessionStorage.removeItem(SCROLL_KEY);
+    // defer until after layout so scroll lands correctly
+    requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo({ top: +savedY, behavior: 'instant' })));
+  }
+
   // Nav: add shadow + slightly more opaque bg when scrolled
   const nav = document.querySelector('nav');
   window.addEventListener('scroll', () => {
