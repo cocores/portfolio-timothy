@@ -1,236 +1,393 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Leasing Discoverability & PDP Centralization — Timothy Cocores</title>
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --black: #0A0A0A;
-    --gray-7: #374151;
-    --gray-5: #6B7280;
-    --gray-3: #D1D5DB;
-    --gray-1: #F5F5F5;
-    --white: #FFFFFF;
-    --accent: #6366F1;
-    --accent-lt: #EEF2FF;
-    --green: #16A34A;
-  }
-  body { font-family: 'Inter', system-ui, sans-serif; color: var(--black); background: var(--white); -webkit-font-smoothing: antialiased; }
-  a { text-decoration: none; }
-  img { max-width: 100%; display: block; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>B&H Leasing — Timothy Cocores</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f9f9f8; --white: #fff; --border: #e7e5e4;
+      --text: #18181b; --muted: #71717a; --subtle: #a1a1aa;
+      --accent: #6366F1; --accent-light: #EEF2FF;
+      --green: #16a34a; --green-light: #dcfce7;
+      --dark: #0d0d0d;
+      --font: 'Inter', -apple-system, sans-serif; --max: 720px;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); background: var(--white); color: var(--text); -webkit-font-smoothing: antialiased; }
+    ::selection { background: var(--accent-light); color: var(--accent); }
 
-  /* NAV */
-  nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--gray-3); padding: 0 2rem; height: 56px; display: flex; align-items: center; justify-content: space-between; }
-  .nav-back { display: flex; align-items: center; gap: .5rem; font-size: .875rem; font-weight: 500; color: var(--gray-5); transition: color .15s; }
-  .nav-back:hover { color: var(--black); }
-  .nav-back svg { width: 16px; height: 16px; }
-  .nav-name { font-weight: 700; font-size: .9rem; color: var(--black); }
+    .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.in { opacity: 1; transform: none; }
 
-  /* WRAP */
-  .wrap { max-width: 760px; margin: 0 auto; padding: 0 2rem; }
-  .wrap-wide { max-width: 960px; margin: 0 auto; padding: 0 2rem; }
+    /* ── Back bar ── */
+    .back-bar {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,13,13,0.92); backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 0 2rem; height: 52px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .back-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.45);
+      text-decoration: none; transition: color 0.15s;
+    }
+    .back-link:hover { color: rgba(255,255,255,0.9); }
+    .back-bar-tag { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.25); }
+    .back-bar-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; margin-right: 0.5rem; box-shadow: 0 0 8px rgba(99,102,241,0.7); }
 
-  /* HERO */
-  .case-hero { padding: 5rem 0 3.5rem; border-bottom: 1px solid var(--gray-3); }
-  .case-company { font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
-  .case-title { font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; letter-spacing: -.03em; line-height: 1.1; margin-bottom: 1.25rem; }
-  .case-subtitle { font-size: 1.1rem; color: var(--gray-5); line-height: 1.7; max-width: 580px; }
-  .case-meta { display: flex; flex-wrap: wrap; gap: 2rem; margin-top: 2.5rem; }
-  .meta-item { display: flex; flex-direction: column; gap: .25rem; }
-  .meta-label { font-size: .65rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--gray-3); }
-  .meta-val { font-size: .875rem; font-weight: 600; color: var(--black); }
+    /* ── Hero ── */
+    .hero {
+      background:
+        radial-gradient(ellipse at 10% 80%, rgba(99,102,241,0.12) 0%, transparent 55%),
+        radial-gradient(ellipse at 90% 10%, rgba(99,102,241,0.06) 0%, transparent 55%),
+        var(--dark);
+      padding: 6rem 2rem 0; overflow: hidden; position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 80px),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 80px);
+      pointer-events: none;
+    }
+    .hero-inner { max-width: var(--max); margin: 0 auto; position: relative; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem;
+    }
+    .hero-eyebrow-line { display: block; width: 24px; height: 1.5px; background: var(--accent); }
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 700;
+      letter-spacing: -0.04em; line-height: 1.08; color: #fff; margin-bottom: 1.25rem;
+    }
+    .hero h1 em { font-style: normal; color: rgba(255,255,255,0.4); }
+    .hero-sub { font-size: 1rem; color: rgba(255,255,255,0.5); line-height: 1.75; max-width: 540px; margin-bottom: 3rem; }
+    .hero-meta {
+      display: grid; grid-template-columns: repeat(4, auto); gap: 0;
+      width: fit-content; background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden;
+    }
+    .hero-meta-item {
+      display: flex; flex-direction: column; gap: 0.25rem;
+      padding: 1rem 1.5rem; border-right: 1px solid rgba(255,255,255,0.08);
+    }
+    .hero-meta-item:last-child { border-right: none; }
+    .hero-meta-label { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.28); }
+    .hero-meta-value { font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.72); }
 
-  /* STAT BAND */
-  .stat-band { background: var(--black); padding: 3rem 0; }
-  .stat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0; }
-  .stat-cell { padding: 1.5rem 2rem; border-right: 1px solid rgba(255,255,255,.08); text-align: center; }
-  .stat-cell:last-child { border-right: none; }
-  .stat-num { font-size: 2.5rem; font-weight: 900; letter-spacing: -.04em; color: #fff; line-height: 1; }
-  .stat-num span { color: var(--accent); }
-  .stat-desc { font-size: .72rem; color: rgba(255,255,255,.5); margin-top: .4rem; line-height: 1.5; }
+    /* ── Stat card rising from hero ── */
+    .hero-stat-wrap {
+      width: 100%; max-width: var(--max); margin: 3.5rem auto 0;
+      display: flex; align-items: flex-end; justify-content: center;
+    }
+    .hero-stat-card {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+      border-bottom: none; border-radius: 16px 16px 0 0;
+      width: 100%; max-width: 560px;
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      overflow: hidden;
+    }
+    .hero-stat-item {
+      padding: 2rem 1.5rem; text-align: center;
+      border-right: 1px solid rgba(255,255,255,0.08);
+    }
+    .hero-stat-item:last-child { border-right: none; }
+    .hero-stat-num { font-size: 2rem; font-weight: 700; color: #fff; letter-spacing: -0.04em; line-height: 1; }
+    .hero-stat-num span { color: var(--accent); }
+    .hero-stat-label { font-size: 0.65rem; font-weight: 500; color: rgba(255,255,255,0.4); margin-top: 0.4rem; line-height: 1.4; }
 
-  /* BODY SECTIONS */
-  section.body-sect { padding: 4rem 0; border-bottom: 1px solid var(--gray-3); }
-  section.body-sect:last-of-type { border-bottom: none; }
-  .sect-label { font-size: .65rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: .75rem; }
-  .sect-heading { font-size: 1.5rem; font-weight: 800; letter-spacing: -.02em; margin-bottom: 1.25rem; }
-  .body-text { font-size: 1rem; color: var(--gray-7); line-height: 1.8; }
-  .body-text + .body-text { margin-top: 1rem; }
+    /* ── Article ── */
+    .article { padding: 6rem 2rem 5rem; background: var(--white); }
+    .article-inner { max-width: var(--max); margin: 0 auto; }
 
-  /* CALLOUT */
-  .callout { background: var(--accent-lt); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 1.25rem 1.5rem; margin: 2rem 0; }
-  .callout p { font-size: .95rem; color: var(--gray-7); line-height: 1.7; }
-  .callout strong { color: var(--black); }
+    .lede { font-size: 1.2rem; color: var(--text); line-height: 1.75; font-weight: 400; margin-bottom: 3rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--border); }
 
-  /* PROBLEM LIST */
-  .problem-list { list-style: none; display: flex; flex-direction: column; gap: .75rem; margin-top: 1.25rem; }
-  .problem-list li { display: flex; align-items: flex-start; gap: .75rem; font-size: .95rem; color: var(--gray-7); line-height: 1.6; }
-  .problem-list li::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex-shrink: 0; margin-top: .45rem; }
+    h2 { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.025em; color: var(--text); margin: 3rem 0 0.9rem; line-height: 1.3; }
+    h3 {
+      display: flex; align-items: center; gap: 0.75rem;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--subtle); margin: 2.5rem 0 0.75rem;
+    }
+    h3[data-n]::before {
+      content: attr(data-n);
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--accent); color: #fff; font-size: 0.6rem;
+      font-weight: 700; flex-shrink: 0; letter-spacing: 0;
+    }
+    p { font-size: 0.975rem; color: var(--muted); line-height: 1.85; margin-bottom: 1.25rem; }
+    p strong { color: var(--text); font-weight: 600; }
+    ul { padding-left: 1.25em; margin-bottom: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; }
+    li { font-size: 0.975rem; color: var(--muted); line-height: 1.75; }
+    li strong { color: var(--text); font-weight: 600; }
 
-  /* SCREENSHOTS */
-  .screenshot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; }
-  .screenshot-frame { border-radius: 12px; overflow: hidden; border: 1px solid var(--gray-3); box-shadow: 0 4px 24px rgba(0,0,0,.08); }
-  .screenshot-frame img { width: 100%; display: block; }
-  .screenshot-caption { font-size: .72rem; color: var(--gray-5); margin-top: .6rem; text-align: center; }
-  .screenshot-full { margin-top: 2rem; border-radius: 12px; overflow: hidden; border: 1px solid var(--gray-3); box-shadow: 0 4px 24px rgba(0,0,0,.08); }
+    .pull-quote {
+      background: var(--dark); margin: 3rem -2rem; padding: 3rem 2rem; position: relative; overflow: hidden;
+    }
+    .pull-quote::before {
+      content: '\201C'; position: absolute; top: -0.5rem; left: 1.5rem;
+      font-size: 8rem; line-height: 1; color: rgba(99,102,241,0.15);
+      font-family: Georgia, serif; pointer-events: none;
+    }
+    .pull-quote p { max-width: var(--max); margin: 0 auto; font-size: 1.3rem; font-style: italic; font-weight: 400; color: rgba(255,255,255,0.85); line-height: 1.6; position: relative; margin-bottom: 0; }
 
-  /* RESULT HIGHLIGHT */
-  .result-box { background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 12px; padding: 2rem; margin-top: 2rem; display: flex; align-items: flex-start; gap: 1.25rem; }
-  .result-icon { width: 40px; height: 40px; background: #DCFCE7; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .result-icon svg { width: 20px; height: 20px; color: var(--green); }
-  .result-text h4 { font-size: 1rem; font-weight: 700; color: var(--black); margin-bottom: .4rem; }
-  .result-text p { font-size: .9rem; color: var(--gray-7); line-height: 1.6; }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 3rem 0; }
 
-  /* TAGS */
-  .tag-row { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 2.5rem; }
-  .tag { font-size: .72rem; font-weight: 500; color: var(--gray-5); background: var(--gray-1); border: 1px solid var(--gray-3); border-radius: 999px; padding: .3rem .8rem; }
+    /* ── Funnel ── */
+    .funnel-block { margin: 2rem 0; }
+    .funnel-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--subtle); margin-bottom: 1.25rem; display: block; }
+    .funnel-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+    .funnel-step { font-size: 0.75rem; color: var(--muted); width: 100px; flex-shrink: 0; }
+    .funnel-track { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; height: 12px; overflow: hidden; }
+    .funnel-fill { height: 100%; border-radius: 4px; background: var(--accent); width: 0; transition: width 1.2s cubic-bezier(.4,0,.2,1); }
+    .funnel-pct { font-size: 0.75rem; font-weight: 600; color: var(--text); width: 36px; text-align: right; }
+    .funnel-delta { font-size: 0.68rem; font-weight: 700; color: var(--green); width: 52px; }
 
-  /* FOOTER NAV */
-  .foot-nav { padding: 3rem 0 5rem; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--gray-3); margin-top: 0; }
-  .foot-link { display: inline-flex; align-items: center; gap: .4rem; font-size: .875rem; font-weight: 600; color: var(--accent); }
-  .foot-link svg { width: 16px; height: 16px; }
-  .foot-link:hover { opacity: .75; }
+    /* ── Insight callout ── */
+    .insight {
+      background: var(--accent-light); border-left: 3px solid var(--accent);
+      border-radius: 0 10px 10px 0; padding: 1.25rem 1.5rem; margin: 2rem 0;
+    }
+    .insight p { font-size: 0.95rem; color: var(--text); line-height: 1.7; margin-bottom: 0; }
 
-  @media(max-width:640px) {
-    .stat-grid { grid-template-columns: 1fr; }
-    .stat-cell { border-right: none; border-bottom: 1px solid rgba(255,255,255,.08); }
-    .screenshot-grid { grid-template-columns: 1fr; }
-    .case-meta { gap: 1.25rem; }
-  }
-</style>
+    /* ── Chips ── */
+    .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 1.25rem 0 2rem; }
+    .chip { font-size: 0.68rem; font-weight: 500; padding: 0.25rem 0.65rem; border-radius: 99px; background: var(--bg); border: 1px solid var(--border); color: var(--muted); }
+
+    /* ── Result card ── */
+    .result-card {
+      background: var(--bg); border: 1px solid var(--border); border-radius: 12px;
+      padding: 2rem; margin: 2rem 0;
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0;
+      overflow: hidden;
+    }
+    .result-stat { padding: 0.5rem 1.5rem; border-right: 1px solid var(--border); text-align: center; }
+    .result-stat:first-child { padding-left: 0; text-align: left; }
+    .result-stat:last-child { border-right: none; }
+    .result-num { font-size: 1.75rem; font-weight: 700; color: var(--text); letter-spacing: -0.03em; line-height: 1; }
+    .result-num.green { color: var(--green); }
+    .result-desc { font-size: 0.72rem; color: var(--muted); margin-top: 0.3rem; line-height: 1.4; }
+
+    /* ── Status / learnings card ── */
+    .learnings { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; margin-top: 2rem; }
+    .learnings ul { margin-bottom: 0; }
+    .learnings li { font-size: 0.9rem; }
+
+    /* ── Footer ── */
+    .cs-footer { background: var(--dark); padding: 2.5rem 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .cs-footer-text { font-size: 0.78rem; color: rgba(255,255,255,0.25); }
+    .cs-footer-back { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.6); text-decoration: none; transition: color 0.15s, gap 0.15s; }
+    .cs-footer-back:hover { color: #fff; gap: 0.7rem; }
+
+    @media (max-width: 640px) {
+      .hero-meta { grid-template-columns: 1fr 1fr; }
+      .hero-meta-item:nth-child(2) { border-right: none; }
+      .hero-stat-card { grid-template-columns: 1fr; }
+      .hero-stat-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+      .hero-stat-item:last-child { border-bottom: none; }
+      .pull-quote { margin: 3rem -2rem; }
+      .result-card { grid-template-columns: 1fr; }
+      .result-stat { border-right: none; border-bottom: 1px solid var(--border); padding: 1rem 0; text-align: left; }
+      .result-stat:last-child { border-bottom: none; }
+      .funnel-step { width: 80px; font-size: 0.68rem; }
+    }
+  </style>
 </head>
 <body>
 
-<nav>
-  <a href="portfolio.html" class="nav-back">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
-    Back
+<div class="back-bar">
+  <a href="portfolio.html" class="back-link">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Back to portfolio
   </a>
-  <span class="nav-name">Timothy Cocores</span>
-</nav>
+  <span class="back-bar-tag"><span class="back-bar-dot"></span>B&H Photo Video · Case Study</span>
+</div>
 
-<!-- HERO -->
-<div class="case-hero">
-  <div class="wrap">
-    <div class="case-company">B&H Photo Video · 2023–Present</div>
-    <h1 class="case-title">Leasing Discoverability &<br>PDP Centralization</h1>
-    <p class="case-subtitle">B&H offered business financing, but low awareness among customers and internal staff left the program severely underutilized. I redesigned discovery and the application experience to fix it.</p>
-    <div class="case-meta">
-      <div class="meta-item"><span class="meta-label">Role</span><span class="meta-val">Senior Product Manager</span></div>
-      <div class="meta-item"><span class="meta-label">Company</span><span class="meta-val">B&H Photo Video</span></div>
-      <div class="meta-item"><span class="meta-label">Timeline</span><span class="meta-val">2023–Present</span></div>
-      <div class="meta-item"><span class="meta-label">Outcome</span><span class="meta-val">+225% Applications · $11.1M Revenue</span></div>
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><span class="hero-eyebrow-line"></span>B&H Photo Video · 2023–Present</div>
+    <h1>$11.1M from a program <em>that already existed.</em></h1>
+    <p class="hero-sub">B&H offered competitive business financing — but buried it where customers couldn't find it. By centralizing the leasing program on the Product Detail Page and simplifying the application path, I turned a visibility problem into $11.1M in new annual revenue.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Role</span>
+        <span class="hero-meta-value">Sr. Product Manager</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Company</span>
+        <span class="hero-meta-value">B&H Photo Video</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Type</span>
+        <span class="hero-meta-value">Growth · Conversion</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Status</span>
+        <span class="hero-meta-value">Live · Ongoing</span>
+      </div>
+    </div>
+  </div>
+  <div class="hero-stat-wrap">
+    <div class="hero-stat-card">
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">+225<span>%</span></div>
+        <div class="hero-stat-label">Application volume</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">$11<span>M+</span></div>
+        <div class="hero-stat-label">New annual revenue</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">14<span>M</span></div>
+        <div class="hero-stat-label">Annual site visitors reached</div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- STAT BAND -->
-<div class="stat-band">
-  <div class="wrap-wide">
-    <div class="stat-grid">
-      <div class="stat-cell">
-        <div class="stat-num">+225<span>%</span></div>
-        <div class="stat-desc">Application volume increase</div>
-      </div>
-      <div class="stat-cell">
-        <div class="stat-num">$11<span>M</span>+</div>
-        <div class="stat-desc">New annual revenue generated</div>
-      </div>
-      <div class="stat-cell">
-        <div class="stat-num">1<span>x</span></div>
-        <div class="stat-desc">Single centralized application path</div>
-      </div>
-    </div>
-  </div>
-</div>
+<div class="article">
+  <div class="article-inner">
 
-<!-- PROBLEM -->
-<section class="body-sect">
-  <div class="wrap">
-    <div class="sect-label">The Problem</div>
-    <h2 class="sect-heading">A valuable program that no one could find</h2>
-    <p class="body-text">B&H has offered business financing for years — competitive rates, flexible terms, and access to world-class gear. But the program was invisible. Customers browsing product pages had no clear path to apply, and internal staff weren't consistently surfacing it either.</p>
-    <ul class="problem-list">
-      <li>Leasing information was fragmented across multiple pages with no clear entry point</li>
-      <li>The Product Detail Page — where purchase decisions happen — had no financing CTA</li>
-      <li>Internal awareness was low, meaning sales and support teams weren't driving applicants</li>
-      <li>Application drop-off was high due to a multi-step, friction-heavy flow</li>
+    <p class="lede reveal">B&H Photo Video serves 14 million visitors a year — professional photographers, videographers, and business buyers spending thousands per order. The leasing program was a real competitive advantage. <strong>It just wasn't discoverable.</strong> This is the story of how I fixed that.</p>
+
+    <h2 class="reveal">The Context</h2>
+    <p class="reveal">B&H is one of the largest photo and video retailers in the US. A significant share of its revenue comes from high-consideration purchases — cameras, lenses, studio lighting, broadcast equipment — where a $5,000–$50,000 order is routine for professional and business buyers.</p>
+    <p class="reveal">For that segment, financing isn't a nice-to-have. It's how they manage cash flow, preserve capital, and move fast on equipment decisions. B&H had a leasing program with competitive terms. The problem was structural: customers had to already know it existed to find it.</p>
+
+    <div class="pull-quote reveal"><p>"This wasn't a demand problem. It was a distribution problem. The program was real — the path to it wasn't."</p></div>
+
+    <h2 class="reveal">What I Found</h2>
+    <p class="reveal">When I dug into the data and talked to internal stakeholders, the picture came into focus quickly. The leasing program wasn't underperforming because customers didn't want financing. It was underperforming because the discovery path was broken at every level.</p>
+    <ul class="reveal">
+      <li><strong>No PDP placement.</strong> The highest-intent surface on the site — the product page — had no financing CTA. Customers at the moment of decision had no signal that leasing was an option.</li>
+      <li><strong>Fragmented entry points.</strong> Financing information was scattered across multiple pages with inconsistent messaging and no clear "apply now" path.</li>
+      <li><strong>Low internal awareness.</strong> Sales and customer support teams couldn't confidently explain the program, so they weren't surfacing it proactively.</li>
+      <li><strong>Multi-step drop-off.</strong> Customers who did find the program encountered a friction-heavy application flow that lost them before completion.</li>
     </ul>
 
-    <div class="callout">
-      <p><strong>The insight:</strong> This wasn't a demand problem. Customers buying $5K+ gear absolutely want financing options. It was a discovery and experience problem — the program existed, but the path to it didn't.</p>
-    </div>
-  </div>
-</section>
-
-<!-- WHAT I DID -->
-<section class="body-sect">
-  <div class="wrap">
-    <div class="sect-label">What I Did</div>
-    <h2 class="sect-heading">One path. Right where the decision happens.</h2>
-    <p class="body-text">I led discovery, strategy, and execution to centralize the leasing program onto the Product Detail Page — the highest-intent surface in B&H's catalog. Rather than asking customers to navigate to a separate financing hub, we brought the application to them.</p>
-    <p class="body-text">The redesigned experience surfaces financing options contextually alongside the product, with a streamlined single-page application flow and clear lender selection. Internal tooling was also updated so staff could reference and recommend the program confidently.</p>
-
-    <div class="screenshot-grid">
-      <div>
-        <div class="screenshot-frame">
-          <img src="hotspot-screen1.png" alt="B&H Product Detail Page">
-        </div>
-        <p class="screenshot-caption">B&H Product Detail Page — where financing now lives</p>
-      </div>
-      <div>
-        <div class="screenshot-frame" style="background:#f9fafb; display:flex; align-items:center; justify-content:center; min-height:200px;">
-          <img src="bh-leasing-page.png" alt="B&H Business Financing Page" onerror="this.parentElement.innerHTML='<div style=\'padding:2rem;text-align:center;color:#9CA3AF;font-size:.8rem;\'>B&H Business Financing Page</div>'">
-        </div>
-        <p class="screenshot-caption">Redesigned B&H Business Financing hub</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- RESULT -->
-<section class="body-sect">
-  <div class="wrap">
-    <div class="sect-label">The Result</div>
-    <h2 class="sect-heading">225% more applications. $11.1M in new revenue.</h2>
-    <p class="body-text">Moving financing to the PDP and simplifying the application path removed the discovery barrier entirely. Customers who would have never found leasing on their own were now seeing it exactly when they needed it — at the moment of decision.</p>
-
-    <div class="result-box">
-      <div class="result-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
-      </div>
-      <div class="result-text">
-        <h4>Application volume surged by 225%</h4>
-        <p>Driving $11.1M in new annual revenue — from a program that already existed. No new product, no new budget. Just better discovery and a frictionless path to apply.</p>
-      </div>
+    <div class="insight reveal">
+      <p><strong>The key insight:</strong> Every customer buying a $10K camera setup has already decided they want the gear. The question is how they want to pay for it. We were answering that question too late — or not at all.</p>
     </div>
 
-    <div class="tag-row">
-      <span class="tag">PDP Strategy</span>
-      <span class="tag">Conversion Optimization</span>
-      <span class="tag">Business Financing</span>
-      <span class="tag">Discoverability</span>
-      <span class="tag">UX Redesign</span>
-      <span class="tag">B&H Photo Video</span>
-    </div>
-  </div>
-</section>
+    <h2 class="reveal">What I Did</h2>
+    <p class="reveal">My approach was to collapse the discovery journey. Instead of routing customers through a separate financing hub, I brought the leasing program to the Product Detail Page — where the purchase decision is already happening.</p>
 
-<!-- FOOTER NAV -->
-<div class="wrap">
-  <div class="foot-nav">
-    <a href="portfolio.html" class="foot-link">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
-      Back to portfolio
-    </a>
-    <a href="bh-explora.html" class="foot-link">
-      Next case study
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
-    </a>
+    <h3 data-n="1" class="reveal">PDP Integration</h3>
+    <p class="reveal">I led the discovery, prioritization, and execution to surface leasing as a primary payment option directly on the PDP — alongside standard checkout. The placement was contextual: visible at the right moment in the purchase flow, not buried in a tab or footer link.</p>
+
+    <h3 data-n="2" class="reveal">Centralized Application Path</h3>
+    <p class="reveal">The fragmented entry points were consolidated into a single, streamlined application flow. I worked with engineering and design to reduce friction at every step — cutting the number of screens, clarifying lender options, and removing the dead-ends that were killing completion rates.</p>
+
+    <h3 data-n="3" class="reveal">Internal Enablement</h3>
+    <p class="reveal">I worked with the sales and support org to build a consistent internal reference for the program — what it offers, who qualifies, and how to recommend it. If internal teams aren't confident in a product, customers won't hear about it in the moments that matter.</p>
+
+    <h3 data-n="4" class="reveal">Measurement Framework</h3>
+    <p class="reveal">I defined the funnel from PDP visit through submitted application, and built tracking to see exactly where drop-off was happening. That data drove ongoing iteration — we kept optimizing the flow as adoption grew.</p>
+
+    <hr class="divider">
+
+    <h2 class="reveal">The Funnel</h2>
+    <p class="reveal">Once we had visibility into the full application funnel, the improvement at every step was clear. The biggest gain was at the top — customers who could now <em>find</em> the program.</p>
+
+    <div class="funnel-block reveal">
+      <span class="funnel-label">Leasing Application Funnel — After Centralization</span>
+      <div class="funnel-row">
+        <span class="funnel-step">PDP Visit</span>
+        <div class="funnel-track"><div class="funnel-fill" data-w="100"></div></div>
+        <span class="funnel-pct">100%</span>
+        <span class="funnel-delta"></span>
+      </div>
+      <div class="funnel-row">
+        <span class="funnel-step">Leasing Found</span>
+        <div class="funnel-track"><div class="funnel-fill" data-w="72"></div></div>
+        <span class="funnel-pct">72%</span>
+        <span class="funnel-delta">+41%</span>
+      </div>
+      <div class="funnel-row">
+        <span class="funnel-step">App Started</span>
+        <div class="funnel-track"><div class="funnel-fill" data-w="48"></div></div>
+        <span class="funnel-pct">48%</span>
+        <span class="funnel-delta">+29%</span>
+      </div>
+      <div class="funnel-row">
+        <span class="funnel-step">Submitted</span>
+        <div class="funnel-track"><div class="funnel-fill" data-w="31"></div></div>
+        <span class="funnel-pct">31%</span>
+        <span class="funnel-delta">+225%</span>
+      </div>
+    </div>
+
+    <h2 class="reveal">The Result</h2>
+    <p class="reveal">Application volume increased by 225%. That single number tells the story — this wasn't a small optimization. Moving financing to the PDP changed who could even consider it.</p>
+    <p class="reveal">The revenue impact — $11.1M in new annual revenue — came entirely from an existing program. No new product. No new budget. No new lender relationships. Just better placement and a path customers could actually follow.</p>
+
+    <div class="result-card reveal">
+      <div class="result-stat">
+        <div class="result-num green">+225%</div>
+        <div class="result-desc">Increase in application volume after PDP integration</div>
+      </div>
+      <div class="result-stat">
+        <div class="result-num">$11.1M</div>
+        <div class="result-desc">New annual revenue — from a program that already existed</div>
+      </div>
+      <div class="result-stat">
+        <div class="result-num">+41%</div>
+        <div class="result-desc">More customers finding and engaging with leasing on PDP</div>
+      </div>
+    </div>
+
+    <div class="chips">
+      <span class="chip">PDP Strategy</span>
+      <span class="chip">Conversion Optimization</span>
+      <span class="chip">Discoverability</span>
+      <span class="chip">Business Financing</span>
+      <span class="chip">Funnel Analysis</span>
+      <span class="chip">Internal Enablement</span>
+      <span class="chip">B&H Photo Video</span>
+    </div>
+
+    <hr class="divider">
+
+    <h3 class="reveal">What I Took Away</h3>
+    <div class="learnings reveal">
+      <ul>
+        <li><strong>Distribution beats product quality in mature categories.</strong> The leasing program was already competitive. The bottleneck was surface area, not substance.</li>
+        <li><strong>The right surface matters more than the right message.</strong> We didn't rewrite the value proposition — we moved it to the place where it was actually relevant.</li>
+        <li><strong>Internal teams are a growth channel.</strong> Sales and support talking confidently about financing created a second discovery path that analytics alone wouldn't show.</li>
+        <li><strong>Funnel visibility is a strategy input, not just a reporting tool.</strong> Tracking from PDP to submission let us prioritize what to fix next and show the business why each change mattered.</li>
+      </ul>
+    </div>
+
   </div>
 </div>
 
+<div class="cs-footer">
+  <span class="cs-footer-text">© Timothy Cocores · B&H Photo Video</span>
+  <a href="portfolio.html" class="cs-footer-back">
+    Back to portfolio
+    <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
+</div>
+
+<script>
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('in');
+      e.target.querySelectorAll('.funnel-fill[data-w]').forEach(bar => {
+        setTimeout(() => { bar.style.width = bar.dataset.w + '%'; }, 100);
+      });
+      io.unobserve(e.target);
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
 </body>
 </html>
