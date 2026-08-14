@@ -169,6 +169,8 @@
     .status-text { font-size: 0.85rem; font-weight: 500; color: var(--text); }
     .status-sub { font-size: 0.75rem; color: var(--subtle); margin-top: 0.1rem; }
 
+    .screen-callout { font-size: 0.78rem; color: var(--muted); line-height: 1.65; margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid var(--border); }
+    .screen-callout strong { color: var(--text); display: block; margin-bottom: 0.2rem; }
     .contributions { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; margin-top: 2rem; }
     .contributions ul { margin-bottom: 0; }
     .contributions li { font-size: 0.9rem; }
@@ -261,18 +263,6 @@
       <span class="chip">Community Verified</span>
     </div>
 
-    <div class="screenshots-section reveal">
-      <span class="screenshots-label">The App</span>
-      <div class="screenshots-grid">
-        <div class="phone-wrap">
-          <img src="loocodes-screen1.png" alt="LooCodes app — location list view">
-        </div>
-        <div class="phone-wrap offset">
-          <img src="loocodes-screen2.png" alt="LooCodes app — location detail cards">
-        </div>
-      </div>
-    </div>
-
     <h2 class="reveal">How It Works</h2>
 
     <h3 data-n="1" class="reveal">Submit What You Know</h3>
@@ -287,6 +277,50 @@
     <h3 data-n="4" class="reveal">Earn Trust Over Time</h3>
     <p class="reveal">Contributors who submit accurate, regularly confirmed entries build reputation in the community. Trusted submitters get early access to new cities and features as the product grows.</p>
 
+    <h2 class="reveal">The App</h2>
+    <p class="reveal">The core UX challenge was speed. Someone who needs a bathroom right now can't afford friction. Every design decision was made around a single constraint: <strong>get the user to a working code in under 10 seconds.</strong></p>
+
+    <div class="screenshots-section reveal">
+      <div class="screenshots-grid">
+        <div>
+          <div class="phone-wrap">
+            <img src="loocodes-screen1.png" alt="LooCode — nearby locations list">
+          </div>
+          <div class="screen-callout">
+            <strong>Nearby list view</strong> — sorted by distance and trust score, not alphabetically. The closest high-confidence entry is always first. No map required to find what you need.
+          </div>
+        </div>
+        <div>
+          <div class="phone-wrap offset">
+            <img src="loocodes-screen2.png" alt="LooCode — location detail with code">
+          </div>
+          <div class="screen-callout">
+            <strong>Location detail</strong> — the code is the largest element on screen. Trust indicators (confirmation count, last verified date) sit below so users can judge confidence at a glance without reading a wall of text.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <h2 class="reveal">The Decisions Behind the Exploration</h2>
+    <p class="reveal">Every open question in this product has a real tension behind it. Here's the actual thinking driving each one.</p>
+
+    <h3 class="reveal">Data freshness model</h3>
+    <p class="reveal">The first instinct was to let users flag stale codes manually. The problem: people only flag things when they're frustrated, which means the data stays stale until someone has a bad experience. <strong>My approach:</strong> entries decay on a time-based score regardless of flags, with a lightweight "still works" confirmation tap that anyone can do in one second. Freshness becomes opt-in, not incident-driven.</p>
+
+    <h3 class="reveal">Anonymous vs. account</h3>
+    <p class="reveal">Requiring an account kills cold-start. If someone can't look up a code the first time they open the app, they'll never come back. <strong>My decision:</strong> lookups are fully anonymous. Submissions require an account — but only because accountability matters for data quality. The friction gate is on the contribution side, not the consumption side.</p>
+
+    <h3 class="reveal">Trust and reputation</h3>
+    <p class="reveal">Yelp-style stars create incentive misalignment — submitters optimize for volume, not accuracy. <strong>My approach:</strong> reputation is a function of confirmation rate, not submission count. A user with 10 entries that were all confirmed ranks higher than one with 100 entries that were half-flagged. Quality over quantity, enforced by the community.</p>
+
+    <h3 class="reveal">Moderation at scale</h3>
+    <p class="reveal">Full-time moderation doesn't scale, and ML classifiers need training data I don't have yet. <strong>My approach:</strong> lean on community flag thresholds (3 flags = auto-hidden, pending review) and restrict new submitters to a lower initial trust level. The community moderates itself in the steady state; I intervene on edge cases.</p>
+
+    <h3 class="reveal">City expansion</h3>
+    <p class="reveal">The temptation is to launch everywhere and let density find itself. That's how you end up with a half-empty map in 50 cities. <strong>My approach:</strong> launch dense in one city (NYC), hit a minimum entry threshold per neighborhood before expanding, and use a waitlist in new cities to build pre-launch density. Scarcity of coverage is worse than no coverage at all.</p>
+
     <hr class="divider">
 
     <div class="status-card reveal">
@@ -295,18 +329,6 @@
         <div class="status-text">In Development</div>
         <div class="status-sub">Actively building — data model, submission flow, and map UX underway</div>
       </div>
-    </div>
-
-    <h3 class="reveal">What I'm Exploring</h3>
-    <div class="contributions reveal">
-      <ul>
-        <li><strong>Data freshness model</strong> — how entries age, decay, and get revived through community confirmation</li>
-        <li><strong>Trust and reputation</strong> — incentivizing accurate submissions without gamifying it awkwardly</li>
-        <li><strong>Moderation at scale</strong> — keeping entries clean without a full-time team watching submissions</li>
-        <li><strong>Anonymous vs. account</strong> — the right balance between frictionless lookup and community contribution</li>
-        <li><strong>City expansion</strong> — starting dense (NYC) and working outward as community density allows</li>
-        <li><strong>Partnerships</strong> — hotels, coffee chains, and co-working spaces as verified contributors</li>
-      </ul>
     </div>
 
   </div>
