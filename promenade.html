@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Promenade — Timothy Cocores</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f9f9f8; --white: #fff; --border: #e7e5e4;
+      --text: #18181b; --muted: #71717a; --subtle: #a1a1aa;
+      --accent: #6366F1; --accent-light: #EEF2FF;
+      --green: #16a34a; --green-light: #dcfce7;
+      --dark: #0d0d0d;
+      --font: 'Inter', -apple-system, sans-serif; --max: 720px;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); background: var(--white); color: var(--text); -webkit-font-smoothing: antialiased; }
+    ::selection { background: var(--accent-light); color: var(--accent); }
+
+    .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+
+    /* ── Back bar ── */
+    .back-bar {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,13,13,0.92); backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 0 2rem; height: 52px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .back-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.45);
+      text-decoration: none; transition: color 0.15s;
+    }
+    .back-link:hover { color: rgba(255,255,255,0.9); }
+    .back-bar-tag { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.25); }
+    .back-bar-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; margin-right: 0.5rem; box-shadow: 0 0 8px rgba(99,102,241,0.7); }
+
+    /* ── Hero ── */
+    .hero {
+      background:
+        radial-gradient(ellipse at 10% 80%, rgba(99,102,241,0.12) 0%, transparent 55%),
+        radial-gradient(ellipse at 90% 10%, rgba(99,102,241,0.06) 0%, transparent 55%),
+        var(--dark);
+      padding: 6rem 2rem 0; overflow: hidden; position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 80px),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 80px);
+      pointer-events: none;
+    }
+    .hero-inner { max-width: var(--max); margin: 0 auto; position: relative; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem;
+    }
+    .hero-eyebrow-line { display: block; width: 24px; height: 1.5px; background: var(--accent); }
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 700;
+      letter-spacing: -0.04em; line-height: 1.08; color: #fff; margin-bottom: 1.25rem;
+    }
+    .hero h1 em { font-style: normal; color: rgba(255,255,255,0.4); }
+    .hero-sub { font-size: 1rem; color: rgba(255,255,255,0.5); line-height: 1.75; max-width: 540px; margin-bottom: 3rem; }
+    .hero-meta {
+      display: grid; grid-template-columns: repeat(4, auto); gap: 0;
+      width: fit-content; background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden;
+    }
+    .hero-meta-item {
+      display: flex; flex-direction: column; gap: 0.25rem;
+      padding: 1rem 1.5rem; border-right: 1px solid rgba(255,255,255,0.08);
+    }
+    .hero-meta-item:last-child { border-right: none; }
+    .hero-meta-label { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.28); }
+    .hero-meta-value { font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.72); }
+
+    /* ── Stat card rising from hero ── */
+    .hero-stat-wrap {
+      width: 100%; max-width: var(--max); margin: 3.5rem auto 0;
+      display: flex; align-items: flex-end; justify-content: center;
+    }
+    .hero-stat-card {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+      border-bottom: none; border-radius: 16px 16px 0 0;
+      width: 100%; max-width: 560px;
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      overflow: hidden;
+    }
+    .hero-stat-item {
+      padding: 2rem 1.5rem; text-align: center;
+      border-right: 1px solid rgba(255,255,255,0.08);
+    }
+    .hero-stat-item:last-child { border-right: none; }
+    .hero-stat-num { font-size: 2rem; font-weight: 700; color: #fff; letter-spacing: -0.04em; line-height: 1; }
+    .hero-stat-num span { color: var(--accent); }
+    .hero-stat-label { font-size: 0.65rem; font-weight: 500; color: rgba(255,255,255,0.4); margin-top: 0.4rem; line-height: 1.4; }
+
+    /* ── Article ── */
+    .article { padding: 6rem 2rem 5rem; background: var(--white); }
+    .article-inner { max-width: var(--max); margin: 0 auto; }
+
+    .lede { font-size: 1.2rem; color: var(--text); line-height: 1.75; font-weight: 400; margin-bottom: 3rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--border); }
+
+    h2 { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.025em; color: var(--text); margin: 3rem 0 0.9rem; line-height: 1.3; }
+    h3 {
+      display: flex; align-items: center; gap: 0.75rem;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--subtle); margin: 2.5rem 0 0.75rem;
+    }
+    h3[data-n]::before {
+      content: attr(data-n);
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--accent); color: #fff; font-size: 0.6rem;
+      font-weight: 700; flex-shrink: 0; letter-spacing: 0;
+    }
+    p { font-size: 0.975rem; color: var(--muted); line-height: 1.85; margin-bottom: 1.25rem; }
+    p strong { color: var(--text); font-weight: 600; }
+    ul { padding-left: 1.25em; margin-bottom: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; }
+    li { font-size: 0.975rem; color: var(--muted); line-height: 1.75; }
+    li strong { color: var(--text); font-weight: 600; }
+
+    .pull-quote {
+      background: var(--dark); margin: 3rem -2rem; padding: 3rem 2rem; position: relative; overflow: hidden;
+    }
+    .pull-quote::before {
+      content: '\201C'; position: absolute; top: -0.5rem; left: 1.5rem;
+      font-size: 8rem; line-height: 1; color: rgba(99,102,241,0.15);
+      font-family: Georgia, serif; pointer-events: none;
+    }
+    .pull-quote p { max-width: var(--max); margin: 0 auto; font-size: 1.3rem; font-style: italic; font-weight: 400; color: rgba(255,255,255,0.85); line-height: 1.6; position: relative; margin-bottom: 0; }
+
+    .divider { border: none; border-top: 1px solid var(--border); margin: 3rem 0; }
+
+    /* ── Funnel ── */
+    .funnel-block { margin: 2rem 0; }
+    .funnel-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--subtle); margin-bottom: 1.25rem; display: block; }
+    .funnel-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+    .funnel-step { font-size: 0.75rem; color: var(--muted); width: 120px; flex-shrink: 0; }
+    .funnel-track { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; height: 12px; overflow: hidden; }
+    .funnel-fill { height: 100%; border-radius: 4px; background: var(--accent); width: 0; transition: width 1.2s cubic-bezier(.4,0,.2,1); }
+    .funnel-pct { font-size: 0.75rem; font-weight: 600; color: var(--text); width: 36px; text-align: right; }
+    .funnel-delta { font-size: 0.68rem; font-weight: 700; color: var(--green); width: 52px; }
+
+    /* ── Insight callout ── */
+    .insight {
+      background: var(--accent-light); border-left: 3px solid var(--accent);
+      border-radius: 0 10px 10px 0; padding: 1.25rem 1.5rem; margin: 2rem 0;
+    }
+    .insight p { font-size: 0.95rem; color: var(--text); line-height: 1.7; margin-bottom: 0; }
+
+    /* ── Chips ── */
+    .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 1.25rem 0 2rem; }
+    .chip { font-size: 0.68rem; font-weight: 500; padding: 0.25rem 0.65rem; border-radius: 99px; background: var(--bg); border: 1px solid var(--border); color: var(--muted); }
+
+    /* ── Result card ── */
+    .result-card {
+      background: var(--bg); border: 1px solid var(--border); border-radius: 12px;
+      padding: 2rem; margin: 2rem 0;
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0;
+      overflow: hidden;
+    }
+    .result-stat { padding: 0.5rem 1.5rem; border-right: 1px solid var(--border); text-align: center; }
+    .result-stat:first-child { padding-left: 0; text-align: left; }
+    .result-stat:last-child { border-right: none; }
+    .result-num { font-size: 1.75rem; font-weight: 700; color: var(--text); letter-spacing: -0.03em; line-height: 1; }
+    .result-num.green { color: var(--green); }
+    .result-desc { font-size: 0.72rem; color: var(--muted); margin-top: 0.3rem; line-height: 1.4; }
+
+    /* ── Status / learnings card ── */
+    .learnings { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; margin-top: 2rem; }
+    .learnings ul { margin-bottom: 0; }
+    .learnings li { font-size: 0.9rem; }
+
+    /* ── Footer ── */
+    .cs-footer { background: var(--dark); padding: 2.5rem 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .cs-footer-text { font-size: 0.78rem; color: rgba(255,255,255,0.25); }
+    .cs-footer-back { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.6); text-decoration: none; transition: color 0.15s, gap 0.15s; }
+    .cs-footer-back:hover { color: #fff; gap: 0.7rem; }
+
+    @media (max-width: 640px) {
+      .hero-meta { grid-template-columns: 1fr 1fr; }
+      .hero-meta-item:nth-child(2) { border-right: none; }
+      .hero-stat-card { grid-template-columns: 1fr; }
+      .hero-stat-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+      .hero-stat-item:last-child { border-bottom: none; }
+      .pull-quote { margin: 3rem -2rem; }
+      .result-card { grid-template-columns: 1fr; }
+      .result-stat { border-right: none; border-bottom: 1px solid var(--border); padding: 1rem 0; text-align: left; }
+      .result-stat:last-child { border-bottom: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="back-bar">
+  <a href="portfolio.html" class="back-link">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Back to portfolio
+  </a>
+  <span class="back-bar-tag"><span class="back-bar-dot"></span>Promenade · Case Study</span>
+</div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><span class="hero-eyebrow-line"></span>Promenade · 2022–2023</div>
+    <h1>Cold start to $5M ARR <em>in under a year.</em></h1>
+    <p class="hero-sub">Local retailers have loyal customers and real inventory — but no way to reach buyers searching online. I built the product strategy and merchant growth motion that took Promenade's local commerce marketplace from zero to $5M ARR by making local shopping as frictionless as ordering from Amazon.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Role</span>
+        <span class="hero-meta-value">Sr. Product Manager</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Company</span>
+        <span class="hero-meta-value">Promenade</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Type</span>
+        <span class="hero-meta-value">Marketplace · Growth</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Timeline</span>
+        <span class="hero-meta-value">2022–2023</span>
+      </div>
+    </div>
+  </div>
+  <div class="hero-stat-wrap">
+    <div class="hero-stat-card">
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">$5<span>M</span></div>
+        <div class="hero-stat-label">ARR reached from zero</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">3<span>x</span></div>
+        <div class="hero-stat-label">Merchant GMV growth</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">40<span>%</span></div>
+        <div class="hero-stat-label">Reduction in merchant time-to-first-sale</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="article">
+  <div class="article-inner">
+
+    <p class="lede reveal">Local commerce is a hard problem. The supply is fragmented — thousands of independent retailers with real inventory and loyal customers but no digital presence. The demand side expects Amazon-level discovery and checkout. Promenade sat in between, and my job was to make both sides work.</p>
+
+    <h2 class="reveal">The Problem</h2>
+    <p class="reveal">Promenade's marketplace had a classic cold-start challenge compounded by a supply-side operational gap. Local merchants were signing up, but the path from "signed up" to "making sales" was broken. Onboarding took days. Catalogs were incomplete. And the buyer experience on the marketplace was inconsistent enough that repeat purchase rates were suffering.</p>
+    <p class="reveal">The demand side had its own problem: buyers searching for local goods online had no reliable way to find or trust local merchants. Search surface area was thin, checkout was fragmented, and there was no signal to distinguish a thriving local shop from one that hadn't logged in for three months.</p>
+
+    <div class="pull-quote reveal"><p>"Two-sided marketplaces don't fail from lack of demand. They fail because supply isn't ready when demand shows up."</p></div>
+
+    <h2 class="reveal">What I Found</h2>
+    <p class="reveal">I mapped the full merchant journey — from signup to first sale — and found the drop-off wasn't random. It clustered at two predictable moments.</p>
+    <ul class="reveal">
+      <li><strong>Catalog setup friction.</strong> Merchants were abandoning onboarding before publishing a single product. The setup flow asked for too much, too fast, with no sense of progress or payoff.</li>
+      <li><strong>Time to first sale was too long.</strong> Merchants who finished onboarding but didn't see a sale within two weeks churned at 3x the rate of those who did. The window was narrow and we weren't doing anything to close it.</li>
+      <li><strong>Buyer trust signals were missing.</strong> Shop pages had no social proof, no inventory freshness signal, and no indication of fulfillment speed — the exact things buyers use to decide whether to purchase from an unfamiliar seller.</li>
+      <li><strong>No feedback loop for merchants.</strong> Merchants had no visibility into how their listings were performing, which meant they couldn't improve and had no reason to stay engaged with the platform.</li>
+    </ul>
+
+    <div class="insight reveal">
+      <p><strong>The core insight:</strong> GMV would follow merchant activation. Every intervention I prioritized had to answer one question: does this get more merchants to their first sale faster?</p>
+    </div>
+
+    <h2 class="reveal">Strategy & Alignment</h2>
+    <p class="reveal">I framed the problem around a single metric: time-to-first-sale. That gave the team a shared north star that connected supply-side activation to buyer-side demand — and made it easy to prioritize ruthlessly. Work that shortened the activation window moved forward. Work that didn't had to wait.</p>
+    <p class="reveal">Cross-functionally, this required buy-in from three teams: engineering (onboarding flow redesign), operations (merchant success playbook), and growth (demand-gen targeting active merchants). I ran a two-week discovery sprint with each team to surface blockers early and set shared OKRs before we wrote a single line of code.</p>
+
+    <h2 class="reveal">What I Built</h2>
+
+    <h3 data-n="1" class="reveal">Streamlined Merchant Onboarding</h3>
+    <p class="reveal">I redesigned the onboarding flow around a minimum viable catalog — the smallest set of products that would get a merchant to their first sale. Instead of asking for complete inventory upfront, we guided merchants to publish their top five items in under 20 minutes, with a progress bar and a live preview of how their shop would look to buyers. Completion rate on onboarding increased significantly in the first month post-launch.</p>
+
+    <h3 data-n="2" class="reveal">Buyer Trust Layer</h3>
+    <p class="reveal">I shipped a shop-page trust layer: last-active timestamp, average fulfillment time, and a verification badge for merchants who had passed our catalog quality bar. These weren't vanity features — they were directly correlated with conversion rate on shop pages. Buyers needed a reason to trust a merchant they'd never heard of, and the existing page gave them none.</p>
+
+    <h3 data-n="3" class="reveal">Merchant Performance Dashboard</h3>
+    <p class="reveal">I worked with engineering to ship a lightweight analytics view for merchants: which listings were getting views, which were converting, and what the top performers had in common. This gave engaged merchants a reason to keep optimizing — and gave our merchant success team a data layer to run proactive outreach from.</p>
+
+    <h3 data-n="4" class="reveal">Demand-Side Discovery Improvements</h3>
+    <p class="reveal">I partnered with growth to improve how active, high-quality merchants surfaced in search and category pages. Freshness signals, catalog completeness, and fulfillment speed fed a ranking adjustment that surfaced the best local inventory at the top — and gave merchants a clear incentive to keep their listings current.</p>
+
+    <hr class="divider">
+
+    <h2 class="reveal">The Activation Funnel</h2>
+    <p class="reveal">Every improvement mapped back to the same funnel. Shortening time-to-first-sale had a compounding effect — merchants who transacted early stayed engaged, kept their catalogs fresh, and drove the demand-side quality that made the marketplace worth browsing.</p>
+
+    <div class="funnel-block reveal">
+      <span class="funnel-label">Merchant Activation Funnel — Before vs. After</span>
+      <div class="funnel-row">
+        <span class="funnel-step">Signup</span>
+        <div class="funnel-track"><div class="funnel-fill" data-w="100"></div></div>
+        <span class="funnel-pct">100%</span>
+        <span class="funnel-delta"></span>
+      </div>
+      <div class="funnel-row">
+        <span class="funnel-step">Onboarding Done</span>
+        <div class="funnel-track"><div class="funnel-fill" data-w="78"></div></div>
+        <span class="funnel-pct">78%</span>
+        <span class="funnel-delta">+34%</span>
+      </div>
+      <div class="funnel-row">
+        <span class="funnel-step">First Listing Live</span>
+        <div class="funnel-track"><div class="funnel-fill" data-w="64"></div></div>
+        <span class="funnel-pct">64%</span>
+        <span class="funnel-delta">+28%</span>
+      </div>
+      <div class="funnel-row">
+        <span class="funnel-step">First Sale</span>
+        <div class="funnel-track"><div class="funnel-fill" data-w="41"></div></div>
+        <span class="funnel-pct">41%</span>
+        <span class="funnel-delta">+40%</span>
+      </div>
+      <div class="funnel-row">
+        <span class="funnel-step">Active at 60 Days</span>
+        <div class="funnel-track"><div class="funnel-fill" data-w="29"></div></div>
+        <span class="funnel-pct">29%</span>
+        <span class="funnel-delta">+3x GMV</span>
+      </div>
+    </div>
+
+    <h2 class="reveal">The Outcome</h2>
+    <p class="reveal">Within the year, the marketplace reached $5M ARR. Merchant GMV grew 3x on the back of better activation and higher catalog quality. Time-to-first-sale dropped by 40%, which compressed the churn window and kept more merchants on the platform long enough to see real returns.</p>
+    <p class="reveal">The work also created a compounding flywheel: better merchants meant better buyer experience, which drove more buyers, which gave merchants more reason to stay active. That loop — not any single feature — was what turned a cold-start marketplace into a working one.</p>
+
+    <div class="result-card reveal">
+      <div class="result-stat">
+        <div class="result-num green">$5M</div>
+        <div class="result-desc">ARR reached from a standing start within the year</div>
+      </div>
+      <div class="result-stat">
+        <div class="result-num">3x</div>
+        <div class="result-desc">Merchant GMV growth driven by activation improvements</div>
+      </div>
+      <div class="result-stat">
+        <div class="result-num">−40%</div>
+        <div class="result-desc">Reduction in merchant time-to-first-sale</div>
+      </div>
+    </div>
+
+    <div class="chips">
+      <span class="chip">Marketplace Strategy</span>
+      <span class="chip">Cold Start</span>
+      <span class="chip">Merchant Activation</span>
+      <span class="chip">Funnel Optimization</span>
+      <span class="chip">Trust & Safety</span>
+      <span class="chip">Growth</span>
+      <span class="chip">Promenade</span>
+    </div>
+
+    <hr class="divider">
+
+    <h3 class="reveal">What I Took Away</h3>
+    <div class="learnings reveal">
+      <ul>
+        <li><strong>Cold-start problems are sequencing problems.</strong> The question isn't whether to focus on supply or demand — it's which constraint is blocking the other right now. In this case, supply quality was the blocker, so that's where I started.</li>
+        <li><strong>Time-to-value is a retention strategy.</strong> Getting merchants to a first sale fast wasn't just a growth metric — it was the most predictive signal of whether they'd stay on the platform. The window was narrow and we had to design for it explicitly.</li>
+        <li><strong>Data visibility changes merchant behavior.</strong> Merchants who could see which listings were performing kept their catalogs fresher and published more products. Giving them a feedback loop cost very little and compounded over time.</li>
+        <li><strong>Cross-functional alignment before execution.</strong> Running a discovery sprint with every team before writing code meant we weren't discovering dependencies mid-sprint. The two weeks upfront saved much more than two weeks of rework.</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<div class="cs-footer">
+  <span class="cs-footer-text">© Timothy Cocores · Promenade</span>
+  <a href="portfolio.html" class="cs-footer-back">
+    Back to portfolio
+    <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
+</div>
+
+<script>
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('in');
+      e.target.querySelectorAll('.funnel-fill[data-w]').forEach(bar => {
+        setTimeout(() => { bar.style.width = bar.dataset.w + '%'; }, 100);
+      });
+      io.unobserve(e.target);
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  document.querySelectorAll('a[href="portfolio.html"]').forEach(a => {
+    a.addEventListener('click', () => sessionStorage.setItem('portfolio_scroll_y', window.scrollY));
+  });
+</script>
+</body>
+</html>
