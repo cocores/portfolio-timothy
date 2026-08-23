@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demandforce — Timothy Cocores</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f9f9f8; --white: #fff; --border: #e7e5e4;
+      --text: #18181b; --muted: #71717a; --subtle: #a1a1aa;
+      --accent: #6366F1; --accent-light: #EEF2FF;
+      --green: #16a34a; --green-light: #dcfce7;
+      --dark: #0d0d0d;
+      --font: 'Inter', -apple-system, sans-serif; --max: 720px;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); background: var(--white); color: var(--text); -webkit-font-smoothing: antialiased; }
+    ::selection { background: var(--accent-light); color: var(--accent); }
+
+    .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+
+    /* ── Back bar ── */
+    .back-bar {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,13,13,0.92); backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 0 2rem; height: 52px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .back-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.45);
+      text-decoration: none; transition: color 0.15s;
+    }
+    .back-link:hover { color: rgba(255,255,255,0.9); }
+    .back-bar-tag { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.25); }
+    .back-bar-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; margin-right: 0.5rem; box-shadow: 0 0 8px rgba(99,102,241,0.7); }
+
+    /* ── Hero ── */
+    .hero {
+      background:
+        radial-gradient(ellipse at 10% 80%, rgba(99,102,241,0.12) 0%, transparent 55%),
+        radial-gradient(ellipse at 90% 10%, rgba(99,102,241,0.06) 0%, transparent 55%),
+        var(--dark);
+      padding: 6rem 2rem 0; overflow: hidden; position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 80px),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 80px);
+      pointer-events: none;
+    }
+    .hero-inner { max-width: var(--max); margin: 0 auto; position: relative; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem;
+    }
+    .hero-eyebrow-line { display: block; width: 24px; height: 1.5px; background: var(--accent); }
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 700;
+      letter-spacing: -0.04em; line-height: 1.08; color: #fff; margin-bottom: 1.25rem;
+    }
+    .hero h1 em { font-style: normal; color: rgba(255,255,255,0.4); }
+    .hero-sub { font-size: 1rem; color: rgba(255,255,255,0.5); line-height: 1.75; max-width: 540px; margin-bottom: 3rem; }
+    .hero-meta {
+      display: grid; grid-template-columns: repeat(4, auto); gap: 0;
+      width: fit-content; background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden;
+    }
+    .hero-meta-item {
+      display: flex; flex-direction: column; gap: 0.25rem;
+      padding: 1rem 1.5rem; border-right: 1px solid rgba(255,255,255,0.08);
+    }
+    .hero-meta-item:last-child { border-right: none; }
+    .hero-meta-label { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.28); }
+    .hero-meta-value { font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.72); }
+
+    /* ── Stat card rising from hero ── */
+    .hero-stat-wrap {
+      width: 100%; max-width: var(--max); margin: 3.5rem auto 0;
+      display: flex; align-items: flex-end; justify-content: center;
+    }
+    .hero-stat-card {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+      border-bottom: none; border-radius: 16px 16px 0 0;
+      width: 100%; max-width: 560px;
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      overflow: hidden;
+    }
+    .hero-stat-item {
+      padding: 2rem 1.5rem; text-align: center;
+      border-right: 1px solid rgba(255,255,255,0.08);
+    }
+    .hero-stat-item:last-child { border-right: none; }
+    .hero-stat-num { font-size: 2rem; font-weight: 700; color: #fff; letter-spacing: -0.04em; line-height: 1; }
+    .hero-stat-num span { color: var(--accent); }
+    .hero-stat-label { font-size: 0.65rem; font-weight: 500; color: rgba(255,255,255,0.4); margin-top: 0.4rem; line-height: 1.4; }
+
+    /* ── Article ── */
+    .article { padding: 6rem 2rem 5rem; background: var(--white); }
+    .article-inner { max-width: var(--max); margin: 0 auto; }
+
+    .lede { font-size: 1.2rem; color: var(--text); line-height: 1.75; font-weight: 400; margin-bottom: 3rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--border); }
+
+    h2 { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.025em; color: var(--text); margin: 3rem 0 0.9rem; line-height: 1.3; }
+    h3 {
+      display: flex; align-items: center; gap: 0.75rem;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--subtle); margin: 2.5rem 0 0.75rem;
+    }
+    h3[data-n]::before {
+      content: attr(data-n);
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--accent); color: #fff; font-size: 0.6rem;
+      font-weight: 700; flex-shrink: 0; letter-spacing: 0;
+    }
+    p { font-size: 0.975rem; color: var(--muted); line-height: 1.85; margin-bottom: 1.25rem; }
+    p strong { color: var(--text); font-weight: 600; }
+    ul { padding-left: 1.25em; margin-bottom: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; }
+    li { font-size: 0.975rem; color: var(--muted); line-height: 1.75; }
+    li strong { color: var(--text); font-weight: 600; }
+
+    .pull-quote {
+      background: var(--dark); margin: 3rem -2rem; padding: 3rem 2rem; position: relative; overflow: hidden;
+    }
+    .pull-quote::before {
+      content: '\201C'; position: absolute; top: -0.5rem; left: 1.5rem;
+      font-size: 8rem; line-height: 1; color: rgba(99,102,241,0.15);
+      font-family: Georgia, serif; pointer-events: none;
+    }
+    .pull-quote p { max-width: var(--max); margin: 0 auto; font-size: 1.3rem; font-style: italic; font-weight: 400; color: rgba(255,255,255,0.85); line-height: 1.6; position: relative; margin-bottom: 0; }
+
+    .divider { border: none; border-top: 1px solid var(--border); margin: 3rem 0; }
+
+    /* ── Insight callout ── */
+    .insight {
+      background: var(--accent-light); border-left: 3px solid var(--accent);
+      border-radius: 0 10px 10px 0; padding: 1.25rem 1.5rem; margin: 2rem 0;
+    }
+    .insight p { font-size: 0.95rem; color: var(--text); line-height: 1.7; margin-bottom: 0; }
+
+    /* ── Before / after bar chart ── */
+    .bar-compare {
+      display: flex; align-items: flex-end; gap: 1.5rem;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 12px; padding: 2rem; margin: 2rem 0;
+    }
+    .bar-col { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; }
+    .bar-col-label { font-size: 0.7rem; color: var(--muted); text-align: center; line-height: 1.4; }
+    .bar-wrap { display: flex; flex-direction: column; justify-content: flex-end; height: 120px; }
+    .bar-rect { width: 48px; border-radius: 6px 6px 0 0; transition: height 1.2s cubic-bezier(.4,0,.2,1); }
+    .bar-rect.before { background: var(--border); height: 0; }
+    .bar-rect.after { background: var(--accent); height: 0; }
+    .bar-stat { flex: 1; display: flex; flex-direction: column; justify-content: center; padding-left: 0.5rem; }
+    .bar-stat-num { font-size: 2.5rem; font-weight: 700; color: var(--green); letter-spacing: -0.04em; line-height: 1; }
+    .bar-stat-desc { font-size: 0.75rem; color: var(--muted); margin-top: 0.3rem; line-height: 1.4; }
+    .bar-legend { display: flex; gap: 1.25rem; margin-top: 0.5rem; }
+    .bar-legend-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.68rem; color: var(--muted); }
+    .bar-legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+
+    /* ── Chips ── */
+    .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 1.25rem 0 2rem; }
+    .chip { font-size: 0.68rem; font-weight: 500; padding: 0.25rem 0.65rem; border-radius: 99px; background: var(--bg); border: 1px solid var(--border); color: var(--muted); }
+
+    /* ── Result card ── */
+    .result-card {
+      background: var(--bg); border: 1px solid var(--border); border-radius: 12px;
+      padding: 2rem; margin: 2rem 0;
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0;
+      overflow: hidden;
+    }
+    .result-stat { padding: 0.5rem 1.5rem; border-right: 1px solid var(--border); text-align: center; }
+    .result-stat:first-child { padding-left: 0; text-align: left; }
+    .result-stat:last-child { border-right: none; }
+    .result-num { font-size: 1.75rem; font-weight: 700; color: var(--text); letter-spacing: -0.03em; line-height: 1; }
+    .result-num.green { color: var(--green); }
+    .result-desc { font-size: 0.72rem; color: var(--muted); margin-top: 0.3rem; line-height: 1.4; }
+
+    /* ── Learnings card ── */
+    .learnings { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; margin-top: 2rem; }
+    .learnings ul { margin-bottom: 0; }
+    .learnings li { font-size: 0.9rem; }
+
+    /* ── Footer ── */
+    .cs-footer { background: var(--dark); padding: 2.5rem 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .cs-footer-text { font-size: 0.78rem; color: rgba(255,255,255,0.25); }
+    .cs-footer-back { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.6); text-decoration: none; transition: color 0.15s, gap 0.15s; }
+    .cs-footer-back:hover { color: #fff; gap: 0.7rem; }
+
+    @media (max-width: 640px) {
+      .hero-meta { grid-template-columns: 1fr 1fr; }
+      .hero-meta-item:nth-child(2) { border-right: none; }
+      .hero-stat-card { grid-template-columns: 1fr; }
+      .hero-stat-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+      .hero-stat-item:last-child { border-bottom: none; }
+      .pull-quote { margin: 3rem -2rem; }
+      .result-card { grid-template-columns: 1fr; }
+      .result-stat { border-right: none; border-bottom: 1px solid var(--border); padding: 1rem 0; text-align: left; }
+      .result-stat:last-child { border-bottom: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="back-bar">
+  <a href="portfolio.html" class="back-link">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Back to portfolio
+  </a>
+  <span class="back-bar-tag"><span class="back-bar-dot"></span>Demandforce · Case Study</span>
+</div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><span class="hero-eyebrow-line"></span>InternetBrands – Demandforce · 2020–2022</div>
+    <h1>The support queue was full. <em>Onboarding was the problem.</em></h1>
+    <p class="hero-sub">Demandforce's SMB customers were flooding support — not because the product was broken, but because onboarding left them confused about how to use it. I ran a first-principles research sprint, rebuilt the onboarding flow from the findings, and cut support tickets in half.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Role</span>
+        <span class="hero-meta-value">Sr. Product Manager</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Company</span>
+        <span class="hero-meta-value">Demandforce</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Type</span>
+        <span class="hero-meta-value">SaaS · Onboarding</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Timeline</span>
+        <span class="hero-meta-value">2020–2022</span>
+      </div>
+    </div>
+  </div>
+  <div class="hero-stat-wrap">
+    <div class="hero-stat-card">
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">−50<span>%</span></div>
+        <div class="hero-stat-label">Support tickets post-rebuild</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">↑<span> </span>Act.</div>
+        <div class="hero-stat-label">Early activation rate improvement</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">SMB</div>
+        <div class="hero-stat-label">Small business focus — healthcare, auto, home services</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="article">
+  <div class="article-inner">
+
+    <p class="lede reveal">Demandforce serves small business owners — dentists, auto shops, salons — who are experts in their trade but not in marketing software. When the support queue is full of the same questions, it's rarely a support problem. It's almost always a product problem hiding upstream.</p>
+
+    <h2 class="reveal">The Context</h2>
+    <p class="reveal">Demandforce is a marketing automation platform built for SMBs — tools for appointment reminders, review generation, email campaigns, and customer retention. The customer base runs the gamut: dental offices, auto repair shops, salons, veterinary practices. What they share is that they're excellent at their trade and time-starved when it comes to everything else.</p>
+    <p class="reveal">When I came onto the product, the support org was stretched. Volume was high, CSAT was suffering, and the team was stuck in a reactive loop — answering the same onboarding questions repeatedly without a path to fixing the source. Leadership knew it was a product problem. No one had run the research to confirm where, exactly, it was breaking.</p>
+
+    <div class="pull-quote reveal"><p>"A crowded support queue isn't a staffing problem. It's a signal that something upstream failed — and the customers are paying the cost of that failure."</p></div>
+
+    <h2 class="reveal">What I Found</h2>
+    <p class="reveal">I started with the data — support ticket categories, volume by topic, time-to-resolution — and then went into the field. I ran structured interviews with customers who had recently contacted support, sat in on onboarding calls, and shadowed the support team for a week. The picture that emerged was consistent.</p>
+    <ul class="reveal">
+      <li><strong>The first-session experience was overwhelming.</strong> New customers were dropped into a full-featured dashboard with no clear starting point. Most didn't know which feature to set up first, and the default state of the product looked incomplete — which it was, until configured.</li>
+      <li><strong>Setup steps were scattered and non-linear.</strong> Connecting a calendar, importing contacts, configuring reminders, and enabling reviews were all independent flows with no guided sequence. Customers skipped critical steps without realizing it, then hit downstream failures when the product didn't behave as expected.</li>
+      <li><strong>Progress was invisible.</strong> There was no indication of what was set up, what wasn't, or what was blocking the product from working. Customers couldn't tell if they were done or not — so many called support to ask.</li>
+      <li><strong>SMB context wasn't accounted for.</strong> Copy assumed a level of marketing familiarity that most customers didn't have. Terms like "list segmentation" and "campaign triggers" created friction at key decision points. The product spoke a language the customers weren't fluent in.</li>
+    </ul>
+
+    <div class="insight reveal">
+      <p><strong>The core insight:</strong> Customers weren't calling support because the product didn't work. They were calling because onboarding never got them to "working" in the first place. Fix the path to first value, and the queue would drop.</p>
+    </div>
+
+    <h2 class="reveal">Strategy & Alignment</h2>
+    <p class="reveal">I brought the research findings to a cross-functional review with product, engineering, design, and the support leadership team. The framing was deliberate: this wasn't a request for engineering resources, it was a shared problem diagnosis. The support data showed the cost. The research showed the cause. The ask was alignment on the fix before we built anything.</p>
+    <p class="reveal">We aligned on a single success metric: support contact rate in the first 30 days. That gave everyone a shared signal — not a vanity metric on onboarding completion, but a real downstream measure of whether the rebuilt flow was working. We also agreed to instrument the new flow from day one so we could iterate in real time rather than waiting for a quarterly review.</p>
+
+    <h2 class="reveal">What I Built</h2>
+
+    <h3 data-n="1" class="reveal">Guided Setup Checklist</h3>
+    <p class="reveal">I replaced the open-dashboard first session with a structured checklist — five steps, in priority order, each completing a meaningful chunk of the product configuration. Progress was visible, each step explained what it unlocked, and the checklist state persisted so customers could return mid-setup without losing context. Customers who completed the checklist activated at a significantly higher rate than those who didn't.</p>
+
+    <h3 data-n="2" class="reveal">SMB-Tuned Copy</h3>
+    <p class="reveal">I worked with design to audit every string in the onboarding flow and rewrite anything that assumed marketing sophistication. "List segmentation" became "which customers to contact." "Campaign trigger" became "when to send it." This wasn't dumbing down — it was translating the product into the language of the people actually using it.</p>
+
+    <h3 data-n="3" class="reveal">Contextual Empty States</h3>
+    <p class="reveal">The dashboard's default state — before setup was complete — looked like a broken product. Empty charts, zero-state tables, and greyed-out features sent customers to support asking if something was wrong. I redesigned every empty state to explain what it would show once set up, with a direct link back to the relevant checklist step. The visual gap between "not configured" and "broken" closed immediately.</p>
+
+    <h3 data-n="4" class="reveal">In-App Support Routing</h3>
+    <p class="reveal">For customers who still needed help, I shipped a contextual help layer tied to onboarding state — surfacing the right FAQ articles and video walkthroughs based on where someone was in setup, rather than a flat help center. This reduced the volume of contacts that needed a human response, freeing support reps to focus on genuinely complex issues.</p>
+
+    <hr class="divider">
+
+    <h2 class="reveal">The Impact</h2>
+    <p class="reveal">Support ticket volume in the first 30 days post-onboarding dropped by 50%. That number held across SMB segments — dental, auto, home services — which told us the problem was structural, not segment-specific. Early activation rate improved as more customers reached "first value" without needing to call for help.</p>
+
+    <div class="bar-compare reveal">
+      <div class="bar-col">
+        <div class="bar-wrap"><div class="bar-rect before" data-h="110"></div></div>
+        <div class="bar-col-label">Before<br>rebuild</div>
+      </div>
+      <div class="bar-col">
+        <div class="bar-wrap"><div class="bar-rect after" data-h="55"></div></div>
+        <div class="bar-col-label">After<br>−50%</div>
+      </div>
+      <div class="bar-stat">
+        <div class="bar-stat-num">−50%</div>
+        <div class="bar-stat-desc">Support tickets in the first 30 days post-onboarding</div>
+        <div class="bar-legend">
+          <div class="bar-legend-item"><div class="bar-legend-dot" style="background:var(--border);"></div> Old onboarding</div>
+          <div class="bar-legend-item"><div class="bar-legend-dot" style="background:var(--accent);"></div> Rebuilt onboarding</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="result-card reveal">
+      <div class="result-stat">
+        <div class="result-num green">−50%</div>
+        <div class="result-desc">Support tickets in first 30 days after onboarding rebuild</div>
+      </div>
+      <div class="result-stat">
+        <div class="result-num">↑ Act.</div>
+        <div class="result-desc">Early activation rate — more customers reaching first value without support</div>
+      </div>
+      <div class="result-stat">
+        <div class="result-num">3 seg.</div>
+        <div class="result-desc">Improvement held across dental, auto, and home services SMB verticals</div>
+      </div>
+    </div>
+
+    <div class="chips">
+      <span class="chip">SaaS</span>
+      <span class="chip">Onboarding</span>
+      <span class="chip">User Research</span>
+      <span class="chip">SMB</span>
+      <span class="chip">Support Reduction</span>
+      <span class="chip">First-Principles</span>
+      <span class="chip">Demandforce</span>
+    </div>
+
+    <hr class="divider">
+
+    <h3 class="reveal">What I Took Away</h3>
+    <div class="learnings reveal">
+      <ul>
+        <li><strong>Support volume is a product metric, not just an ops metric.</strong> When the queue is full of the same question, the product team owns the answer. Framing it that way — and bringing the data — is what got cross-functional alignment without a political fight.</li>
+        <li><strong>First-principles research before solutions.</strong> The instinct was to patch specific support ticket categories. The research revealed the issue was structural — no guided path, no progress visibility — which made the fix both more comprehensive and more durable.</li>
+        <li><strong>SMB customers need a different voice.</strong> These weren't marketers using a marketing tool — they were trade professionals using a tool adjacent to their trade. Copy that assumed marketing fluency was creating friction at every step. Meeting customers in their language isn't a UX nicety; it's table stakes.</li>
+        <li><strong>Instrument from day one.</strong> Agreeing upfront on a single downstream metric — 30-day contact rate — meant we had real signal within the first week of the new flow going live. It also meant we could iterate quickly instead of waiting for qualitative feedback to accumulate.</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<div class="cs-footer">
+  <span class="cs-footer-text">© Timothy Cocores · Demandforce</span>
+  <a href="portfolio.html" class="cs-footer-back">
+    Back to portfolio
+    <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
+</div>
+
+<script>
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('in');
+      e.target.querySelectorAll('.bar-rect[data-h]').forEach(bar => {
+        setTimeout(() => { bar.style.height = bar.dataset.h + 'px'; }, 100);
+      });
+      io.unobserve(e.target);
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  document.querySelectorAll('a[href="portfolio.html"]').forEach(a => {
+    a.addEventListener('click', () => sessionStorage.setItem('portfolio_scroll_y', window.scrollY));
+  });
+</script>
+</body>
+</html>
