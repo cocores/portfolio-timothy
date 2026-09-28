@@ -523,6 +523,46 @@
       .project,.funnel-bar,.spark-bar,.radial-fill,.ltv-bar { transition: none; }
       .project { opacity: 1; transform: none; }
     }
+    /* ── Resume tray ── */
+    .resume-tray-overlay {
+      display: none; position: fixed; inset: 0; z-index: 998;
+      background: rgba(0,0,0,.45); backdrop-filter: blur(4px);
+    }
+    .resume-tray-overlay.open { display: block; }
+    .resume-tray {
+      position: fixed; top: 0; right: -620px; bottom: 0; z-index: 999;
+      width: 100%; max-width: 600px;
+      background: #fff; box-shadow: -8px 0 40px rgba(0,0,0,.18);
+      display: flex; flex-direction: column;
+      transition: right 0.32s cubic-bezier(.4,0,.2,1);
+    }
+    .resume-tray-overlay.open .resume-tray { right: 0; }
+    .resume-tray-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1.5rem; border-bottom: 1px solid #e7e5e4; flex-shrink: 0;
+    }
+    .resume-tray-title {
+      font-size: .8rem; font-weight: 700; color: #18181b; letter-spacing: .02em;
+    }
+    .resume-tray-actions { display: flex; align-items: center; gap: .75rem; }
+    .resume-download-btn {
+      display: inline-flex; align-items: center; gap: .4rem;
+      background: var(--accent); color: #fff; font-size: .78rem; font-weight: 600;
+      padding: .45rem 1rem; border-radius: 100px; text-decoration: none;
+      transition: background .15s; font-family: inherit; border: none; cursor: pointer;
+    }
+    .resume-download-btn:hover { background: #4F52C8; }
+    .resume-tray-close {
+      background: none; border: none; cursor: pointer; color: #71717a;
+      padding: .25rem; border-radius: 6px; display: flex; align-items: center;
+      transition: background .15s, color .15s;
+    }
+    .resume-tray-close:hover { background: #f4f4f5; color: #18181b; }
+    .resume-tray-body { flex: 1; overflow: hidden; }
+    .resume-tray-body iframe {
+      width: 100%; height: 100%; border: none; display: block;
+    }
+
     /* ── LinkedIn tray ── */
     .li-tray-overlay {
       display: none; position: fixed; inset: 0; z-index: 998;
@@ -593,10 +633,10 @@
         See my work
       </a>
       <div class="hero-dot"></div>
-      <a href="TimothyMCocoresProductResume.pdf" class="hero-link soft" target="_blank" style="display:inline-flex;align-items:center;gap:.35rem;">
+      <button onclick="document.getElementById('resume-tray').classList.add('open')" class="hero-link soft" style="display:inline-flex;align-items:center;gap:.35rem;background:none;border:none;cursor:pointer;font-family:inherit;font-size:inherit;">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Download resume
-      </a>
+      </button>
       <div class="hero-dot"></div>
       <span class="hero-link soft" style="border:none;cursor:default;display:inline-flex;align-items:center;gap:.35rem;">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.6"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
@@ -1160,10 +1200,10 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
         LinkedIn
       </button>
-      <a href="TimothyMCocoresProductResume.pdf" class="coffee-btn" target="_blank">
+      <button class="coffee-btn" onclick="document.getElementById('resume-tray').classList.add('open')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
         Download resume
-      </a>
+      </button>
       <a href="#work" class="coffee-btn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
         Case studies
@@ -1251,6 +1291,26 @@
 </script>
 
 <!-- EMAIL MODAL -->
+<div class="resume-tray-overlay" id="resume-tray" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="resume-tray">
+    <div class="resume-tray-header">
+      <div class="resume-tray-title">Timothy Cocores — Product Resume</div>
+      <div class="resume-tray-actions">
+        <a href="TimothyMCocoresProductResume.pdf" download class="resume-download-btn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download PDF
+        </a>
+        <button class="resume-tray-close" onclick="document.getElementById('resume-tray').classList.remove('open')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="resume-tray-body">
+      <iframe src="TimothyMCocoresProductResume.pdf" title="Timothy Cocores Product Resume"></iframe>
+    </div>
+  </div>
+</div>
+
 <div class="li-tray-overlay" id="li-tray" onclick="if(event.target===this)this.classList.remove('open')">
   <div class="li-tray">
     <div class="li-tray-header">
