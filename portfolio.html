@@ -386,23 +386,29 @@
     /* EMAIL MODAL */
     .email-modal-overlay {
       display: none; position: fixed; inset: 0; z-index: 999;
-      background: rgba(0,0,0,.55); backdrop-filter: blur(4px);
-      align-items: center; justify-content: center; padding: 1.5rem;
+      background: rgba(0,0,0,.45); backdrop-filter: blur(4px);
     }
-    .email-modal-overlay.open { display: flex; }
+    .email-modal-overlay.open { display: block; }
     .email-modal {
-      background: var(--white); border-radius: 16px; padding: 2.25rem;
-      width: 100%; max-width: 460px; box-shadow: 0 24px 64px rgba(0,0,0,.18);
-      position: relative; animation: modal-in .2s ease;
+      position: fixed; top: 0; right: -500px; bottom: 0; z-index: 1000;
+      width: 100%; max-width: 460px;
+      background: var(--white); box-shadow: -8px 0 40px rgba(0,0,0,.18);
+      display: flex; flex-direction: column;
+      transition: right 0.32s cubic-bezier(.4,0,.2,1);
     }
-    @keyframes modal-in { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
+    .email-modal-overlay.open .email-modal { right: 0; }
+    .email-tray-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--gray-2); flex-shrink: 0;
+    }
+    .email-tray-title { font-size: .8rem; font-weight: 700; color: var(--black); }
     .email-modal-close {
-      position: absolute; top: 1rem; right: 1rem;
       background: none; border: none; cursor: pointer;
       color: var(--gray-5); padding: .25rem; border-radius: 6px;
       display: flex; align-items: center; justify-content: center;
     }
     .email-modal-close:hover { background: var(--gray-1); color: var(--black); }
+    .email-tray-body { flex: 1; overflow-y: auto; padding: 2rem 1.75rem; }
     .email-modal h3 { font-size: 1.25rem; font-weight: 800; margin-bottom: .35rem; }
     .email-modal p { font-size: .875rem; color: var(--gray-5); margin-bottom: 1.5rem; line-height: 1.6; }
     .email-field { display: flex; flex-direction: column; gap: .4rem; margin-bottom: 1rem; }
@@ -414,7 +420,7 @@
       background: var(--white);
     }
     .email-field input:focus, .email-field textarea:focus { border-color: var(--accent); }
-    .email-field textarea { resize: vertical; min-height: 100px; }
+    .email-field textarea { resize: vertical; min-height: 120px; }
     .email-submit {
       width: 100%; padding: .75rem; border-radius: 8px;
       background: var(--accent); color: #fff; font-size: .9rem;
@@ -422,7 +428,7 @@
       transition: background .15s; margin-top: .5rem;
     }
     .email-submit:hover { background: #4F52C8; }
-    .email-success { text-align: center; padding: 1.5rem 0; }
+    .email-success { text-align: center; padding: 2rem 0; }
     .email-success svg { color: #16a34a; width: 40px; height: 40px; margin-bottom: .75rem; }
     .email-success h4 { font-size: 1.1rem; font-weight: 800; margin-bottom: .4rem; }
     .email-success p { font-size: .875rem; color: var(--gray-5); }
@@ -1339,11 +1345,15 @@
 
 <div class="email-modal-overlay" id="email-modal" onclick="if(event.target===this)this.classList.remove('open')">
   <div class="email-modal">
-    <button class="email-modal-close" onclick="document.getElementById('email-modal').classList.remove('open')">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-    </button>
+    <div class="email-tray-header">
+      <div class="email-tray-title">Send me a message</div>
+      <button class="email-modal-close" onclick="document.getElementById('email-modal').classList.remove('open')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="email-tray-body">
     <div id="email-form-wrap">
-      <h3>Send me a message</h3>
+      <h3>Let's talk.</h3>
       <p>I'll get back to you faster than a pour-over. No spam, no cold pitches — just real conversation.</p>
       <div data-fs-error style="font-size:.8rem;color:#dc2626;margin-bottom:.75rem;display:none;"></div>
       <form id="email-form">
@@ -1369,6 +1379,7 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
       <h4>Message sent!</h4>
       <p>Thanks for reaching out. I'll be in touch soon.</p>
+    </div>
     </div>
   </div>
 </div>
