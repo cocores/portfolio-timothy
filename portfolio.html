@@ -873,7 +873,7 @@
           <div class="cur-card-img-placeholder">
             <div class="cur-icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
           </div>
-          <div class="cur-status-wrap"><span class="cur-status status-beta">Beta Testing</span></div>
+          <div class="cur-status-wrap"><span class="cur-status status-building">In Development</span></div>
         </div>
         <div class="cur-card-body">
           <div>
@@ -1215,23 +1215,27 @@
     <div id="email-form-wrap">
       <h3>Send me a message</h3>
       <p>I'll get back to you faster than a pour-over. No spam, no cold pitches — just real conversation.</p>
-      <form id="email-form" onsubmit="handleEmailSubmit(event)">
+      <div data-fs-error style="font-size:.8rem;color:#dc2626;margin-bottom:.75rem;display:none;"></div>
+      <form id="email-form">
         <div class="email-field">
           <label>Your name</label>
-          <input type="text" name="name" placeholder="Jane Smith" required>
+          <input type="text" name="name" placeholder="Jane Smith" required data-fs-field>
+          <span data-fs-error="name" style="font-size:.75rem;color:#dc2626;"></span>
         </div>
         <div class="email-field">
           <label>Your email</label>
-          <input type="email" name="email" placeholder="jane@company.com" required>
+          <input type="email" name="email" placeholder="jane@company.com" required data-fs-field>
+          <span data-fs-error="email" style="font-size:.75rem;color:#dc2626;"></span>
         </div>
         <div class="email-field">
           <label>Message</label>
-          <textarea name="message" placeholder="Tell me what you're working on..." required></textarea>
+          <textarea name="message" placeholder="Tell me what you're working on..." required data-fs-field></textarea>
+          <span data-fs-error="message" style="font-size:.75rem;color:#dc2626;"></span>
         </div>
-        <button type="submit" class="email-submit">Send message →</button>
+        <button type="submit" class="email-submit" data-fs-submit-btn>Send message →</button>
       </form>
     </div>
-    <div id="email-success" class="email-success" style="display:none">
+    <div data-fs-success class="email-success" style="display:none">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
       <h4>Message sent!</h4>
       <p>Thanks for reaching out. I'll be in touch soon.</p>
@@ -1240,42 +1244,9 @@
 </div>
 
 <script>
-async function handleEmailSubmit(e) {
-  e.preventDefault();
-  const form = e.target;
-  const btn = form.querySelector('.email-submit');
-  btn.textContent = 'Sending…';
-  btn.disabled = true;
-
-  const data = {
-    name: form.name.value,
-    email: form.email.value,
-    message: form.message.value,
-    _subject: 'Lets Connect',
-    _replyto: form.email.value,
-  };
-
-  try {
-    const res = await fetch('https://formspree.io/f/timothycocores@gmail.com', {
-      method: 'POST',
-      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-    if (res.ok) {
-      document.getElementById('email-form-wrap').style.display = 'none';
-      document.getElementById('email-success').style.display = 'block';
-    } else {
-      throw new Error();
-    }
-  } catch {
-    // Fallback to mailto
-    const subject = encodeURIComponent('Lets Connect');
-    const body = encodeURIComponent('Name: ' + data.name + '\nEmail: ' + data.email + '\n\n' + data.message);
-    window.location.href = 'mailto:timothycocores@gmail.com?subject=' + subject + '&body=' + body;
-    btn.textContent = 'Send message →';
-    btn.disabled = false;
-  }
-}
+  window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+  formspree('initForm', { formElement: '#email-form', formId: 'mdekyaaw' });
 </script>
+<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
 </body>
 </html>
