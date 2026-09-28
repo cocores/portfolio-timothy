@@ -529,6 +529,41 @@
       .project,.funnel-bar,.spark-bar,.radial-fill,.ltv-bar { transition: none; }
       .project { opacity: 1; transform: none; }
     }
+    /* ── Case study tray ── */
+    .cs-tray-overlay {
+      display: none; position: fixed; inset: 0; z-index: 997;
+      background: rgba(0,0,0,.5); backdrop-filter: blur(4px);
+    }
+    .cs-tray-overlay.open { display: block; }
+    .cs-tray {
+      position: fixed; top: 0; right: -105%; bottom: 0; z-index: 998;
+      width: 92%; max-width: 1080px;
+      background: #fff; box-shadow: -8px 0 48px rgba(0,0,0,.22);
+      display: flex; flex-direction: column;
+      transition: right 0.35s cubic-bezier(.4,0,.2,1);
+    }
+    .cs-tray-overlay.open .cs-tray { right: 0; }
+    .cs-tray-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 1.5rem; height: 52px; flex-shrink: 0;
+      background: rgba(13,13,13,0.95); border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .cs-tray-back {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .8rem; font-weight: 500; color: rgba(255,255,255,0.45);
+      background: none; border: none; cursor: pointer; font-family: inherit;
+      transition: color .15s;
+    }
+    .cs-tray-back:hover { color: rgba(255,255,255,0.9); }
+    .cs-tray-close {
+      background: none; border: none; cursor: pointer;
+      color: rgba(255,255,255,0.4); padding: .25rem; border-radius: 6px;
+      display: flex; align-items: center; transition: color .15s;
+    }
+    .cs-tray-close:hover { color: #fff; }
+    .cs-tray-body { flex: 1; overflow-y: auto; }
+    .cs-tray-body iframe { width: 100%; height: 100%; border: none; display: block; min-height: 100%; }
+
     /* ── Resume tray ── */
     .resume-tray-overlay {
       display: none; position: fixed; inset: 0; z-index: 998;
@@ -797,10 +832,10 @@
           <div class="project-tags">
             <span class="ptag">PDP Strategy</span><span class="ptag">Conversion</span><span class="ptag">Fintech</span><span class="ptag">B&H Leasing</span>
           </div>
-          <a href="bh-leasing.html" class="project-link">
+          <button onclick="openCSTray('bh-leasing.html')" class="project-link">
             Full case study
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
-          </a>
+          </button>
         </div>
       </div>
 
@@ -868,10 +903,10 @@
           <div class="project-tags">
             <span class="ptag">Marketplace</span><span class="ptag">Cold Start</span><span class="ptag">Growth Strategy</span><span class="ptag">Local Commerce</span>
           </div>
-          <a href="promenade.html" class="project-link">
+          <button onclick="openCSTray('promenade.html')" class="project-link">
             Full case study
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
-          </a>
+          </button>
         </div>
       </div>
 
@@ -921,10 +956,10 @@
           <div class="project-tags">
             <span class="ptag">SaaS</span><span class="ptag">Onboarding</span><span class="ptag">User Research</span><span class="ptag">SMB</span>
           </div>
-          <a href="demandforce.html" class="project-link">
+          <button onclick="openCSTray('demandforce.html')" class="project-link">
             Full case study
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
-          </a>
+          </button>
         </div>
       </div>
 
@@ -953,7 +988,7 @@
             <div class="cur-tagline">Dating app with a social wingman twist</div>
           </div>
           <p class="cur-desc">A dating app where friends vouch for you — your "wing" sends the first message on your behalf to break the ice. Designing the matching algorithm, trust & safety model, and the dual-profile UX.</p>
-          <a href="wingd.html" class="cur-cta">View Wingd <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg></a>
+          <button onclick="openCSTray('wingd.html')" class="cur-cta">View Wingd <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg></button>
         </div>
       </div>
 
@@ -971,7 +1006,7 @@
             <div class="cur-tagline">Scan slabbed or raw coins to see PCGS grade value</div>
           </div>
           <p class="cur-desc">Point your camera at any slabbed or non-slabbed coin and instantly get its current PCGS graded market value. Built for collectors who want fast, accurate pricing without digging through lookup tables.</p>
-          <a href="coin-value-scanner.html" class="cur-cta">View Coin Scanner<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg></a>
+          <button onclick="openCSTray('coin-value-scanner.html')" class="cur-cta">View Coin Scanner<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg></button>
         </div>
       </div>
 
@@ -989,7 +1024,7 @@
             <div class="cur-tagline">Customer-facing image annotation tool</div>
           </div>
           <p class="cur-desc">A browser-based tool for product, design, and business teams to create annotated customer-facing images — hotspots, measurements, and callouts — for PDPs, Image Galleries, and Explora content.</p>
-          <a href="hot-spot-tool.html" class="cur-cta">View Annotation Suite <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg></a>
+          <button onclick="openCSTray('hot-spot-tool.html')" class="cur-cta">View Annotation Suite <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg></button>
         </div>
       </div>
 
@@ -1007,7 +1042,7 @@
             <div class="cur-tagline">Community-sourced restroom access codes</div>
           </div>
           <p class="cur-desc">A crowdsourced directory of bathroom door codes for cafes, hotels, and stores. Community validates codes and a trust score surfaces the most reliable ones. Currently integrating Google Maps API for location-based discovery, building backend storage, and working toward an App Store release.</p>
-          <a href="bathroom-codes.html" class="cur-cta">View LooCode <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg></a>
+          <button onclick="openCSTray('bathroom-codes.html')" class="cur-cta">View LooCode <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg></button>
         </div>
       </div>
 
@@ -1025,7 +1060,7 @@
             <div class="cur-tagline">A polaroid camera in your pocket</div>
           </div>
           <p class="cur-desc">Turn your phone into a polaroid camera — capture moments with the warmth and nostalgia of instant film, right from your pocket. Camera layer and film develop animation underway — live at <a href="https://polopocket.vercel.app" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">polopocket.vercel.app</a>. Currently implementing backend storage and logins for premium features.</p>
-          <a href="polapocket.html" class="cur-cta">View PolaPocket <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg></a>
+          <button onclick="openCSTray('polapocket.html')" class="cur-cta">View PolaPocket <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg></button>
         </div>
       </div>
 
@@ -1297,6 +1332,23 @@
 </script>
 
 <!-- EMAIL MODAL -->
+<div class="cs-tray-overlay" id="cs-tray" onclick="if(event.target===this)closeCSTray()">
+  <div class="cs-tray">
+    <div class="cs-tray-bar">
+      <button class="cs-tray-back" onclick="closeCSTray()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Back to portfolio
+      </button>
+      <button class="cs-tray-close" onclick="closeCSTray()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="cs-tray-body">
+      <iframe id="cs-tray-iframe" src="" title="Case Study"></iframe>
+    </div>
+  </div>
+</div>
+
 <div class="resume-tray-overlay" id="resume-tray" onclick="if(event.target===this)this.classList.remove('open')">
   <div class="resume-tray">
     <div class="resume-tray-header">
@@ -1387,6 +1439,27 @@
 <script>
   window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
   formspree('initForm', { formElement: '#email-form', formId: 'mdekyaaw' });
+</script>
+<script>
+  function openCSTray(url) {
+    const iframe = document.getElementById('cs-tray-iframe');
+    iframe.src = url + '?tray=1';
+    document.getElementById('cs-tray').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeCSTray() {
+    document.getElementById('cs-tray').classList.remove('open');
+    document.body.style.overflow = '';
+    setTimeout(() => { document.getElementById('cs-tray-iframe').src = ''; }, 350);
+  }
+  document.getElementById('cs-tray-iframe').addEventListener('load', function () {
+    try {
+      const path = this.contentWindow.location.pathname;
+      if (path.endsWith('portfolio.html') || path === '/' || path === '/index.html') {
+        closeCSTray();
+      }
+    } catch (e) {}
+  });
 </script>
 <script src="https://unpkg.com/@formspree/ajax@1" defer></script>
 <script src="https://platform.linkedin.com/badges/js/profile.js" async defer></script>
