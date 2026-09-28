@@ -150,6 +150,23 @@
     .funnel-pct { font-size: 0.75rem; font-weight: 600; color: var(--text); width: 36px; text-align: right; }
     .funnel-delta { font-size: 0.68rem; font-weight: 700; color: var(--green); width: 52px; }
 
+    /* ── Live link callout ── */
+    .live-callout {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      background: var(--bg); border: 1px solid var(--border); border-radius: 12px;
+      padding: 1.25rem 1.5rem; margin: 2rem 0; flex-wrap: wrap;
+    }
+    .live-callout-left { display: flex; flex-direction: column; gap: 0.25rem; }
+    .live-callout-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--subtle); }
+    .live-callout-title { font-size: 0.9rem; font-weight: 600; color: var(--text); }
+    .live-callout-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: var(--text); color: #fff; font-size: 0.78rem; font-weight: 600;
+      padding: 0.55rem 1.1rem; border-radius: 100px; text-decoration: none;
+      transition: background 0.15s; white-space: nowrap; flex-shrink: 0;
+    }
+    .live-callout-link:hover { background: var(--accent); }
+
     /* ── Insight callout ── */
     .insight {
       background: var(--accent-light); border-left: 3px solid var(--accent);
@@ -290,6 +307,17 @@
 
     <h3 data-n="4" class="reveal">Measurement Framework</h3>
     <p class="reveal">I defined the funnel from PDP visit through submitted application, and built tracking to see exactly where drop-off was happening. That data drove ongoing iteration — we kept optimizing the flow as adoption grew.</p>
+
+    <div class="live-callout reveal">
+      <div class="live-callout-left">
+        <span class="live-callout-label">Live page</span>
+        <span class="live-callout-title">B&H Business Financing — as it exists today</span>
+      </div>
+      <a href="https://www.bhphotovideo.com/a/pages/business-financing?origSearch=leasing&sts=ma" target="_blank" rel="noopener" class="live-callout-link">
+        View live page
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
+    </div>
 
     <hr class="divider">
 
